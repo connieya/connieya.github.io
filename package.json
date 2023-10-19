@@ -1,13 +1,12 @@
 {
-  "name": "gatsby-starter-default",
+  "name": "my-blog",
   "private": true,
-  "description": "A simple starter to get up and developing quickly with Gatsby",
+  "description": "Developer Park Geon Hee's personal blog.",
   "version": "0.1.0",
-  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+  "author": "Park Geon Hee",
   "dependencies": {
     "gatsby": "^5.12.4",
     "gatsby-plugin-image": "^3.12.0",
-    "gatsby-plugin-manifest": "^5.12.0",
     "gatsby-plugin-sharp": "^5.12.0",
     "gatsby-source-filesystem": "^5.12.0",
     "gatsby-transformer-sharp": "^5.12.0",
