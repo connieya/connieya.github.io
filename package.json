@@ -8,13 +8,20 @@
     "gatsby": "^5.12.4",
     "gatsby-plugin-image": "^3.12.0",
     "gatsby-plugin-sharp": "^5.12.0",
+    "gatsby-plugin-typescript": "^5.12.0",
     "gatsby-source-filesystem": "^5.12.0",
     "gatsby-transformer-sharp": "^5.12.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "typescript": "^5.2.2"
   },
   "devDependencies": {
-    "prettier": "^2.8.8"
+    "@typescript-eslint/eslint-plugin": "^6.8.0",
+    "@typescript-eslint/parser": "^6.8.0",
+    "eslint": "^8.51.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "prettier": "^3.0.3"
   },
   "keywords": [
     "gatsby"
