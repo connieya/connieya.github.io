@@ -15,8 +15,11 @@ module.exports = {
     siteUrl: `https://gatsbystarterdefaultsource.gatsbyjs.io/`,
   },
   plugins: [
-    `gatsby-plugin-image`,
     `gatsby-plugin-emotion`,
+    `gatsby-plugin-image`,
+    `gatsby-transformer-sharp`,
+    `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-sharp`,
     {
       resolve: 'gatsby-plugin-typescript',
       options: {
@@ -24,7 +27,6 @@ module.exports = {
         allExtensions: true,
       },
     },
-    `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -32,8 +34,13 @@ module.exports = {
         path: `${__dirname}/contents`,
       },
     },
-    `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`,
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `images`,
+        path: `${__dirname}/static`,
+      },
+    },
     {
       resolve: `gatsby-transformer-remark`,
       options: {
@@ -67,6 +74,16 @@ module.exports = {
             options: {
               target: '_blank',
               rel: 'nofollow',
+            },
+          },
+          {
+            resolve: `gatsby-plugin-sharp`,
+            options: {
+              defaults: {
+                formats: ['auto', 'webp'],
+                quality: 100,
+                placeholder: 'blurred',
+              },
             },
           },
         ],
