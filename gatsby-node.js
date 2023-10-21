@@ -3,7 +3,9 @@
  *
  * See: https://www.gatsbyjs.com/docs/reference/config-files/gatsby-node/
  */
-
+/**
+ * @type {import('gatsby').GatsbyNode['createPages']}
+ */
 const path = require('path')
 const { createFilePath } = require('gatsby-source-filesystem')
 // Setup Import Alias
@@ -22,17 +24,55 @@ exports.onCreateWebpackConfig = ({ getConfig, actions }) => {
   })
 }
 
-/**
- * @type {import('gatsby').GatsbyNode['createPages']}
- */
-exports.createPages = async ({ actions }) => {
+exports.createPages = async ({ actions, graphql, reporter }) => {
   const { createPage } = actions
-  createPage({
-    path: '/using-dsg',
-    component: require.resolve('./src/templates/using-dsg.js'),
-    context: {},
-    defer: true,
-  })
+
+  // Get All Markdown File For Paging
+  const queryAllMarkdownData = await graphql(`
+    {
+      allMarkdownRemark(
+        sort: { order: DESC, fields: [frontmatter___date, frontmatter___title] }
+      ) {
+        edges {
+          node {
+            fields {
+              slug
+            }
+          }
+        }
+      }
+    }
+  `)
+
+  // Handling GraphQL Query Error
+  if (queryAllMarkdownData.errors) {
+    reporter.panicOnBuild(`Error while running query`)
+    return
+  }
+
+  // Import Post Template Component
+  const PostTemplateComponent = path.resolve(
+    __dirname,
+    'src/templates/post_template.tsx',
+  )
+
+  // Page Generating Function
+  const generatePostPage = ({
+    node: {
+      fields: { slug },
+    },
+  }) => {
+    const pageOptions = {
+      path: slug,
+      component: PostTemplateComponent,
+      context: { slug },
+    }
+
+    createPage(pageOptions)
+  }
+
+  // Generate Post Page And Passing Slug Props for Query
+  queryAllMarkdownData.data.allMarkdownRemark.edges.forEach(generatePostPage)
 }
 
 exports.onCreateNode = ({ node, getNode, actions }) => {
@@ -47,4 +87,14 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
       value: slug,
     })
   }
+}
+
+// 이거 해주면 알아서 React 컴포넌트인지 인식한다. 따로 FunctionComponent 등 타입을 넣어줄 필요가 없어진다.
+exports.onCreateBabelConfig = ({ actions }) => {
+  actions.setBabelPlugin({
+    name: '@babel/plugin-transform-react-jsx',
+    options: {
+      runtime: 'automatic',
+    },
+  })
 }
