@@ -12,10 +12,13 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@types/react-helmet": "^6.1.8",
     "gatsby": "^5.12.4",
+    "gatsby-plugin-canonical-urls": "^5.12.0",
     "gatsby-plugin-emotion": "^8.12.0",
     "gatsby-plugin-image": "^3.12.1",
     "gatsby-plugin-react-helmet": "^6.12.0",
+    "gatsby-plugin-robots-txt": "^1.8.0",
     "gatsby-plugin-sharp": "^5.12.1",
+    "gatsby-plugin-sitemap": "^6.12.2",
     "gatsby-plugin-typescript": "^5.12.0",
     "gatsby-remark-copy-linked-files": "^6.12.0",
     "gatsby-remark-external-links": "^0.0.4",
@@ -38,6 +41,7 @@
     "eslint": "^8.51.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
+    "gh-pages": "^6.0.0",
     "prettier": "^3.0.3"
   },
   "keywords": [
@@ -48,10 +52,11 @@
     "build": "gatsby build",
     "develop": "gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,css}\"",
-    "start": "gatsby develop",
+    "start": "npm run develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
+    "deploy": "gatsby build && gh-pages -d public -b master"
   },
   "repository": {
     "type": "git",

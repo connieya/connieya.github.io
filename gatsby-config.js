@@ -12,7 +12,7 @@ module.exports = {
     title: `Dev-Log`,
     description: `gatsby 로 나만의 블로그 만들기`,
     author: `Park Geon Hee`,
-    siteUrl: `https://gatsbystarterdefaultsource.gatsbyjs.io/`,
+    siteUrl: `https://connieya.github.io/`,
   },
   plugins: [
     `gatsby-plugin-emotion`,
@@ -20,6 +20,13 @@ module.exports = {
     `gatsby-transformer-sharp`,
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-sharp`,
+    'gatsby-plugin-sitemap',
+    {
+      resolve: 'gatsby-plugin-robots-txt',
+      options: {
+        policy: [{ userAgent: '*', allow: '/' }],
+      },
+    },
     {
       resolve: 'gatsby-plugin-typescript',
       options: {
@@ -84,6 +91,13 @@ module.exports = {
                 quality: 100,
                 placeholder: 'blurred',
               },
+            },
+          },
+          {
+            resolve: 'gatsby-plugin-canonical-urls',
+            options: {
+              siteUrl: 'https://connieya.github.io/',
+              stripQueryString: true,
             },
           },
         ],

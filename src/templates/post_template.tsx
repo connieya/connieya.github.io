@@ -30,22 +30,14 @@ const PostTemplate: FunctionComponent<PostTemplateProps> = function ({
         summary,
         date,
         categories,
-        thumbnail: {
-          childImageSharp: { gatsbyImageData },
-          publicURL,
-        },
+        thumbnail: { publicURL },
       },
     },
   } = edges[0]
 
   return (
     <Template>
-      <PostHead
-        title={title}
-        date={date}
-        categories={categories}
-        thumbnail={gatsbyImageData}
-      />
+      <PostHead title={title} date={date} categories={categories} />
       <PostContent html={html} />
       <CommentWidget />
     </Template>
