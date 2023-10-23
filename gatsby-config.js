@@ -19,16 +19,8 @@ module.exports = {
     `gatsby-plugin-image`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-react-helmet`,
-    `gatsby-plugin-sharp`,
     'gatsby-plugin-sitemap',
-    {
-      resolve: 'gatsby-plugin-robots-txt',
-      options: {
-        host: 'https://connieya.github.io',
-        sitemap: 'https://connieya.github.io/sitemap-index.xml',
-        policy: [{ userAgent: '*', allow: '/' }],
-      },
-    },
+
     {
       resolve: 'gatsby-plugin-typescript',
       options: {
@@ -93,6 +85,14 @@ module.exports = {
                 quality: 100,
                 placeholder: 'blurred',
               },
+            },
+          },
+          {
+            resolve: 'gatsby-plugin-robots-txt',
+            options: {
+              host: 'https://connieya.github.io',
+              sitemap: 'https://connieya.github.io/sitemap-index.xml',
+              policy: [{ userAgent: '*', allow: '/' }],
             },
           },
           {

@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useMemo } from 'react'
 import styled from '@emotion/styled'
-import PostItem from './PostItem'
 import { PostListItemType } from 'components/types/PostItem.types'
+import PostItem from './PostItem'
 
 export type PostType = {
   node: {

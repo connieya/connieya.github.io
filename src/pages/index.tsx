@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useMemo } from 'react'
-import styled from '@emotion/styled'
 import Introduction from 'components/Main/Introduction'
-import CategoryList, { CategoryListProps } from 'components/Main/CategoryList'
+import CategoryList, { CategoryListProps } from 'components/Post/CategoryList'
 import PostList, { PostType } from 'components/Post/PostList'
 import { graphql } from 'gatsby'
 import { PostListItemType } from 'components/types/PostItem.types'
@@ -9,9 +8,10 @@ import { IGatsbyImageData } from 'gatsby-plugin-image'
 import queryString, { ParsedQuery } from 'query-string'
 import Template from 'components/Common/Template'
 
-type IndexPageProps = {
+type Props = {
   location: {
     search: string
+    href: string
   }
   data: {
     site: {
@@ -25,27 +25,24 @@ type IndexPageProps = {
       edges: PostListItemType[]
     }
     file: {
-      childImageSharp: {
-        gatsbyImageData: IGatsbyImageData
-      }
+      childImageSharp: { gatsbyImageData: IGatsbyImageData }
       publicURL: string
     }
   }
 }
-
-const IndexPage: FunctionComponent<IndexPageProps> = function ({
+const Home = ({
   location: { search },
   data: {
     site: {
       siteMetadata: { title, description, siteUrl },
     },
-    allMarkdownRemark: { edges },
+    allMarkdownRemark: { edges: posts },
     file: {
       childImageSharp: { gatsbyImageData },
       publicURL,
     },
   },
-}) {
+}: Props) => {
   const parsed: ParsedQuery<string> = queryString.parse(search)
   const selectedCategory: string =
     typeof parsed.category !== 'string' || !parsed.category
@@ -54,7 +51,7 @@ const IndexPage: FunctionComponent<IndexPageProps> = function ({
 
   const categoryList = useMemo(
     () =>
-      edges.reduce(
+      posts.reduce(
         (
           list: CategoryListProps['categoryList'],
           {
@@ -89,12 +86,12 @@ const IndexPage: FunctionComponent<IndexPageProps> = function ({
         selectedCategory={selectedCategory}
         categoryList={categoryList}
       />
-      <PostList selectedCategory={selectedCategory} posts={edges} />
+      <PostList selectedCategory={selectedCategory} posts={posts} />
     </Template>
   )
 }
 
-export default IndexPage
+export default Home
 
 export const getPostList = graphql`
   query getPostList {
@@ -119,7 +116,9 @@ export const getPostList = graphql`
             summary
             date(formatString: "YYYY.MM.DD.")
             categories
-            thumbnail
+            thumbnail {
+              publicURL
+            }
           }
         }
       }

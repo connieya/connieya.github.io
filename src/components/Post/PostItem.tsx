@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React from 'react'
 import { navigate } from 'gatsby'
 import styled from '@emotion/styled'
 import { Link } from 'gatsby'
@@ -6,16 +6,20 @@ import { PostFrontMatterType } from 'components/types/PostItem.types'
 import { GatsbyImage } from 'gatsby-plugin-image'
 import CategoryListItem from './CategoryListItem'
 
-type PostItemProps = PostFrontMatterType & { link: string }
+type Props = PostFrontMatterType & { link: string }
 
-const PostItem: FunctionComponent<PostItemProps> = function ({
-  title,
-  date,
+const PostItem = ({
   categories,
+  date,
   summary,
-  //   thumbnail: { publicURL },
+  thumbnail,
+  // {
+  // childImageSharp: { gatsbyImageData },
+  // }
+
+  title,
   link,
-}) {
+}: Props) => {
   const handleClick = () => {
     navigate(link)
   }
@@ -28,14 +32,18 @@ const PostItem: FunctionComponent<PostItemProps> = function ({
           ))}
         </CategoriesContainer>
         <Title onClick={handleClick}>{title}</Title>
-
         <Description>{summary}</Description>
         <CreatedAtAndTimeToReadContainer>
           <CreatedAt>{date}</CreatedAt>
         </CreatedAtAndTimeToReadContainer>
       </TextInfoContainer>
       <ThumbnailContainer onClick={handleClick}>
-        <ThumbnailImage src={''} alt="Post Item Image" />
+        <Thumbnail
+          // image={gatsbyImageData}
+          role="link"
+          alt="썸네일 이미지, 누르면 해당 글로 이동"
+          onClick={handleClick}
+        />
       </ThumbnailContainer>
     </Container>
   )
@@ -97,6 +105,11 @@ const ThumbnailContainer = styled.div`
   align-items: center;
   width: 200px;
   height: 200px;
+`
+
+const Thumbnail = styled(GatsbyImage)`
+  height: 100%;
+  cursor: pointer;
 `
 
 const CreatedAtAndTimeToReadContainer = styled.div`

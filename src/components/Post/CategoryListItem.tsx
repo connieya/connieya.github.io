@@ -22,7 +22,7 @@ const CategoryListItem = ({ active = false, category, innerText }: Props) => {
         aria-label={`${innerText || category} 카테고리`}
         to={`/?category=${encodeURI(category)}`}
       >
-        {innerText || category}
+        {category}
       </StyledLink>
     </Container>
   )
@@ -36,6 +36,7 @@ const Container = styled.span`
   }
 
   margin: 0.25rem;
+  padding: 0.25rem;
 `
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -45,11 +46,13 @@ const StyledLink = styled(({ active, ...props }: GatsbyLinkProps) => (
   z-index: 9;
   display: inline-block;
   padding: 0.25rem 0.75rem;
-  color: ${({ active }) => (active ? COLORS.WHITE : COLORS.BLACK)};
+  color: ${COLORS.BLACK}
   font-size: 0.9rem;
+  font-weight : ${({ active }) => (active ? '900' : '600')};
   white-space: nowrap;
-  background-color: ${({ active }) => (active ? COLORS.SUB_BOLD : COLORS)};
-  border: 1px solid ${COLORS.GRAY};
+  background-color: ${({ active }) => (active ? COLORS : COLORS)};
+  border: ${({ active }) =>
+    active ? '2px solid #909da1' : '1px solid #b5a5a5'};
   border-radius: 1rem;
   transform: scale(${({ active }) => (active ? 1.15 : 1)});
   cursor: pointer;
@@ -60,8 +63,8 @@ const StyledLink = styled(({ active, ...props }: GatsbyLinkProps) => (
   }
 
   &:hover {
-    color: ${({ active }) => (active ? COLORS.WHITE : COLORS.BLACK)};
-    background-color: ${({ active }) => (active ? COLORS.SUB_BOLD : '#f0f0f0')};
+    color: ${COLORS.BLACK}
+    background-color: ${({ active }) => (active ? '#a0a0a0' : '#b5a5a5')};
   }
 
   @media (max-width: 768px) {
