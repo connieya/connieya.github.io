@@ -2,7 +2,7 @@ import React, { FunctionComponent, useMemo } from 'react'
 import styled from '@emotion/styled'
 import Introduction from 'components/Main/Introduction'
 import CategoryList, { CategoryListProps } from 'components/Main/CategoryList'
-import PostList, { PostType } from 'components/Main/PostList'
+import PostList, { PostType } from 'components/Post/PostList'
 import { graphql } from 'gatsby'
 import { PostListItemType } from 'components/types/PostItem.types'
 import { IGatsbyImageData } from 'gatsby-plugin-image'
@@ -63,7 +63,7 @@ const IndexPage: FunctionComponent<IndexPageProps> = function ({
             },
           }: PostType,
         ) => {
-          categories.forEach(category => {
+          categories?.forEach(category => {
             if (list[category] === undefined) list[category] = 1
             else list[category]++
           })

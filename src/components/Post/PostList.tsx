@@ -23,11 +23,9 @@ type PostListProps = {
   posts: PostType[]
 }
 
-const PostListWrapper = styled.div`
+const Container = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 20px;
-  width: 768px;
+  width: 780px;
   margin: 0 auto;
   padding: 50px 0 100px;
 
@@ -37,6 +35,8 @@ const PostListWrapper = styled.div`
     padding: 50px 20px;
   }
 `
+
+const PostListContainer = styled.div``
 
 const PostList: FunctionComponent<PostListProps> = function ({
   selectedCategory,
@@ -58,19 +58,21 @@ const PostList: FunctionComponent<PostListProps> = function ({
   )
 
   return (
-    <PostListWrapper>
-      {postListData.map(
-        ({
-          node: {
-            id,
-            fields: { slug },
-            frontmatter,
-          },
-        }: PostListItemType) => (
-          <PostItem {...frontmatter} link={slug} key={id} />
-        ),
-      )}
-    </PostListWrapper>
+    <Container>
+      <PostListContainer>
+        {postListData.map(
+          ({
+            node: {
+              id,
+              fields: { slug },
+              frontmatter,
+            },
+          }: PostListItemType) => (
+            <PostItem {...frontmatter} link={slug} key={id} />
+          ),
+        )}
+      </PostListContainer>
+    </Container>
   )
 }
 
