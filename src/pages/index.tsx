@@ -1,13 +1,12 @@
-import React, { FunctionComponent, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import Introduction from 'components/Main/Introduction'
 import CategoryList, { CategoryListProps } from 'components/Post/CategoryList'
 import PostList, { PostType } from 'components/Post/PostList'
 import { graphql } from 'gatsby'
-import { PostListItemType } from 'components/types/PostItem.types'
 import { IGatsbyImageData } from 'gatsby-plugin-image'
 import queryString, { ParsedQuery } from 'query-string'
 import Template from 'components/Common/Template'
-
+import { PostItem } from 'types/Post'
 type Props = {
   location: {
     search: string
@@ -22,7 +21,7 @@ type Props = {
       }
     }
     allMarkdownRemark: {
-      edges: PostListItemType[]
+      edges: PostItem[]
     }
     file: {
       childImageSharp: { gatsbyImageData: IGatsbyImageData }
@@ -117,6 +116,9 @@ export const getPostList = graphql`
             date(formatString: "YYYY.MM.DD.")
             categories
             thumbnail {
+              childImageSharp {
+                gatsbyImageData
+              }
               publicURL
             }
           }

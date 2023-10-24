@@ -2,6 +2,8 @@ import React, { FunctionComponent } from 'react'
 import styled from '@emotion/styled'
 import { GatsbyImage, IGatsbyImageData } from 'gatsby-plugin-image'
 import PostHeadInfo, { PostHeadInfoProps } from './PostHeadInfo'
+import COLORS from 'utils/constant/colors'
+import CategoryListItem from 'components/Post/CategoryListItem'
 
 type GatsbyImgProps = {
   image: IGatsbyImageData
@@ -43,11 +45,41 @@ const PostHead: FunctionComponent<PostHeadProps> = function ({
   categories,
 }) {
   return (
-    <PostHeadWrapper>
-      <BackgroundImage alt="thumbnail" />
-      <PostHeadInfo title={title} date={date} categories={categories} />
-    </PostHeadWrapper>
+    <Container>
+      <Title>{title}</Title>
+      <CategoriesCreatedAtContainer>
+        <CategoriesAndTimeToReadContainer>
+          {categories.map(category => (
+            <CategoryListItem category={category} key={category} />
+          ))}
+        </CategoriesAndTimeToReadContainer>
+        <CreatedAt>{date}</CreatedAt>
+      </CategoriesCreatedAtContainer>
+    </Container>
   )
 }
 
 export default PostHead
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+const CategoriesCreatedAtContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: ${COLORS.GRAY_BOLD};
+`
+
+const Title = styled.h1`
+  word-break: keep-all;
+`
+
+const CategoriesAndTimeToReadContainer = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+const CreatedAt = styled.div``

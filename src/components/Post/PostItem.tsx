@@ -12,11 +12,9 @@ const PostItem = ({
   categories,
   date,
   summary,
-  thumbnail,
-  // {
-  // childImageSharp: { gatsbyImageData },
-  // }
-
+  thumbnail: {
+    childImageSharp: { gatsbyImageData },
+  },
   title,
   link,
 }: Props) => {
@@ -39,7 +37,7 @@ const PostItem = ({
       </TextInfoContainer>
       <ThumbnailContainer onClick={handleClick}>
         <Thumbnail
-          // image={gatsbyImageData}
+          image={gatsbyImageData}
           role="link"
           alt="썸네일 이미지, 누르면 해당 글로 이동"
           onClick={handleClick}
