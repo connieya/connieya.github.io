@@ -43,10 +43,14 @@ const PostHead: FunctionComponent<PostHeadProps> = function ({
   title,
   date,
   categories,
+  thumbnail,
 }) {
   return (
     <Container>
-      <Title>{title}</Title>
+      <Thumbnail image={thumbnail} alt="해당 포스트 썸네일 이미지" />
+      <div>
+        <Title>{title}</Title>
+      </div>
       <CategoriesCreatedAtContainer>
         <CategoriesAndTimeToReadContainer>
           {categories.map(category => (
@@ -65,7 +69,11 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 `
-
+const Thumbnail = styled(GatsbyImage)`
+  width: 100%;
+  max-width: 768px;
+  margin: 4rem auto;
+`
 const CategoriesCreatedAtContainer = styled.div`
   display: flex;
   align-items: center;

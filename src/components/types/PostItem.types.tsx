@@ -22,3 +22,12 @@ export type PostListItemType = {
     frontmatter: PostFrontMatterType
   }
 }
+
+export type PostDetail = {
+  node: {
+    tableOfContents: string
+    timeToRead: number
+    html: string
+    frontmatter: PostFrontMatterType
+  }
+}

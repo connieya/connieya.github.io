@@ -1,45 +1,60 @@
-import React, { FunctionComponent } from 'react'
+import React, { useRef } from 'react'
 import { graphql } from 'gatsby'
 import Template from 'components/Common/Template'
 import PostHead from 'components/PostDetail/PostHead'
-import { PostFrontMatterType } from 'components/types/PostItem.types'
-import PostContent from 'components/Post/PostContent'
-import CommentWidget from 'components/PostDetail/CommentWidget'
+import PostComment from 'components/PostDetail/PostComment'
+import { PostDetail } from 'types/Post'
+import TableOfContents from 'components/PostDetail/TableOfContent'
+import styled from '@emotion/styled'
+import PostBody from 'components/PostDetail/PostBody'
 
 type PostTemplateProps = {
   data: {
     allMarkdownRemark: {
-      edges: PostPageIemType[]
+      edges: PostDetail[]
     }
   }
   location: {
     href: string
   }
 }
-const PostTemplate: FunctionComponent<PostTemplateProps> = function ({
+const PostTemplate = ({
   data: {
     allMarkdownRemark: { edges },
   },
   location: { href },
-}) {
+}: PostTemplateProps) => {
+  const contentRef = useRef<HTMLDivElement>(null)
   const {
     node: {
+      tableOfContents,
       html,
       frontmatter: {
         title,
         summary,
         date,
         categories,
-        thumbnail: { publicURL },
+        thumbnail: {
+          childImageSharp: { gatsbyImageData },
+          publicURL,
+        },
       },
     },
   } = edges[0]
 
   return (
     <Template title={title} description={summary} url={href} image={publicURL}>
-      <PostHead title={title} date={date} categories={categories} />
-      <PostContent html={html} />
-      <CommentWidget />
+      <Container>
+        <PostHead
+          title={title}
+          date={date}
+          categories={categories}
+          thumbnail={gatsbyImageData}
+        />
+        <PostBody html={html} />
+        <PostComment />
+        <TableOfContents ref={contentRef} tableOfContents={tableOfContents} />
+      </Container>
     </Template>
   )
 }
@@ -50,6 +65,7 @@ export const queryMarkdownDataBySlug = graphql`
     allMarkdownRemark(filter: { fields: { slug: { eq: $slug } } }) {
       edges {
         node {
+          tableOfContents
           html
           frontmatter {
             title
@@ -68,9 +84,9 @@ export const queryMarkdownDataBySlug = graphql`
     }
   }
 `
-export type PostPageIemType = {
-  node: {
-    html: string
-    frontmatter: PostFrontMatterType
-  }
-}
+const Container = styled.div`
+  position: relative;
+  width: 100%;
+  max-width: 768px;
+  margin: 0 auto;
+`
