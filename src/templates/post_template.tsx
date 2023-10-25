@@ -51,7 +51,7 @@ const PostTemplate = ({
           categories={categories}
           thumbnail={gatsbyImageData}
         />
-        <PostBody html={html} />
+        <PostBody ref={contentRef} html={html} />
         <PostComment />
         <TableOfContents ref={contentRef} tableOfContents={tableOfContents} />
       </Container>

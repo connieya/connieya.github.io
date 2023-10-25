@@ -1,8 +1,12 @@
 import styled from '@emotion/styled'
 import React from 'react'
-
+import { Link } from 'gatsby'
 const Header = () => {
-  return <Container></Container>
+  return (
+    <Container>
+      <TextWrapper to="/">Connieya</TextWrapper>
+    </Container>
+  )
 }
 
 export default Header
@@ -21,4 +25,16 @@ const Container = styled.div`
     #af7a28 69%,
     #eceb08
   );
+`
+
+const TextWrapper = styled(Link)`
+  display: flex;
+  font-size: 28px;
+  padding-top: 6px;
+  align-items: center;
+  color: #fff;
+  font-family: Catamaran;
+  font-weight: 800;
+  margin-left: 20px;
+  opacity: 0.7;
 `
