@@ -1,5 +1,5 @@
 ---
-date: '2023-04-02'
+date: '2023-02-25'
 title: 'Spring Security 와 JWT 를 사용하여 로그인 구현하기'
 categories: ['Project','JWT']
 summary: '개인 프로젝트를 하면서  Spring Security와 JWT를 활용하여 사용자 인증을 구현했습니다.'
