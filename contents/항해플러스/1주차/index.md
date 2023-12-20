@@ -131,7 +131,6 @@ Develop 환경이나 Beta , RC 환경에 순차적으로 배포하면서 테스�
 
 개발 환경에 따라 설정 값을 다르게 하여 로딩한다. 
 
-우선 3단계로 환경을 나눈다고 가정 하여 dev , stage , prod 로 파일을 생성하자
 
 spring 은 프로필이라는 개념을 지원하여 
 
@@ -143,22 +142,86 @@ propeties , yml 파일에 설정 값을 넣으면 해당 프로필을 사용한�
 
 application-{profile}.yml
 
-![img_3.png](img_3.png)
+![img_16.png](img_16.png)
 
+로컬에서 개발하고 테스트하는 환경인  local 과 배포 후 운영 환경 전에 테스트 해볼 dev , 그리고 운영 환경인 prod 로
+분리 하였다.
 
 
 application.yml
 
-```properties
+```yaml
 spring:
- profiles:
-  active: dev
+  profiles:
+    active: local
+
+```
+
+application-local.yml
+
+로컬 개발은 In Memory DB 인 H2 데이터 베이스를 사용 할 것이고,
+개발한 것을 바로 테스트 코드를 작성하여 테스트 할 수 있게
+JPA ddl 속성을 create 로 하였다.
+
+```yaml
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+        exclude: "cache"
+  endpoint:
+    health:
+      show-details: always
+
+
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:~/test;
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+```
+
+그리고 개발 환경은 실제 운영환경과 동일한 환경이기 때문에 Mysql DB 를 사용할 것이고
+
+DB 테이블이 날아가면 안되기 때문에 JPA ddl 속성은 validate 로 지정하였다.
+
+```yaml
+server:
+  port: 8080
+
+spring:
+  application:
+    name: hanghae-plus-dev
+
+  datasource:
+   driver-class-name: com.mysql.cj.jdbc.Driver
+   url: jdbc:mysql://localhost:3306/hanghae-plus?serverTimezone=Asia/Seoul
+    username: # 유저 네임
+    password: # 비밀 번호
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
 ```
 
 
 
-
-![img_4.png](img_4.png)
 
 
 ## STEP02 빌드 환경 구축
