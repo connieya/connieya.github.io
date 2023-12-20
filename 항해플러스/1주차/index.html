@@ -272,7 +272,6 @@ Develop 환경이나 Beta , RC 환경에 순차적으로 배포하면서 테스�
 </ul>
 <h4 id="환경-분리" style="position:relative;"><a href="#%ED%99%98%EA%B2%BD-%EB%B6%84%EB%A6%AC" aria-label="환경 분리 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>환경 분리</h4>
 <p>개발 환경에 따라 설정 값을 다르게 하여 로딩한다.</p>
-<p>우선 3단계로 환경을 나눈다고 가정 하여 dev , stage , prod 로 파일을 생성하자</p>
 <p>spring 은 프로필이라는 개념을 지원하여</p>
 <p>propeties , yml 파일에 설정 값을 넣으면 해당 프로필을 사용한다고 판단한다.</p>
 <p>나는 yml 을 사용하였다.</p>
@@ -280,40 +279,38 @@ Develop 환경이나 Beta , RC 환경에 순차적으로 배포하면서 테스�
 <p>application-{profile}.yml</p>
 <p><span
       class="gatsby-resp-image-wrapper"
-      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 768px; "
+      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 611px; "
     >
       <a
     class="gatsby-resp-image-link"
-    href="/static/84b29226f2d0dde35620808c3cc80ebb/adb12/img_3.png"
+    href="/static/9b62f0ea102689617b228e165bbdf03e/a91ec/img_16.png"
     style="display: block"
     target="_blank"
     rel="noopener"
   >
     <span
     class="gatsby-resp-image-background-image"
-    style="padding-bottom: 58.333333333333336%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAMCAYAAABiDJ37AAAACXBIWXMAAAsTAAALEwEAmpwYAAABlklEQVR42pVT2XKDMAzkb9okHDanuTEmEJIm/d78GzNbyUw6nUyStg87yEZaVivh7DyBnSeR5g3KqkWS5YjTHJkqofKKzgWyooYiZHT2RYStG2CtW0HnxeN7T1wde+kKJIlC1U1ozAm9GdEPB+ynGV2/p+fxG6kqsNn5zwn5a64vKcnDu0/KuguaVhPhhE4PFPfQHPcjWm1IafVaIZNxK9M4UNFgi5quhxeEVsnPYo7vyR4SchK30uq9VcI+vm1cq5xxT/CSkC9YSUzmazMRRlSNtsO4qfoXIRcwoQgTGopG3Rnyj/0abNuMW6vPQPWLyxa5/tXhNfADQhyhNj3G6WRVdtQ+T7qiATGpzXsCer/IKAWpvDr9MIOhxwOmzzP2F1qPM+HjiOE0YzjOFM8w45r3CNoclvFwpnWbrw4zyzBFqGgPTYe0LVbUBZIyR1IR6hxRpmyezb8D2bXwzyCiZPVwu6NdlBJxTUVFDJlHEIQgXZ9CsSXS5v3q4TolAS8MkTalJZMqhshiBFGEsEyIkGLy+C9T/gKyVoBM+ZGgPAAAAABJRU5ErkJggg=='); background-size: cover; display: block;"
+    style="padding-bottom: 72.39583333333333%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAOCAYAAAAvxDzwAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB8klEQVR42oWU63LaMBCFeZhOJtjGtuQL+H6TbIMpbdJmoOlM2/d/idNjEaZpp8CPMyvj9aej1S6Luu0xq9M79OMe+8MT9YzD5xcTz+uvUP0OVaNxyb+mRdONmKWHCf32E16Pzzidjjh9/4Xjtx/48vKK0+tP7PZPBPa45F/TwvUDzFp50kTL8VHWmlLIyoa7asSbzLz3RIhL/jUt7JWHixzXx9Jeoag6dGpEqwaWYcImyfHhYYmHRxvv8/8nAn2819J2DTAvWzpskeYVSj7P8Lxqz3muwL/fXfQX0GHiIx1WlaLDLZQe0Q87TNMB43ZijTRsbmgxx3Lc+0Aj1tAJfIh0DTcq4MUFY27WLtdelEKmDbwwMbl3gZbtQeZrFJ1CVAwI8w4BAWHWQiY1/HVhgK6MYVkr4/Y2kLu6oUSQJRCbEpKao0jOcXZmwHEGMcM31duF3HAo0hh51yEsRjrTBNBd2hHaEpjRcQefJZBJY6Lt3ALypRsFPOqGAMmPAsaAwHP0Y0ln0qy9SPAk7GEhzMluOsyaGl4q4CWCl0Gtz9ER/tvzn2h7d255FUnEVQ6tJmjOuGmhfkLH0SrYm808+/wtL1oMwx5BuDb9e91hFqNUCtvdR+h+a4a+YWNXLcexqNmP8x+BQlGz4fUAX0amVDPwN3poy7O3Z1/aAAAAAElFTkSuQmCC'); background-size: cover; display: block;"
   ></span>
   <picture>
           <source
-              srcset="/static/84b29226f2d0dde35620808c3cc80ebb/a59e9/img_3.webp 192w,
-/static/84b29226f2d0dde35620808c3cc80ebb/0ca9f/img_3.webp 384w,
-/static/84b29226f2d0dde35620808c3cc80ebb/dc9b9/img_3.webp 768w,
-/static/84b29226f2d0dde35620808c3cc80ebb/66318/img_3.webp 970w"
-              sizes="(max-width: 768px) 100vw, 768px"
+              srcset="/static/9b62f0ea102689617b228e165bbdf03e/a59e9/img_16.webp 192w,
+/static/9b62f0ea102689617b228e165bbdf03e/0ca9f/img_16.webp 384w,
+/static/9b62f0ea102689617b228e165bbdf03e/8dd45/img_16.webp 611w"
+              sizes="(max-width: 611px) 100vw, 611px"
               type="image/webp"
             />
           <source
-            srcset="/static/84b29226f2d0dde35620808c3cc80ebb/3b721/img_3.png 192w,
-/static/84b29226f2d0dde35620808c3cc80ebb/66595/img_3.png 384w,
-/static/84b29226f2d0dde35620808c3cc80ebb/fe486/img_3.png 768w,
-/static/84b29226f2d0dde35620808c3cc80ebb/adb12/img_3.png 970w"
-            sizes="(max-width: 768px) 100vw, 768px"
+            srcset="/static/9b62f0ea102689617b228e165bbdf03e/3b721/img_16.png 192w,
+/static/9b62f0ea102689617b228e165bbdf03e/66595/img_16.png 384w,
+/static/9b62f0ea102689617b228e165bbdf03e/a91ec/img_16.png 611w"
+            sizes="(max-width: 611px) 100vw, 611px"
             type="image/png"
           />
           <img
             class="gatsby-resp-image-image"
-            src="/static/84b29226f2d0dde35620808c3cc80ebb/fe486/img_3.png"
-            alt="img_3.png"
+            src="/static/9b62f0ea102689617b228e165bbdf03e/a91ec/img_16.png"
+            alt="img_16.png"
             title=""
             loading="lazy"
             decoding="async"
@@ -322,58 +319,66 @@ Develop 환경이나 Beta , RC 환경에 순차적으로 배포하면서 테스�
         </picture>
   </a>
     </span></p>
+<p>로컬에서 개발하고 테스트하는 환경인  local 과 배포 후 운영 환경 전에 테스트 해볼 dev , 그리고 운영 환경인 prod 로
+분리 하였다.</p>
 <p>application.yml</p>
-<div class="gatsby-highlight" data-language="properties"><pre class="language-properties"><code class="language-properties"><span class="token key attr-name">spring</span><span class="token punctuation">:</span>
-<span class="token key attr-name"> profiles</span><span class="token punctuation">:</span>
-<span class="token key attr-name">  active</span><span class="token punctuation">:</span> <span class="token value attr-value">dev</span></code></pre></div>
-<p><span
-      class="gatsby-resp-image-wrapper"
-      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 768px; "
-    >
-      <a
-    class="gatsby-resp-image-link"
-    href="/static/e0e5f5576fe4be60c0d526bca729493a/550d9/img_4.png"
-    style="display: block"
-    target="_blank"
-    rel="noopener"
-  >
-    <span
-    class="gatsby-resp-image-background-image"
-    style="padding-bottom: 42.1875%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAICAYAAAD5nd/tAAAACXBIWXMAAAsTAAALEwEAmpwYAAABSklEQVR42m2SXXKDMAyEcw7ABhL+wcY2pO30/vfISZjtSiSZPPRhR5Kx159kLtbWsIay/8t8qKDyj1pyW15hyvooq5usPS6m6ZEvHsW0IB+pWXKnubl1GIYZI9fmJcAvKyLzcfJYuMdzT9uN6Prp6LmvG+bHpegnZCEhixuyNVKS78jSDsPNjkaBtae+w4Zffp9dQHIRiSaFqYTyqOoGtrrRUGh4c+6D0kmupqzttcXCw2vY4XyE47qj6cQz/ejQSaRpVbeHjsHUJ2FBdKXjofwlrlm2vDCP25eaxnhX2pDu2PYfREYRLzuk9aYdacjkTfUky0gh5pbzFTIxO7XBr5tG5xPpo0bWB81QX9uTMGdbSiVxfRKy/VfLQhUTKTW+qWieNBdDqU9CNVzPObqTTgzlhUvOReYmLb/IxERo5aKmHSCPQemjyG/zB7zn6qYNlpvIAAAAAElFTkSuQmCC'); background-size: cover; display: block;"
-  ></span>
-  <picture>
-          <source
-              srcset="/static/e0e5f5576fe4be60c0d526bca729493a/a59e9/img_4.webp 192w,
-/static/e0e5f5576fe4be60c0d526bca729493a/0ca9f/img_4.webp 384w,
-/static/e0e5f5576fe4be60c0d526bca729493a/dc9b9/img_4.webp 768w,
-/static/e0e5f5576fe4be60c0d526bca729493a/e2c2f/img_4.webp 1152w,
-/static/e0e5f5576fe4be60c0d526bca729493a/f3efb/img_4.webp 1536w,
-/static/e0e5f5576fe4be60c0d526bca729493a/c6086/img_4.webp 2140w"
-              sizes="(max-width: 768px) 100vw, 768px"
-              type="image/webp"
-            />
-          <source
-            srcset="/static/e0e5f5576fe4be60c0d526bca729493a/3b721/img_4.png 192w,
-/static/e0e5f5576fe4be60c0d526bca729493a/66595/img_4.png 384w,
-/static/e0e5f5576fe4be60c0d526bca729493a/fe486/img_4.png 768w,
-/static/e0e5f5576fe4be60c0d526bca729493a/d2d74/img_4.png 1152w,
-/static/e0e5f5576fe4be60c0d526bca729493a/e8464/img_4.png 1536w,
-/static/e0e5f5576fe4be60c0d526bca729493a/550d9/img_4.png 2140w"
-            sizes="(max-width: 768px) 100vw, 768px"
-            type="image/png"
-          />
-          <img
-            class="gatsby-resp-image-image"
-            src="/static/e0e5f5576fe4be60c0d526bca729493a/fe486/img_4.png"
-            alt="img_4.png"
-            title=""
-            loading="lazy"
-            decoding="async"
-            style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
-          />
-        </picture>
-  </a>
-    </span></p>
+<div class="gatsby-highlight" data-language="yaml"><pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">spring</span><span class="token punctuation">:</span>
+  <span class="token key atrule">profiles</span><span class="token punctuation">:</span>
+    <span class="token key atrule">active</span><span class="token punctuation">:</span> local
+</code></pre></div>
+<p>application-local.yml</p>
+<p>로컬 개발은 In Memory DB 인 H2 데이터 베이스를 사용 할 것이고,
+개발한 것을 바로 테스트 코드를 작성하여 테스트 할 수 있게
+JPA ddl 속성을 create 로 하였다.</p>
+<div class="gatsby-highlight" data-language="yaml"><pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">management</span><span class="token punctuation">:</span>
+  <span class="token key atrule">endpoints</span><span class="token punctuation">:</span>
+    <span class="token key atrule">web</span><span class="token punctuation">:</span>
+      <span class="token key atrule">exposure</span><span class="token punctuation">:</span>
+        <span class="token key atrule">include</span><span class="token punctuation">:</span> <span class="token string">"*"</span>
+        <span class="token key atrule">exclude</span><span class="token punctuation">:</span> <span class="token string">"cache"</span>
+  <span class="token key atrule">endpoint</span><span class="token punctuation">:</span>
+    <span class="token key atrule">health</span><span class="token punctuation">:</span>
+      <span class="token key atrule">show-details</span><span class="token punctuation">:</span> always
+
+
+<span class="token key atrule">spring</span><span class="token punctuation">:</span>
+  <span class="token key atrule">datasource</span><span class="token punctuation">:</span>
+    <span class="token key atrule">driver-class-name</span><span class="token punctuation">:</span> org.h2.Driver
+    <span class="token key atrule">url</span><span class="token punctuation">:</span> jdbc<span class="token punctuation">:</span>h2<span class="token punctuation">:</span>~/test;
+    <span class="token key atrule">username</span><span class="token punctuation">:</span> sa
+    <span class="token key atrule">password</span><span class="token punctuation">:</span>
+
+  <span class="token key atrule">jpa</span><span class="token punctuation">:</span>
+    <span class="token key atrule">hibernate</span><span class="token punctuation">:</span>
+      <span class="token key atrule">ddl-auto</span><span class="token punctuation">:</span> create
+    <span class="token key atrule">show-sql</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+    <span class="token key atrule">properties</span><span class="token punctuation">:</span>
+      <span class="token key atrule">hibernate</span><span class="token punctuation">:</span>
+        <span class="token key atrule">format_sql</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+</code></pre></div>
+<p>그리고 개발 환경은 실제 운영환경과 동일한 환경이기 때문에 Mysql DB 를 사용할 것이고</p>
+<p>DB 테이블이 날아가면 안되기 때문에 JPA ddl 속성은 validate 로 지정하였다.</p>
+<div class="gatsby-highlight" data-language="yaml"><pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">server</span><span class="token punctuation">:</span>
+  <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">8080</span>
+
+<span class="token key atrule">spring</span><span class="token punctuation">:</span>
+  <span class="token key atrule">application</span><span class="token punctuation">:</span>
+    <span class="token key atrule">name</span><span class="token punctuation">:</span> hanghae<span class="token punctuation">-</span>plus<span class="token punctuation">-</span>dev
+
+  <span class="token key atrule">datasource</span><span class="token punctuation">:</span>
+   <span class="token key atrule">driver-class-name</span><span class="token punctuation">:</span> com.mysql.cj.jdbc.Driver
+   <span class="token key atrule">url</span><span class="token punctuation">:</span> jdbc<span class="token punctuation">:</span>mysql<span class="token punctuation">:</span>//localhost<span class="token punctuation">:</span>3306/hanghae<span class="token punctuation">-</span>plus<span class="token punctuation">?</span>serverTimezone=Asia/Seoul
+    <span class="token key atrule">username</span><span class="token punctuation">:</span> <span class="token comment"># 유저 네임</span>
+    <span class="token key atrule">password</span><span class="token punctuation">:</span> <span class="token comment"># 비밀 번호</span>
+
+  <span class="token key atrule">jpa</span><span class="token punctuation">:</span>
+    <span class="token key atrule">hibernate</span><span class="token punctuation">:</span>
+      <span class="token key atrule">ddl-auto</span><span class="token punctuation">:</span> validate
+    <span class="token key atrule">show-sql</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+    <span class="token key atrule">properties</span><span class="token punctuation">:</span>
+      <span class="token key atrule">hibernate</span><span class="token punctuation">:</span>
+        <span class="token key atrule">format_sql</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+</code></pre></div>
 <h2 id="step02-빌드-환경-구축" style="position:relative;"><a href="#step02-%EB%B9%8C%EB%93%9C-%ED%99%98%EA%B2%BD-%EA%B5%AC%EC%B6%95" aria-label="step02 빌드 환경 구축 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>STEP02 빌드 환경 구축</h2>
 <p><code class="language-text">docker</code> or <code class="language-text">docker-compose</code> 등 컨테이너 기술을 활용해
 이미지를 빌드, 배포해보자</p>
