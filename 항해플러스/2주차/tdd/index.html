@@ -630,6 +630,52 @@ OrderSerivce 안에 private 메서드로 되어 있다.</p>
 <li>Spy : Stub 이면서 호출된 내용을 기록하여 보여줄 수 이쓴 객체 일부는 실제 객체처럼 동작시키고 일부만 Stubbing 할 수 있다.</li>
 <li>Mock : 행위에 대한 기대를 명세하고, 그에 따라 동작하도록 만들어진 객체</li>
 </ul>
+<p>관심사를 분리하여 기능 별로 테스트를 하기 쉽게 설계를 변경하여</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 768px; "
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/5682e46de17abd6052f6962103595f58/249e2/image.png"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 92.70833333333334%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAATCAYAAACQjC21AAAACXBIWXMAACToAAAk6AGCYwUcAAACl0lEQVR42o1Ua3OiMBT1f+xOd1RQfBVE5BkggQBq1W7dutP//yP60bM3qThdp7X9cOYScu/JfZykYzkT2FEIhyVYZgHmkYfxYgZrPsXIvQ3lc8ZJW2fy2jGDAaxohAEb4r5ywR8FJmyK7qKP3tJA1yPrGRrdRU+v9R5Zwzeh4gknMyTrD4jQH8JcDjEMLHiFD7Gr4EkfSxkgbBKwh4xsjKCOkO0ErXOkhHjNMGX3MJaKaHgyA81zJiQYRDplNqImJTBNGK9TxJtUB6t1UMfwq1CTe7QeJ7PPCVuoU+V+Bb8OiSwDI+R7ASefo+v20FuYBNUCsyW7TTjwLX0y30qElEm6zTFLbfSJYEBt0SCfq7gbhBQwiiZwxRJelYNtS9i5Qz0ewQrHet+KxhjHU+2n1jcJ23523V8wIglbFCieShS/JernhrBBfVxDPJYECYe7KvuTJlaEXDZ4D1GtUK232B+OeCQcji+oVg9Ihbz45EX1hrIGV5DNScVxWb92Ip7hGqwUKDcN1k9HPByeIVY1EvrHCoFEcL2vkBS8jTnFIlf2tdNfmriGmuCd8wO9qIBdFGA7RmVLlIeKbKW/012ulXCOOfVJ5FT6x0OZkHTYiiOoIkSkwfvM0RJpBzIMRxffL6esoIKimpGAGU1ZwCZCFayIWu0pn28Tqimrko2kwZyGkG1TiKcaq78blFRyeaipZAG+L75HqDSWrjl8Geo+veltpDO06Ftlpwja0r8U9jieIawS6h+n68dh0JB05v5AvzTG2e9bV085qafqzv4JI67gVjUkCVv+IX0+r7F52SHfcSq7oaGF2vdTQnXqjF6cuMn0E2Zz71Jqe4/HyfS/9c0MlYN6bZKGRLpK4Aj3fVmXCj7o+4XwH3A9XrB+OnV8AAAAAElFTkSuQmCC'); background-size: cover; display: block;"
+  ></span>
+  <picture>
+          <source
+              srcset="/static/5682e46de17abd6052f6962103595f58/a59e9/image.webp 192w,
+/static/5682e46de17abd6052f6962103595f58/0ca9f/image.webp 384w,
+/static/5682e46de17abd6052f6962103595f58/dc9b9/image.webp 768w,
+/static/5682e46de17abd6052f6962103595f58/6da5f/image.webp 810w"
+              sizes="(max-width: 768px) 100vw, 768px"
+              type="image/webp"
+            />
+          <source
+            srcset="/static/5682e46de17abd6052f6962103595f58/3b721/image.png 192w,
+/static/5682e46de17abd6052f6962103595f58/66595/image.png 384w,
+/static/5682e46de17abd6052f6962103595f58/fe486/image.png 768w,
+/static/5682e46de17abd6052f6962103595f58/249e2/image.png 810w"
+            sizes="(max-width: 768px) 100vw, 768px"
+            type="image/png"
+          />
+          <img
+            class="gatsby-resp-image-image"
+            src="/static/5682e46de17abd6052f6962103595f58/fe486/image.png"
+            alt="Alt text"
+            title=""
+            loading="lazy"
+            decoding="async"
+            style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+          />
+        </picture>
+  </a>
+    </span></p>
+<p>재고 , 주문 , 포인트 내역 ,잔액 차감 테스트를 진행할 수 있었다.</p>
 <h3 id="통합-테스트" style="position:relative;"><a href="#%ED%86%B5%ED%95%A9-%ED%85%8C%EC%8A%A4%ED%8A%B8" aria-label="통합 테스트 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>통합 테스트</h3>
 <ul>
 <li>모듈을 통합하는 과정에서 모듈 간의 호환성을 확인하기 위해 수행되는 테스트</li>
@@ -699,6 +745,11 @@ OrderSerivce 안에 private 메서드로 되어 있다.</p>
 
 <span class="token punctuation">}</span>
 </code></pre></div>
+<p>일반적으로 단위 테스트와 통합 테스트의 정의가 모호해서 사람 마다 분류하는 기준이 다르다고 한다.</p>
+<p>우선 스프링 빈을 로드하거나 h2 같은 테스트 DB를 사용하면 통합 테스트</p>
+<p>그 외에 단일 스레드 ,단일 프로세스 , 디스크 I/O 를 사용하지 않으면 단위 테스트로 분류하였다.</p>
+<p>테스트를 분류하는 기준은 모호하지만, 단위 테스트가 프로젝트에서 가장 많은 비중을 차지 해야하고
+개발자가 집중해야 하는 테스트임에는 틀림 없는 것 같다.</p>
 <h3 id="느낀점" style="position:relative;"><a href="#%EB%8A%90%EB%82%80%EC%A0%90" aria-label="느낀점 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>느낀점</h3>
 <p>이번에 TDD를 접하고 테스트 코드를 작성 하면서 테스트 코드를 왜 작성해야 하는지
 느낄 수 있었다.</p>
