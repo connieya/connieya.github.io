@@ -3,7 +3,7 @@ date: '2023-12-30'
 title: '항해 플러스 4주차 - 동시성 테스트  '
 categories: ['항해플러스']
 summary: 'e-커머스 상품 주문 서비스 중에 동시성 문제가 야기 되는 경우를 분석하고 테스트 코드를 작성해본다.'
-# thumbnail: './img_7.png'
+thumbnail: './image.png'
 ---
 
 # TDD 기반 기능 구현 동시성 문제
