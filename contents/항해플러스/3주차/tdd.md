@@ -317,7 +317,7 @@ map 으로 변환하는 기능은 private 메서드로 수정하였다.
 
 주문에 해당하는
 
-### 잔액 차감 응집도 높이기
+### 잔액과 총 가격 비교 , 잔액 차감 통합하기
 
 ```java
     @Transactional
@@ -331,6 +331,21 @@ map 으로 변환하는 기능은 private 메서드로 수정하였다.
 
 ```
 
+사용자의 현재 잔액과 주문 한 총 가격을 비교한 뒤에 사용자의 잔액을 차감한다.
+하지만 요구사항이 추가되어 여러 기능을 추가적으로 개발했을 때
+
+잔액 차감이라는 메서드를 사용한다고 했을 때, 비교하는 로직을 다시 사용해야한다.
+
+
+```java
+ public void deductPoints(Long totalPrice) {
+    this.currentPoint -= totalPrice;
+    }
+```
+
+
+
+
 ```java
     public void deductPoints(Long totalPrice) {
         if (this.currentPoint < totalPrice){
@@ -340,15 +355,23 @@ map 으로 변환하는 기능은 private 메서드로 수정하였다.
     }
 ```
 
+잔액 차감하는 메서드 안에서 잔액과 가격을 비교하면 되지 않을까?
+
+잔액 차감과 비교하는 로직을 통합하여 다른 기능에서 잔액 차감 메서드를 사용했을 때
+
+코드의 중복을 줄일 수 있다.
+
 ```java
- @Transactional
+    @Transactional
     public void deductPoint(User user , Order order) {
         Long totalPrice = order.getTotalPrice();
         user.deductPoints(totalPrice);
     }
 ```
 
-### 재고 차감 응집도 높이기
+### 재고 차감과 재고 수량 확인 통합하기
+
+위와 같은 이유로
 
 ```java
     @Transactional

@@ -12,6 +12,31 @@ e-커머스 상품 주문 서비스 기능에서 동시에 요청이 발생 했�
 
 ## 재고 차감
 
+주문 비즈니스 로직
+
+```java
+    @Transactional
+    public OrderPostResponse createOrder(OrderPostRequest request ) {
+        User user = userReader.read(request.getUserId());
+        // 재고 차감
+        stockManager.deduct(request);
+        // 주문
+        Order savedOrder = orderAppender.append(user, request.getProducts());
+        // 잔액 차감
+        userManager.deductPoint(user, savedOrder);
+        // 포인트 내역 저장
+        pointManager.process(user, savedOrder);
+
+        // 결제
+        Payment payment = new Payment(savedOrder, user);
+        Payment savedPayment = paymentRepository.save(payment);
+        publisher.publishEvent(new PaymentEvent(this,savedPayment));
+
+        return OrderPostResponse.of(savedOrder);
+    }
+
+```
+
 여러 사용자가 동시에 주문을 요청할 때 , 상품의 재고 수량이 요청된 주문 만큼
 잘 차감 되는지 확인을 해야 한다.
 
@@ -21,8 +46,8 @@ e-커머스 상품 주문 서비스 기능에서 동시에 요청이 발생 했�
 
 https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html
 
-`CompletableFuture` 클래스는 Java 에서 비동기적 및 동시성 작ㅇ버을 처리하기 위한 클래스로 Future 와 CompletionStage 인터페이스를 구현하여 미래에 완료될
-작어블 나타낸다.
+`CompletableFuture` 클래스는 Java 에서 비동기적 및 동시성 작업을 처리하기 위한 클래스로 Future 와 CompletionStage 인터페이스를 구현하여 미래에 완료될
+작업을 나타낸다.
 
 ```java
     void deductQuantityWithConcurrency() {
@@ -160,7 +185,7 @@ DB 에서 제공하는 행 배타잠금(Row Exclusive Lock)을 이용해 잠금�
 실제로 데이터에 엑세스 하기 전에 먼저 락을 걸어 충돌을 예방하기 위해 비관적 락을 사용하였다.
 
 ```java
- @Component
+@Component
 @RequiredArgsConstructor
 public class ProductReader {
 
@@ -304,17 +329,229 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 ![Alt text](image-6.png)
 
-### 문제
+### 의문점
 
-#### 락의 설정 범위
+비관적 락을 적용하기 위해 관련 자료를 찾아보던 중 비관적 락을 사용했을 때 데드락 발생 가능성이 있다고 하였다.
+
+하지만 내가 작성한 코드에는 데드락이 발생하지 않아서 왜 데드락이 발생하지 않는지
+생각해보았다.
+
+내가 락을 설정한 쿼리를 보면
 
 ```java
-@Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
-
     @Lock(value = LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT p FROM Product p WHERE p.id IN :productIds ")
     List<Product> findAllByPessimisticLock(@Param("productIds") List<Long> productIds);
-
-}
 ```
+
+이 코드는 상품 조회 시 where ~ In 절을 사용하여 데이터를 한 번에 가져온다.
+
+예를 들어, A 유저가 상품 1,2,3,4를 조회한 후 락을 설정한다면, B 유저가 상품 2,1,4,5,6을 조회하려 할 때 락이 이미 걸려있어서 B 유저는 락을 기다리게 됩니다. 이러한 상황에서는 B 유저만 락을 기다리므로 데드락이 발생하지 않을 것이라고 유추하였다.
+
+그렇다면 , 데드락이 발생하는 코드는 어떤 것일까?
+
+상품을 조회할 때 where ~ In 절로 한 번에 가져오는 것이 아니라 반복문을 통해 1개씩 조회하는 경우라고 생각하였다.
+
+A 유저가 상품 1,2,3,4를 조회하는데, 우선 상품 1을 조회합니다. 이때, B 유저는 2,1,4,5,6를 조회하는데, 우선 상품 2를 조회합니다. 그 다음 A 유저가 상품 2를 조회하려 하는데 B가 락을 선점했기 때문에 락 해제를 기다리게 됩니다. 그리고 B 유저가 상품 1을 조회하려 하는데 A가 상품 1에 대한 락을 선점했기 때문에 락 해제를 기다리게 됩니다.
+
+A 유저와 B 유저 모두 서로 락이 해제되기만을 기다리기 때문에 데드락이 발생한다.
+
+내가 유추한 것이 맞는지 확인하기 위해 테스트 코드를 작성해보았다.
+
+#### 테스트 코드
+
+재고 차감하는 로직
+
+```java
+    @Transactional
+    public void deduct2(OrderPostRequest request) {
+        List<ProductRequestForOrder> requestForOrders = request.getProducts();
+        for (ProductRequestForOrder requestForOrder : requestForOrders) {
+            Product findProduct = productRepository.findByIdPessimisticLock(requestForOrder.getProductId()).orElseThrow(() -> new EntityNotFoundException(ErrorCode.PRODUCT_NOT_FOUND));
+            Long stock = requestForOrder.getQuantity();
+            findProduct.deductQuantity(stock);
+        }
+    }
+```
+
+반복문을 통해 상품을 하나 씩 조회한 뒤, 재고 차감을 진행하는 코드로 변경하였다.
+
+락 설정은 아래와 같이 설정하였다.
+
+```java
+  @Lock(value = LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT p FROM Product p WHERE p.id = :productId ")
+    Optional<Product> findByIdPessimisticLock(@Param("productId") Long productId);
+```
+
+그리고 테스트 코드를 다음과 같이 작성하였다.
+
+"건희" 유저가 양파 3개, 감자 3개 주문
+
+"거니" 유저가 감자 3개, 양파 3개 주문
+
+```java
+   @DisplayName("동시에 주문을 했을 때 주문에 맞게 재고를 차감한다. 데드락 테스트")
+    @RepeatedTest(100)
+    @Test
+    void deductQuantityWithConCurrency(){
+        // given
+        Product productOnion = Product.create("양파", 1000L, 30L);
+        Product productPotato = Product.create("감자", 2000L, 30L);
+        Product productCarrot = Product.create("당근", 3000L, 30L);
+        Product productMushroom = Product.create("버섯", 5000L, 30L);
+
+
+        productRepository.saveAll(List.of(productOnion,productPotato,productCarrot,productMushroom));
+
+        User geonhee = FakeUser.create(1L, "건희", 5000L);
+        User gunny = FakeUser.create(1L, "거니", 5000L);
+
+        // 양파 3개 , 감자 3개 주문
+        ProductRequestForOrder request1_1 = ProductRequestForOrder.of(productOnion.getId(), 3L, productOnion.getPrice());
+        ProductRequestForOrder request1_2 = ProductRequestForOrder.of(productPotato.getId(), 3L, productPotato.getPrice());
+
+        // 감자 3개 , 양파 3개 주문
+        ProductRequestForOrder request2_1 = ProductRequestForOrder.of(productPotato.getId(), 3L, productPotato.getPrice());
+        ProductRequestForOrder request2_2 = ProductRequestForOrder.of(productOnion.getId(), 3L, productOnion.getPrice());
+
+        OrderPostRequest requests1 = OrderPostRequest
+                .of(geonhee.getId(), List.of(request1_1, request1_2));
+
+        OrderPostRequest requests2 = OrderPostRequest
+                .of(gunny.getId(), List.of(request2_1, request2_2));
+
+        // when
+        CompletableFuture.allOf(
+                CompletableFuture.runAsync(()->  fakeStockManager.deduct2(requests1)),
+                CompletableFuture.runAsync(()->  fakeStockManager.deduct2(requests2))
+
+        ).join();
+
+        Product findProductPotato = productRepository.findById(productPotato.getId()).get();
+
+        //then
+        Assertions.assertThat(findProductPotato.getQuantity()).isEqualTo(30L-3L-3L);
+    }
+```
+
+#### 결과
+
+예상한 대로 데드락이 발생한다.
+
+![Alt text](image-7.png)
+
+만약에
+
+주문을 "건희" , "거니" 유저 모두 양파 3개, 감자 3개 순서대로 주문한다면??
+
+```java
+        User geonhee = FakeUser.create(1L, "건희", 5000L);
+        User gunny = FakeUser.create(1L, "거니", 5000L);
+
+        // 양파 3개 , 감자 3개 주문
+        ProductRequestForOrder request1_1 = ProductRequestForOrder.of(productOnion.getId(), 3L, productOnion.getPrice());
+        ProductRequestForOrder request1_2 = ProductRequestForOrder.of(productPotato.getId(), 3L, productPotato.getPrice());
+
+        // 양파 3개 , 감자 3개 주문
+        ProductRequestForOrder request2_1 = ProductRequestForOrder.of(productOnion.getId(), 3L, productOnion.getPrice());
+        ProductRequestForOrder request2_2 = ProductRequestForOrder.of(productPotato.getId(), 3L, productPotato.getPrice());
+
+        OrderPostRequest requests1 = OrderPostRequest
+                .of(geonhee.getId(), List.of(request1_1, request1_2));
+
+        OrderPostRequest requests2 = OrderPostRequest
+                .of(gunny.getId(), List.of(request2_1, request2_2));
+
+        // when
+        CompletableFuture.allOf(
+                CompletableFuture.runAsync(()->  fakeStockManager.deduct4(requests1)),
+                CompletableFuture.runAsync(()->  fakeStockManager.deduct4(requests2))
+
+        ).join();
+```
+
+운 좋게 데드락이 발생하지 않을 수 있으니 테스트를 100번 수행하게 했지만
+
+데드락이 발생하지 않았다.
+
+![Alt text](image-8.png)
+
+그렇다면, 제일 처음 유추 한대로
+
+where ~ In 절에 락을 걸었을 때도 테스트를 진행 해보면
+
+```java
+    @Transactional
+    public void deduct(OrderPostRequest request) {
+        List<ProductRequestForOrder> requestForOrders = request.getProducts();
+        Map<Long, Long> productIdQuntitiyMap = convertToProductIdQuantityMap(requestForOrders);
+        List<Product> products = fakeProductReader.read(request.getProducts());
+        for (Product product : products) {
+            Long quantity = productIdQuntitiyMap.get(product.getId());
+            product.deductQuantity(quantity);
+        }
+        productRepository.saveAll(products);
+    }
+
+```
+
+```java
+   @Transactional
+    public List<Product> read(List<ProductRequestForOrder> productRequest) {
+        return productRepository.findAllByPessimisticLock(productRequest.stream().map(ProductRequestForOrder::getProductId).collect(Collectors.toList()));
+    }
+```
+
+```java
+    @DisplayName("동시에 주문을 했을 때 주문에 맞게 재고를 차감한다. 데드락 테스트")
+    @RepeatedTest(100)
+    @Test
+    void deductQuantityWithConCurrency(){
+        // given
+        Product productOnion = Product.create("양파", 1000L, 30L);
+        Product productPotato = Product.create("감자", 2000L, 30L);
+        Product productCarrot = Product.create("당근", 3000L, 30L);
+        Product productMushroom = Product.create("버섯", 5000L, 30L);
+
+
+        productRepository.saveAll(List.of(productOnion,productPotato,productCarrot,productMushroom));
+
+        User geonhee = FakeUser.create(1L, "건희", 5000L);
+        User gunny = FakeUser.create(1L, "거니", 5000L);
+
+        // 양파 3개 , 감자 3개 주문
+        ProductRequestForOrder request1_1 = ProductRequestForOrder.of(productOnion.getId(), 3L, productOnion.getPrice());
+        ProductRequestForOrder request1_2 = ProductRequestForOrder.of(productPotato.getId(), 3L, productPotato.getPrice());
+
+        // 감자 3개 , 양파 3개 주문
+        ProductRequestForOrder request2_1 = ProductRequestForOrder.of(productOnion.getId(), 3L, productOnion.getPrice());
+        ProductRequestForOrder request2_2 = ProductRequestForOrder.of(productPotato.getId(), 3L, productPotato.getPrice());
+
+        OrderPostRequest requests1 = OrderPostRequest
+                .of(geonhee.getId(), List.of(request1_1, request1_2));
+
+        OrderPostRequest requests2 = OrderPostRequest
+                .of(gunny.getId(), List.of(request2_1, request2_2));
+
+        // when
+        CompletableFuture.allOf(
+                CompletableFuture.runAsync(()->  fakeStockManager.deduct(requests1)),
+                CompletableFuture.runAsync(()->  fakeStockManager.deduct(requests2))
+
+        ).join();
+
+        Product findProductPotato = productRepository.findById(productPotato.getId()).get();
+
+        //then
+        Assertions.assertThat(findProductPotato.getQuantity()).isEqualTo(30L-3L-3L);
+    }
+```
+
+#### 결과
+
+상품들의 한 번에 조회하기 때문에
+
+데드락이 발생하지 않는다.
+
+![Alt text](image-9.png)
