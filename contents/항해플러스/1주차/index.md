@@ -6,7 +6,6 @@ summary: 'Docker 와 Github Actions , ECR , ECS 로 CI/ CD 구축하였습니다
 thumbnail: './img_7.png'
 ---
 
-
 항해 플러스 1주차는 Github Actions 와 Docker 를 활용하여
 웹 어플리케이션의 CI/CD 를 구축해야 한다.
 
@@ -16,13 +15,11 @@ thumbnail: './img_7.png'
 - STEP 02 빌드 환경 구축
 - STEP 03 배포 환경 구축
 
-
 ## STEP 01 웹서버 생성
 
 간단한 서버 어플리케이션 프로젝트를 생성하고 Health-Check router 를 구현해야 한다.
 
 스프링에서는 health-check 에 유용한 라이브러리인 actuator 가 있다.
-
 
 [spring actuator 공식 문서](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html)
 
@@ -33,28 +30,25 @@ actuator 를 사용하여 프로젝트를 생성해보자.
 #### Dependency 추가
 
 build.gradle 예시
+
 ```groovy
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 }
 ```
 
-서버를 실행하고 
+서버를 실행하고
 
 localhost:8080/actuaor 를 입력하면
 
 다음과 같이 애플리케이션의 헬스 상태를 볼 수 있는 URL을 제공해준다.
 ![img.png](img.png)
 
-
 localhost:8080/actuator/health 에 링크에 들어가보면
 
 ![img_1.png](img_1.png)
 
 서버가 잘 동작하는 지 헬스 상태를 볼 수 있다.
-
-
-
 
 여기서 잠깐 !
 
@@ -65,12 +59,10 @@ localhost:8080/actuator/health 에 링크에 들어가보면
 > Hypermedia As Engine Of Application State 의 약자로 서버가 클라이언트에게
 > 하이퍼 미디어를 통해 정보를 동적으로 제공해주는 것
 
-
-스프링 actuator 는 헬스 상태 뿐 아니라  수 많은 기능을 제공하는데,
+스프링 actuator 는 헬스 상태 뿐 아니라 수 많은 기능을 제공하는데,
 이 기능들을 웹 환경에서 보이도록 노출할 수 있다.
 
-
-application.yml 추가 
+application.yml 추가
 
 ```properties
 management:
@@ -80,11 +72,9 @@ management:
       include: "*"
 ```
 
-
 localhost:8080/actuator/health 입력하면
 
 ![img_2.png](img_2.png)
-
 
 스프링 actuator 가 제공하는 수 많은 기능을 확인할 수 있다.
 
@@ -92,24 +82,23 @@ localhost:8080/actuator/health 입력하면
 
 #### Phase 란?
 
->개발 환경(Phase) 은 Application 이 동작하는 환경을 의미한다. 
- 대부분의 Framework 는 각각의 개발 환경마다 설정 값을 다르게
-세팅할 수 있는 기능이 있다.
-
+> 개발 환경(Phase) 은 Application 이 동작하는 환경을 의미한다.
+> 대부분의 Framework 는 각각의 개발 환경마다 설정 값을 다르게
+> 세팅할 수 있는 기능이 있다.
 
 Spring Boot 의 경우 Profile 기능이 있다.
 
 #### 개발 환경을 분리하는 이유?
 
 제품을 개발할 때 Application 을 바로 운영 환경에 배포하지 않는다.
-개발하고 있는 Local 에서 Application 을 실행해보면서 디버깅이나 
+개발하고 있는 Local 에서 Application 을 실행해보면서 디버깅이나
 테스트를 진행하고, 실제 운영 환경과 비슷한 시스템이 갖춰진
 Develop 환경이나 Beta , RC 환경에 순차적으로 배포하면서 테스트 과정을 거친다.
 
 개발 환경은 회사나 팀에 따라 레벨이 조금씩 달라 질 수 있지만
 보통 `local` -`develop` - `beta` - `stage` - `production` 순으로 구성하는 것이 보통이다.
 
-- local 
+- local
   - 개인이 개발하는 PC 작업 환경
   - 직접 IDE 를 통해서 코드를 개발하고 이를 바로 실행시키면서 디버깅할 수 있는 환경이다.
 - develop
@@ -126,17 +115,15 @@ Develop 환경이나 Beta , RC 환경에 순차적으로 배포하면서 테스�
   - 실제 서비스의 운영 환경
   - Production 환경에 서비스를 배포하면 보통 Application 의 Release Notes 가 생성된다.
 
-
 #### 환경 분리
 
-개발 환경에 따라 설정 값을 다르게 하여 로딩한다. 
+개발 환경에 따라 설정 값을 다르게 하여 로딩한다.
 
-
-spring 은 프로필이라는 개념을 지원하여 
+spring 은 프로필이라는 개념을 지원하여
 
 propeties , yml 파일에 설정 값을 넣으면 해당 프로필을 사용한다고 판단한다.
 
-나는 yml 을 사용하였다. 
+나는 yml 을 사용하였다.
 
 프로필 작성 규칙
 
@@ -144,9 +131,8 @@ application-{profile}.yml
 
 ![img_16.png](img_16.png)
 
-로컬에서 개발하고 테스트하는 환경인  local 과 배포 후 운영 환경 전에 테스트 해볼 dev , 그리고 운영 환경인 prod 로
+로컬에서 개발하고 테스트하는 환경인 local 과 배포 후 운영 환경 전에 테스트 해볼 dev , 그리고 운영 환경인 prod 로
 분리 하였다.
-
 
 application.yml
 
@@ -154,7 +140,6 @@ application.yml
 spring:
   profiles:
     active: local
-
 ```
 
 application-local.yml
@@ -168,12 +153,11 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
-        exclude: "cache"
+        include: '*'
+        exclude: 'cache'
   endpoint:
     health:
       show-details: always
-
 
 spring:
   datasource:
@@ -189,7 +173,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
 ```
 
 그리고 개발 환경은 실제 운영환경과 동일한 환경이기 때문에 Mysql DB 를 사용할 것이고
@@ -220,22 +203,18 @@ spring:
 
 ```
 
-
-
-
-
 ## STEP02 빌드 환경 구축
 
-`docker` or `docker-compose` 등 컨테이너 기술을 활용해 
+`docker` or `docker-compose` 등 컨테이너 기술을 활용해
 이미지를 빌드, 배포해보자
 
 ### 빌드란?
 
 > 소스코드 파일을 실행가능한 소프트웨어 산출물로 만드는 일련의 과정
 
-빌드의 산출물 
+빌드의 산출물
 
-- jar 
+- jar
   - java 어플리케이션이 동작할 수 있도록 자바 프로젝트를 압축한 파일
   - Class (Java 리소스 , 속성 파일) , 라이브러리 파일을 포함함
   - JRE(Java Runtime Environment) 만 있어도 실행 가능함
@@ -243,24 +222,22 @@ spring:
   - 웹 애플리케이션을 압축하고 배포하는 데 사용되는 파일 형태
   - 웹 관련 자원을 포함함 (JSP , Servlet , JAR , Class ,XML , HTML , Javascript)
 
-
 ### jar vs war
 
 스프링부트 는 내장 톰캣을 포함하고 있기 때문에 간단하게 JAR 배포만으로 실행이 가능하다.
 
-스프링 부트에서 JSP를 지양하는데 JAR 에서 JSP를 사용할 수 없다. 
+스프링 부트에서 JSP를 지양하는데 JAR 에서 JSP를 사용할 수 없다.
 
 JSP 를 사용하여 화면을 구성해야 하거나 or 외장 WAS를 이용할 계획이 아니라면
 jar 를 사용하면 된다.
 
-
-jar 파일은  java -jar 프로젝트네임.jar 명령어로 실행 한다.
+jar 파일은 java -jar 프로젝트네임.jar 명령어로 실행 한다.
 
 ### 배포
 
 > 빌드의 결과물을 사용자가 접근할 수 있는 환경에 배치하는 것
 
-## 도커 
+## 도커
 
 > 컨테이너 기반의 오픈소스 가상화 플랫폼
 
@@ -269,16 +246,12 @@ jar 파일은  java -jar 프로젝트네임.jar 명령어로 실행 한다.
 - 소프트웨어 개발 에서 컨테이너는 표준화된 소프트웨어 유닛이다.
 - 기본적으로 코드 패키지로, 코드를 실행하는 데 필요한 종속성과 도구가 포함되어 있다.
 
-
 ### 도커를 사용하는 이유는?
 
 애플리케이션을 환경에 구애 받지 않고 실행할 수 있다는 장점 때문에
 
-
-
 ※
 docker -- help 를 사용하면 여러 가지 명령어를 볼 수 있다.
-
 
 ### 도커 이미지
 
@@ -297,8 +270,7 @@ docker -- help 를 사용하면 여러 가지 명령어를 볼 수 있다.
 - docker ps --help : docker ps 에 사용 가능한 모든 구성 옵션을 볼 수 있다.
 - docker run : 이미지를 기반으로 새 컨테이너를 만든다.
 
-
-### Dockerfile 
+### Dockerfile
 
 `docker build ` 명령어를 통해서 Docker 가 Dockerfile 을 읽어서 자동으로
 도커 이미지를 빌드한다.
@@ -308,7 +280,6 @@ docker -- help 를 사용하면 여러 가지 명령어를 볼 수 있다.
 - Dockerfile 에 정의한 순서대로 읽어서 Docker 데몬에 해당 명령어를 실행한다.
 - `FROM` 키워드로 시작해야 한다.
 
-
 ### 레이어 시스템
 
 도커파일을 만들 때 레이어 시스템을 사용하는 데 명령어 당 한줄 씩 레이어라고 칭한다.
@@ -317,12 +288,11 @@ docker -- help 를 사용하면 여러 가지 명령어를 볼 수 있다.
 이때 속도 개선을 하게 위해서는 변경되는 레이어를 아래에 두어야 한다.
 변경된 것을 파악한 시점 부터 모두 재빌드 하게 된다.
 
-예를 들어 1~5 레이어로 구성된 dockerfile 이 있다고 하고, 
-3번째 레이어에서 변경된 것이 파악이 되면 1~2 번째 까지는 다시 빌드하지 않고 
+예를 들어 1~5 레이어로 구성된 dockerfile 이 있다고 하고,
+3번째 레이어에서 변경된 것이 파악이 되면 1~2 번째 까지는 다시 빌드하지 않고
 Cache에 저장되어 있는 상태를 그대로 사용하고 3~끝까지는 다시 image 를 만든다.
 
 ### 명령어
-
 
 #### `FROM`
 
@@ -334,12 +304,10 @@ https://docs.docker.com/engine/reference/builder/#from
 
 보통 OS 나 프로그래밍 언어 이미지를 지정한다.
 
-
-
 #### `LABEL`
 
 이미지에 레이블을 추가하여 프로젝트별 이미지 구성, 라이센스 정보 기록, 자동화 정보 등
-기타 여러가지 정보를 기록할 수 있다. 각 레이블은 LABEL 로 시작하고, 
+기타 여러가지 정보를 기록할 수 있다. 각 레이블은 LABEL 로 시작하고,
 하나 이상의 키-값 쌍으로 추가하면 된다.
 
 ```dockerfile
@@ -357,12 +325,10 @@ LABEL com.example.version.is-production=""
 
 명확성 그리고 신뢰성을 위해 WORKDIR 은 항상 절대 경로를 사용해야 한다.
 
-
 #### `ARG`
 
 docker build 커맨드로 docker image 를 빌드할 때 설정할 수 있는 옵션들을
 지정해 준다.
-
 
 #### `RUN`
 
@@ -370,7 +336,7 @@ docker build 커맨드로 docker image 를 빌드할 때 설정할 수 있는 �
 
 길거나 복잡한 RUN 구문은 백슬래시를 활용하여 여러 줄로 분할하는 것이 Dockerfile 관리에 좋다.
 
-RUN 에서 자주 사용되는 명령어는 `apt-get` 이다.  `RUN apt-get` 은 
+RUN 에서 자주 사용되는 명령어는 `apt-get` 이다. `RUN apt-get` 은
 패키지를 설치하는 명령어이기 때문에 몇가지를 고려 해야 한다.
 
 ```dockerfile
@@ -381,11 +347,9 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 ```
 
-
 #### `ENV`
 
 환경 변수를 지정할 때 사용된다.
-
 
 #### `ADD`
 
@@ -399,25 +363,22 @@ RUN apt-get update && apt-get install -y \
 
 #### `COPY`
 
-ADD 와 기본적으로 동일하나 URL 지정이 불가하며 압축파일을 자동으로 
+ADD 와 기본적으로 동일하나 URL 지정이 불가하며 압축파일을 자동으로
 풀어주지 않는다.
 
 #### `CMD`
 
-CMD 는 나열되어 있는 인수와 함께, 이미지에 포함되어 있는 
+CMD 는 나열되어 있는 인수와 함께, 이미지에 포함되어 있는
 소프트웨어를 실행하는 데 사용된다. CMD는 거의 대부분 항상
 
 `["실행 파일", "param1" , "param2"]` 와 같은 형태로 사용되어야 한다.
 
-
 #### `EXPOSE`
 
-'EXPOSE' 는 컨테이너가 연결을 받는 포트를 나타낸다. 
+'EXPOSE' 는 컨테이너가 연결을 받는 포트를 나타낸다.
 따라서 애플리케이션에서 공통으로 사용되는 기존 포트를 사용해야 한다.
 
-
 ### 실습
-
 
 Dockerfile 생성
 
@@ -434,22 +395,15 @@ WORKDIR /app
 CMD ["java", "-jar", "app.jar"]
 ```
 
-
-
 빌드 하기
 
 gradle 을 사용하기 때문에
 
 프로젝트 루트 경로에 ./gradle build 명령어 입력
 
-
-
 ![img_5.png](img_5.png)
 
-
 jar 파일이 build/libs 경로에 생성된다.
-
-
 
 #### 도커 이미지 빌드
 
@@ -459,16 +413,13 @@ docker build -t [dockerHub ID]/[이미지명]:[태그명] [Dockerfile 위치]
 - hanghae-plus 라는 이름으로 도커 이미지를 생성한다.
 - 마지막 . 은 현 위치라는 뜻이다.
 
-
 #### 이미지 실행
 
 이미지를 실행하는 명령어는 docker run - 이미지 이름이다.
 
 docker run hanghae-plus
 
-
 나중에 배포할 서버에서 도커 이미지를 가져오고 실행하면 될 것 같다.
-
 
 ### GitHub Actions
 
@@ -476,9 +427,8 @@ docker run hanghae-plus
 
 #### CI (Continuous Integration)
 
-> 지속적 통합이라는 뜻으로 개발을 진행하면서도 품질을 관리할 수 있도록 
-여러 명이 하나의 코드에 대해서 수정을 진행해도 지속적으로 통합하면서 관리할 수 있음을 의미한다.
-
+> 지속적 통합이라는 뜻으로 개발을 진행하면서도 품질을 관리할 수 있도록
+> 여러 명이 하나의 코드에 대해서 수정을 진행해도 지속적으로 통합하면서 관리할 수 있음을 의미한다.
 
 마틴 파울러가 제시하는 CI의 4가지 규칙
 
@@ -487,22 +437,16 @@ docker run hanghae-plus
 - 테스팅을 자동화해서 언제든지 시스템에 대한 건전한 테스트 수트를 실행할 수 있게 할 것
 - 누구든 현재 실행 파일을 얻으면 지금까지 가장 완전한 실행 파일을 얻었다는 확신을 하게 할 것
 
-
 #### CD (Continuous Deployment)
 
 > 지속적 배포라는 뜻으로 빌드의 결과물을 프로덕션으로 릴리스하는 작업을 자동화하는 것을
 > 의미한다.
 
-
 GitHub Actions 를 사용하면 자동으로 코드 저장소에서 어떤 이벤트를
 발생했을 때 특정 작업이 일어나게 하거나 주기적으로 어떤 작업들을 반복해서
 실행시킬 수도 있다.
 
-
 #### 핵심 개념
-
-
-
 
 `Workflows`
 
@@ -532,8 +476,6 @@ on:
 jobs:
   # ...(생략)...
 ```
-
-
 
 `Jobs`
 
@@ -567,28 +509,23 @@ jobs:
       # ...(생략)...
 ```
 
-
 `Steps`
 
 - 단순한 작업이 아닌 이상 하나의 작업은 여러 단계의 명령을 순차적으로 실행한다.
 - GitHub Actions 에서는 각 작업이 하나 이상의 단계로 모델링 된다.
 - 작업 단계는 단순한 command 나 script 가 될 수도 있고 action 이라는 복접한 명령일 수도 있다.
-- command 나 script 를 실행할 때는 run 속성을 사용하며, action 을 사용할 때는 uses 속성을 사용한다. 
+- command 나 script 를 실행할 때는 run 속성을 사용하며, action 을 사용할 때는 uses 속성을 사용한다.
 - 워크플로우 파일내에서 작업 단계를 명시해줄 때는 yml 문법에서 시퀀스 타입을 사용하기 때문에 각 단계 앞에서 반드시 '-' 를 붙여줘야 한다.
-
 
 `Actions`
 
 - GitHub Actions 에서 빈번하게 필요한 반복 단계를 재사용하기 용이하도록 제공되는 일종의 작업 공유 매커니즘
 
-
-
-
 #### 실습
 
 최상위 루트에 .github / workflow / [이름].yml 파일 생성 하면 된다.
 
-근데 이 작업을 직접 안하고 
+근데 이 작업을 직접 안하고
 
 github repository 에서 Actions 탭에 들어가서
 
@@ -622,12 +559,11 @@ jobs:
 
 ```
 
-그리고 아래 과정을 겪으며  yml 최종 변경 하였다.
+그리고 아래 과정을 겪으며 yml 최종 변경 하였다.
 
-- build 과정 에서 경로 관련 에러가 발생 하여  ./gradlw build 명령어 추가
-- access denied 에러가 발생 하여  chomd +x gralew 추가
+- build 과정 에서 경로 관련 에러가 발생 하여 ./gradlw build 명령어 추가
+- access denied 에러가 발생 하여 chomd +x gralew 추가
 - 버전 관련 에러가 발생 하여 actions/set-up java 명령어를 추가
-
 
 ```properties
 name: hanghae-plus-actions
@@ -660,7 +596,6 @@ jobs:
 
 ![img_7.png](img_7.png)
 
-
 ## STEP03 배포 환경 구축
 
 ### ECR
@@ -668,18 +603,17 @@ jobs:
 AWS ECR 이란?
 
 > AWS 에서 제공하는 Docker Hub 와 비슷한 개념으로, Amazon Elastic Container
-> Registry 의 약자로 안전하고 확장 가능한 신뢰할 수 있는 AWS 관리형 컨테이너 
+> Registry 의 약자로 안전하고 확장 가능한 신뢰할 수 있는 AWS 관리형 컨테이너
 > 이미지 레지스트리 서비스
 
 - ECR 은 이미지를 가용성과 확장성이 뛰어난 아키텍처에 호스팅하여 사용자는 애플리케이션을 위한 컨테이너를 안정적으로 배포할 수 있다.
 - ECR를 사용함으로써 이미지 리포지토리를 직ㅈ버 구축하고 관리할 필요가 없습니다.
 
+ECR 을 사용하기 전 IAM 계정을 만들자
 
-ECR 을  사용하기 전 IAM 계정을 만들자
+### IAM
 
-### IAM 
-
-IAM (AWS Identity and Access Management)  이란?
+IAM (AWS Identity and Access Management) 이란?
 
 > AWS 리소스에 대한 액세스를 안전하게 제어할 수 있는 웹 서비스이다.
 > IAM을 사용하여 리소스를 사용하도록 인증 및 권한 부여된 대상을 제어한다.
@@ -696,25 +630,21 @@ AWS 서비스에서는 해당 요청을 처리하기 전에 우선 자격 증명
 
 사용자 IAM 생성하기
 
-
-
-
 ![img_8.png](img_8.png)
 
-
-ACCESS_KEY , SECRET_KEY 발급 
-
+ACCESS_KEY , SECRET_KEY 발급
 
 ![img_9.png](img_9.png)
-
 
 #### ECR 리포지토리 생성
 
 ![img_10.png](img_10.png)
 
+개발 환경과 운영 환경을 분리하기 위해 repository 각각 생성
+
+![Alt text](image.png)
 
 Github Repository 의 Secret 이용하기
-
 
 ![img_11.png](img_11.png)
 
@@ -765,61 +695,51 @@ jobs:
 
 ```
 
+ECR 에 나와 있는 푸시 명령을 토대로 yml 파일을 완성 하였다.
 
- ECR 에 나와 있는 푸시 명령을 토대로 yml 파일을 완성 하였다.
+#### EC2 실행하기
 
+EC2 인스턴스를 생성하고 ec2 에 도커를 설치한다.
 
-#### EC2 실행하기 
-
-EC2 인스턴스를 생성하고  ec2 에 도커를 설치한다. 
 - sudo yum docker -y
-
 
 도커 서비스를 실행 시키자
 
 - sudo systemctl start docker
 
- 자격 증명을 활성화 하자.
+자격 증명을 활성화 하자.
 
 - aws configure
 
 ACCESS_KEY , SECRET_KEY 를 입력하여 자격 증명을 완료하자
 
-
 docker image 다운 받기 위해 권한 설정을 하자
 
 - sudo usermode -a -G docker $USER
-
 
 ecr 에 올린 도커 이미지를 pull 받기 위해 ecr 에 로그인 하자
 
 - aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin [ECR URL ]
 
-
 도커 이미지를 다운 받자
 
-- docker pull  [ECR URL]
+- docker pull [ECR URL]
 
-
-docker image ls  명령어를 통해 이미지가 잘 다운 받아졌는지 확인 해보자
+docker image ls 명령어를 통해 이미지가 잘 다운 받아졌는지 확인 해보자
 
 ![img_12.png](img_12.png)
-
 
 ECR에 올린 이미지가 잘 다운 받아졌고 이제 컨테이너를 실행하자
 
 - docker run --name hanghae-plus-web -p 8000:8000 [이미지 ID]
 
-
 컨테이너가 실행 되었다. 확인 해보자
 
-퍼블릭 IP 주소를 입력 해보면 
+퍼블릭 IP 주소를 입력 해보면
 
 ![img_13.png](img_13.png)
 
-
 짠! 로컬에서 환경 설정하고 개발했던 것과 동일하게 잘 실행 된다.
-
 
 ### 단점
 
@@ -829,7 +749,6 @@ ECR에 올린 이미지가 잘 다운 받아졌고 이제 컨테이너를 실행
 
 - 인스턴스를 수동으로 생성하고 구성해야 한다.
 - 인스턴스를 수동으로 연결하고, 수동으로 도커를 설치한다.
-
 
 조금 더 좋은 방법이 없을까? 위에 수동으로 하는 작업도 다 자동으로 할 수 없을까??
 
@@ -842,20 +761,19 @@ ECR에 올린 이미지가 잘 다운 받아졌고 이제 컨테이너를 실행
 
 EC2 인스턴스를 실행하는 것 처럼 자체 머신을 실행하는 대신 관리형 서비스를 사용할 수 있다
 
-#### 구성 요소 
-
+#### 구성 요소
 
 - Cluster : 작업 또는 서비스의 논리적 그룹이다. 클러스터를 실행하여 작업을 실행할 수 있다.
   - 클러스터 템플릿 선택 (Fargate | EC2 | External)
   - 클러스 이름 설정
 - Service : 클러스터에서 지정된 수의 작업을 동시에 실행하고 관리할 수 있게 해주는 구성 서비스는 Task를 포함하며, Task 와 관련된 Auto Scaling 과
-Load Balancing 을 관리한다.
+  Load Balancing 을 관리한다.
   - 시작 유형 선택 (Fargate | EC2 | External)
   - 작업 정의 선택
   - 클러스터 선택
   - 서비스 이름 설정
   - 작업 개수 설정
-  - 배포 유형 설정 
+  - 배포 유형 설정
   - 네트워크 구성 (VPC , 서브넷 , 보안그룹)
   - Load Balancing 설정
   - Auto Scaling 설정
@@ -867,13 +785,41 @@ Load Balancing 을 관리한다.
   - CPU/메모리 리소스 할당 설정
   - 작업의 컨테이너에 사용할 데이터 볼륨 설정
 
-#### AWS Fargate 
+#### VPC 생성
+
+Amazon VPC
+
+> Amazon Virtual Private Cloud 를 사용하면 정의한 논리적으로 격리된 가상 네트워크에서
+> AWS 리소스를 시작할 수 있다.
+
+![Alt text](image-1.png)
+
+#### 대상 그룹 생성
+
+ALB(Application Load Balancer)가 요청을 분배하는 기준에 대한 설정
+
+![Alt text](image-5.png)
+
+헬스 체크 routing point 입력
+
+![Alt text](image-3.png)
+
+#### ALB 생성
+
+![Alt text](image-4.png)
+
+![Alt text](image-6.png)
+
+![Alt text](image-7.png)
+
+#### AWS Fargate
 
 > AWS Fargate 는 Amazon EC2 인스턴스의 서버나 클러스터를 관리할 필요 없이
 > 컨테이너를 실행하기 위해 Amazon ECS 에 사용할 수 있는 기술이다.
 > Fargate 를 사용하면 더 이상 컨테이너를 실행하기 위해 가상 머신의
 > 클러스터를 프로비저닝, 구성 또는 조정할 필요가 없습니다.
 
+![Alt text](image-8.png)
 
 #### 태스크 정의
 
@@ -881,19 +827,22 @@ Fargate 를 선택! Fargate 는 컨테이너가 무한대로 확장되는 서버
 
 ![img_14.png](img_14.png)
 
- ECR 의 이미지 URI 를 등록한다.  
+ECR 의 이미지 URI 를 등록한다.
 
 ![img_15.png](img_15.png)
 
+태스크 정의 생성 후 태스크 정의를 이용해 Service 생성
 
-## 회고 
+![Alt text](image-9.png)
 
-CI CD 를 경험 한적도 없었고, Phase 를 구성한 적도 없어서 
+## 회고
+
+CI CD 를 경험 한적도 없었고, Phase 를 구성한 적도 없어서
 개념을 이해하고 적용하는 데 시간이 많이 걸려 과제를 수행 하는 것이 쉽지 않았다.
 
 블로그와 문서 , 강의를 통해서 개념들을 익히고 현재 요구사항에 필요한 최소한의 조건으로 설정하였다.
 
-완벽하게 이해한 것도 아니고 설정 파일도 수정할 것이 있지만  하나의 cycle 다 경험 할 수 있어서 좋았다. 
+완벽하게 이해한 것도 아니고 설정 파일도 수정할 것이 있지만 하나의 cycle 다 경험 할 수 있어서 좋았다.
 
 회사에 이번에 배운 것을 차근차근 적용 해봐야 겠다.
 
