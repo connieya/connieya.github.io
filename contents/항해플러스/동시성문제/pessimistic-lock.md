@@ -1,6 +1,6 @@
 ---
 date: '2023-12-30'
-title: '항해 플러스 4주차 - 동시성 테스트  '
+title: '동시성 문제와 데이터 일관성 문제 해결 with pessimistic lock'
 categories: ['항해플러스']
 summary: 'e-커머스 상품 주문 서비스 중에 동시성 문제가 야기 되는 경우를 분석하고 테스트 코드를 작성해본다.'
 thumbnail: './image.png'
@@ -336,7 +336,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 결과
 
 ![Alt text](image-6.png)
-
 
 ### 의문점
 

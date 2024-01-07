@@ -1,6 +1,6 @@
 ---
 date: '2023-12-09'
-title: '항해 플러스 1주차 - CI/CD 배포 파이프라인 구축'
+title: 'CI/CD 배포 파이프라인 구축'
 categories: ['항해플러스']
 summary: 'Docker 와 Github Actions , ECR , ECS 로 CI/ CD 구축하였습니다.'
 thumbnail: './img_7.png'
@@ -834,9 +834,6 @@ ECR 의 이미지 URI 를 등록한다.
 태스크 정의 생성 후 태스크 정의를 이용해 Service 생성
 
 ![Alt text](image-9.png)
-
-
-
 
 ## 회고
 
