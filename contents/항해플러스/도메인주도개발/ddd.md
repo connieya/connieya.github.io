@@ -1,4 +1,4 @@
-<!-- ---
+---
 date: '2023-01-06'
 title: '도메인 주도 개발 리팩토링'
 categories: ['항해플러스']
@@ -146,4 +146,6 @@ public class ProductService {
         return productRepository.findAllByPessimisticLock(productRequests.stream().map(ProductRequestForOrder::getProductId).collect(Collectors.toList()));
     }
 }
-``` -->
+```
+
+.............. 추후에 내용 추가하기.........................
