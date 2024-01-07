@@ -54,6 +54,8 @@ public class OrderProduct{
 
 가장 많이 팔린 상품을 구하기 위해 productId 의 개수를 카운트해서 select 하기
 
+최근 3일이라는 기준은 OrderProduct 에 있는 createdDate 를 기준으로 3일이라는 구간을 지정한다.
+
 ### OrderProductRepository 에 메서드 추가
 
 가장 많이 팔린 상품 3개 조회
@@ -72,6 +74,90 @@ public interface OrderProductRepository extends JpaRepository<OrderProduct,Long>
     List<OrderProductRankResponse> findTop3RankProductsInLast3Days(@Param("startDate") LocalDateTime startDate , @Param("endDate") LocalDateTime endDate);
 
 }
+```
+
+#### 시간 의존성 주입하기
+
+```java
+@Entity
+@Table(name = "orders")
+@Getter
+@NoArgsConstructor
+public class Order extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_id")
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    private Long totalPrice;
+
+
+    @OneToMany(mappedBy = "order" ,cascade = CascadeType.ALL)
+    private List<OrderProduct> product;
+
+
+    @Builder
+    private Order(User user, List<ProductRequestForOrder> products) {
+        this.user = user;
+        this.product = getOrderProducts(products);
+        this.totalPrice = calculateTotalPrice(products);
+    }
+
+
+    private List<OrderProduct> getOrderProducts(List<ProductRequestForOrder> products) {
+        return products.stream()
+               .map(product -> new OrderProduct(this, product.getProductId(), product.getQuantity(), product.getPrice()))
+                .collect(Collectors.toList());
+    }
+
+    private static long calculateTotalPrice(List<ProductRequestForOrder> products) {
+        return products.stream()
+                .mapToLong(product -> product.getPrice() * product.getQuantity())
+                .sum();
+    }
+
+    public static Order create(User user, List<ProductRequestForOrder> products) {
+        return new Order(user, products);
+    }
+}
+```
+
+Order 객체를 생성할 때 , OrderProduct 객체를 생성해서 DB 에 함께 영속화 시킨다.
+
+createdDate 는 생성할 때 자동으로 생성된다. 그런데, '최근 3일' 이라는 기준이 있기 때문에
+
+테스트를 위해서
+
+FakeOrder 객체를 생성하였고,
+
+```java
+public class FakeOrder {
+    public static Order create(User user , List<ProductRequestForOrder> products , LocalDateTime dateTime) {
+        return new Order(user,products,dateTime);
+    }
+}
+```
+
+Order 엔티티에 아래 코드를 추가하였다.
+
+```java
+ public Order(User user, List<ProductRequestForOrder> products, LocalDateTime dateTime) {
+        this.user = user;
+        this.product = getOrderProducts(products ,dateTime);
+        this.totalPrice = calculateTotalPrice(products);
+    }
+
+    private List<OrderProduct> getOrderProducts(List<ProductRequestForOrder> products, LocalDateTime dateTime) {
+        return products.stream()
+                .map(product -> new OrderProduct(this, product.getProductId(), product.getQuantity(), product.getPrice() ,dateTime,dateTime))
+                .collect(Collectors.toList());
+    }
+
 ```
 
 ### 테스트 코드 작성
@@ -208,6 +294,99 @@ test fixture 를 사용하면 여러 테스트를 진행 한다고 했을 때, �
 
 위 2가지를 고려하는 것이 좋겠다.
 
+### 의존성과 테스트
+
+위의 코드는 DB에 데이터를 insert 하고 , 내가 작성한 쿼리 (최근 3일간 인기 상품) 가 잘 동작하는 지를 테스트 하였다.
+
+그러면 이제 비즈니스 로직 부분에서 테스트를 진행해야 한다.
+
+주문을 수행하는 컴포넌트 클래스
+
+```java
+@Component
+@RequiredArgsConstructor
+public class OrderAppender {
+
+    private final OrderRepository orderRepository;
+
+    @Transactional
+    public Order append(User user, List<ProductRequestForOrder> products) {
+        Order order = Order.create(user, products);
+        return orderRepository.save(order);
+    }
+
+}
+```
+
+#### 문제
+
+여기서 '최근 3일' 이라는 시간을 기준으로 테스트 하기 위해서
+
+파라미터에 '시간'을 주입해줘야 한다.
+
+뿐 만아니라, OrderAppender 를 의존하는
+
+OrderService 의 createOrder 메서드에도 파라미터에 '시간'을 주입해줘야 한다.
+
+```java
+    @Transactional
+    public void createOrder(OrderPostRequest request ) {
+        User user = userReader.read(request.getUserId());
+        // 재고 차감
+        stockManager.deduct(request);
+        // 주문
+        Order savedOrder = orderAppender.append(user, request.getProducts());
+        // 잔액 차감
+        userManager.deductPoint(user, savedOrder);
+        // 포인트 내역 저장
+        pointManager.process(user, savedOrder);
+    }
+```
+
+그리고 OrderService 를 의존하는 Controller layer 에서도 "시간"을 주입해줘야 한다.
+
+코드의 많은 부분을 수정해줘야 한다. 테스트를 위해서는 이 방법 밖에 없는 것일까?
+
+#### 시도
+
+'시간' 을 주입하는 대신, TimeProvider 라는 인터페이스를 만들어서 인터페이스에 의존하게 하자
+
+의존성 역전을 하게 하는 것이다.
+
+```java
+public interface TimeProvider {
+   LocalDateTime getLocalDateTime();
+}
+```
+
+테스트가 아닌 실제 비즈니스 로직에서는
+
+```java
+@Component
+public class SystemTimeProvider implements TimeProvider {
+    @Override
+    public LocalDateTime getLocalDateTime() {
+        return LocalDateTime.now();
+    }
+}
+```
+
+현재 시간을 넣어준다.
+
+그리고 테스트를 진행 할 때는 현재 시간이 아닌 테스트 하고자 하는 시간을 받도록 구현하였다.
+
+```java
+@AllArgsConstructor
+public class TestTimeProvider implements TimeProvider{
+    private LocalDateTime localDateTime;
+    @Override
+    public LocalDateTime getLocalDateTime() {
+        return localDateTime;
+    }
+}
+
+```
+
 ## 코드 점진적으로 개선하기
 
 ### 주문하기 로직 관심사 분리, 응집도 높이기
@@ -236,7 +415,7 @@ public class OrderService {
         // 주문
         Order savedOrder = orderAppender.append(user, products);
 
-        // 결제
+        // 포인트 내역 저장
         pointManager.process(user,savedOrder);
     }
 
@@ -336,15 +515,11 @@ map 으로 변환하는 기능은 private 메서드로 수정하였다.
 
 잔액 차감이라는 메서드를 사용한다고 했을 때, 비교하는 로직을 다시 사용해야한다.
 
-
 ```java
  public void deductPoints(Long totalPrice) {
     this.currentPoint -= totalPrice;
     }
 ```
-
-
-
 
 ```java
     public void deductPoints(Long totalPrice) {
@@ -369,46 +544,9 @@ map 으로 변환하는 기능은 private 메서드로 수정하였다.
     }
 ```
 
-### 재고 차감과 재고 수량 확인 통합하기
+### 개선 해야 할 점
 
-위와 같은 이유로
-
-```java
-    @Transactional
-    public void deduct(OrderPostRequest request) {
-        List<ProductRequestForOrder> requestForOrders = request.getProducts();
-        Map<Long, Long> productIdQuntitiyMap = convertToProductIdQuantityMap(requestForOrders);
-        List<Product> products =   productReader.read(request.getProducts());
-        for (Product product : products) {
-            Long quantity = productIdQuntitiyMap.get(product.getId());
-            if (product.isLessThanQuantity(quantity)){
-                throw new InsufficientStockException(INSUFFICIENT_STOCK);
-            }
-            product.deductQuantity(quantity);
-        }
-        productRepository.saveAll(products);
-    }
-```
-
-```java
-  public void deductQuantity(Long quantity) {
-        if (isLessThanQuantity(quantity)){
-            throw new InsufficientStockException(INSUFFICIENT_STOCK);
-        }
-        this.quantity -= quantity;
-    }
-```
-
-```java
-    @Transactional
-    public void deduct(OrderPostRequest request) {
-        List<ProductRequestForOrder> requestForOrders = request.getProducts();
-        Map<Long, Long> productIdQuntitiyMap = convertToProductIdQuantityMap(requestForOrders);
-        List<Product> products =   productReader.read(request.getProducts());
-        for (Product product : products) {
-            Long quantity = productIdQuntitiyMap.get(product.getId());
-            product.deductQuantity(quantity);
-        }
-        productRepository.saveAll(products);
-    }
-```
+- 테스트 하기 좋은 설계에 대해 고민하기
+- 단위 테스트 비중을 높이기
+- 올바른 단위 테스트가 무엇인지 생각해보기
+- Mockito 에 대해서 공부하기

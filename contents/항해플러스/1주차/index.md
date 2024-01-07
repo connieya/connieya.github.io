@@ -835,6 +835,9 @@ ECR 의 이미지 URI 를 등록한다.
 
 ![Alt text](image-9.png)
 
+
+
+
 ## 회고
 
 CI CD 를 경험 한적도 없었고, Phase 를 구성한 적도 없어서
