@@ -1,6 +1,6 @@
 ---
 date: '2023-12-09'
-title: 'CI/CD 배포 파이프라인 구축'
+title: 'Docker , ECR ,ECS , Github Actions을 활용한 CI/CD  파이프라인 구축'
 categories: ['항해플러스']
 summary: 'Docker 와 Github Actions , ECR , ECS 로 CI/ CD 구축하였습니다.'
 thumbnail: './img_7.png'
@@ -792,23 +792,22 @@ Amazon VPC
 > Amazon Virtual Private Cloud 를 사용하면 정의한 논리적으로 격리된 가상 네트워크에서
 > AWS 리소스를 시작할 수 있다.
 
-![Alt text](image-1.png)
+![Alt text](image-17.png)
 
 #### 대상 그룹 생성
 
 ALB(Application Load Balancer)가 요청을 분배하는 기준에 대한 설정
 
-![Alt text](image-5.png)
-
+![Alt text](image-18.png)
 헬스 체크 routing point 입력
 
 ![Alt text](image-3.png)
 
 #### ALB 생성
 
-![Alt text](image-4.png)
+![Alt text](image-26.png)
 
-![Alt text](image-6.png)
+![Alt text](image-19.png)
 
 ![Alt text](image-7.png)
 
@@ -819,13 +818,12 @@ ALB(Application Load Balancer)가 요청을 분배하는 기준에 대한 설정
 > Fargate 를 사용하면 더 이상 컨테이너를 실행하기 위해 가상 머신의
 > 클러스터를 프로비저닝, 구성 또는 조정할 필요가 없습니다.
 
-![Alt text](image-8.png)
+![Alt text](image-20.png)
 
 #### 태스크 정의
 
 Fargate 를 선택! Fargate 는 컨테이너가 무한대로 확장되는 서버리스 실행 환경이다.
-
-![img_14.png](img_14.png)
+![Alt text](image-21.png)
 
 ECR 의 이미지 URI 를 등록한다.
 
@@ -833,7 +831,214 @@ ECR 의 이미지 URI 를 등록한다.
 
 태스크 정의 생성 후 태스크 정의를 이용해 Service 생성
 
-![Alt text](image-9.png)
+![Alt text](image-22.png)
+
+서비스 생성 성공
+
+![Alt text](image-16.png)
+
+이번에는 실제 요청을 통해 서버가 정상적으로 접근 가능한지를 확인해보자
+![Alt text](image-24.png)
+
+![Alt text](image-23.png)
+
+ALB 주소를 이용해서 접근 하면
+
+Target Group 에 의해 포트포워딩되어 ECS 의 서비스에 연결할 수 있게 된다.
+
+![Alt text](image-25.png)
+
+### Github Actions 배포 자동화
+
+앞서 생성한 task definition 의 json 을 복사 한 다음에
+
+![Alt text](image-27.png)
+
+프로젝트에 task-definition.json 파일을 생성하자
+
+task-definition.json
+
+```json
+{
+  "taskDefinitionArn": "arn:aws:ecs:ap-northeast-2:490538782156:task-definition/hhp-ecommerce-dev:1",
+  "containerDefinitions": [
+    {
+      "name": "ecommerce",
+      "image": "490538782156.dkr.ecr.ap-northeast-2.amazonaws.com/hhplus-dev",
+      "cpu": 0,
+      "portMappings": [
+        {
+          "name": "ecommerce-8080-tcp",
+          "containerPort": 8080,
+          "hostPort": 8080,
+          "protocol": "tcp",
+          "appProtocol": "http"
+        }
+      ],
+      "essential": true,
+      "environment": [],
+      "environmentFiles": [],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "ulimits": [],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-create-group": "true",
+          "awslogs-group": "/ecs/hhp-ecommerce-dev",
+          "awslogs-region": "ap-northeast-2",
+          "awslogs-stream-prefix": "ecs"
+        },
+        "secretOptions": []
+      }
+    }
+  ],
+  "family": "hhp-ecommerce-dev",
+  "taskRoleArn": "arn:aws:iam::490538782156:role/role-ecs-tasks",
+  "executionRoleArn": "arn:aws:iam::490538782156:role/role-ecs-tasks",
+  "networkMode": "awsvpc",
+  "revision": 1,
+  "volumes": [],
+  "status": "ACTIVE",
+  "requiresAttributes": [
+    {
+      "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+    },
+    {
+      "name": "ecs.capability.execution-role-awslogs"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.ecr-auth"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.task-iam-role"
+    },
+    {
+      "name": "ecs.capability.execution-role-ecr-pull"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+    },
+    {
+      "name": "ecs.capability.task-eni"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+    }
+  ],
+  "placementConstraints": [],
+  "compatibilities": ["EC2", "FARGATE"],
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "1024",
+  "memory": "3072",
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  },
+  "registeredAt": "2024-01-11T07:03:08.235Z",
+  "registeredBy": "arn:aws:iam::490538782156:root",
+  "tags": []
+}
+```
+
+ci-dev 파이프라인의 step 을 위의 task definition 맞게 변경 한다.
+
+```properties
+name: Docker Image CI to ECR - dev
+
+on:
+  push:
+    branches: [ "dev" ]
+  pull_request:
+    branches: [ "dev" ]
+
+env:
+  AWS_REGION: ap-northeast-2
+  ECS_CLUSTER_NAME: cluster-hhplus-dev
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 17
+      uses: actions/setup-java@v1
+      with:
+          java-version: 17
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    - name: Build with Gradle
+      run: ./gradlew bootjar
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id : ${{secrets.AWS_ACCESS_KEY}}
+        aws-secret-access-key : ${{secrets.AWS_SECRET_KEY}}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Login to AWS ECR
+      id: login-ecr
+      run: aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${{secrets.ECR_DEV_URL}}
+
+    - name: Build the Docker image
+      id: build-image
+      run: |
+       docker build -t hhplus-dev:latest .
+       echo "::set-output name=image::${{ secrets.ECR_DEV_URL }}/hhplus-dev:latest"
+
+    - name : ADD Tag
+      run : docker tag hhplus-dev:latest ${{secrets.ECR_DEV_URL}}/hhplus-dev:latest
+    - name: Push Docker image to ECR
+      run: docker push ${{secrets.ECR_DEV_URL}}/hhplus-dev:latest
+      env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS }}
+    - name: Render ECS task-definition
+      id: render-task-definition
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+       task-definition: task-definition-dev.json
+       container-name: ecommerce
+       image: ${{ steps.build-image.outputs.image }}
+
+    - name: Deploy Amazon ECS task-definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.render-task-definition.outputs.task-definition }}
+        cluster: ${{env.ECS_CLUSTER_NAME}}
+        service: hhp-ecommerce-service
+        wait-for-service-stability: true
+```
+
+### 자동 배포 확인
+
+설정을 변경 했으니
+
+ci-dev 을 트리깅 해서 내 ECR에 빌드된 이미지를 업로드 하고, 정상적 자동 배포 되는지 확인 해보자
+
+확인을 위해 API 응답을 변경 "hello world !!!!!!!! => "안녕 !!!!";
+
+```java
+  @GetMapping("/")
+    public String hello() {
+        return "안녕 !!!!";
+    }
+```
+
+변경 된 코드 Push 후 dev 브랜치에 PR
+
+Github Actions 정상 동작
+
+![Alt text](image-15.png)
+
+자동 배포 완료
+![Alt text](image-1.png)
 
 ## 회고
 
@@ -843,8 +1048,6 @@ CI CD 를 경험 한적도 없었고, Phase 를 구성한 적도 없어서
 블로그와 문서 , 강의를 통해서 개념들을 익히고 현재 요구사항에 필요한 최소한의 조건으로 설정하였다.
 
 완벽하게 이해한 것도 아니고 설정 파일도 수정할 것이 있지만 하나의 cycle 다 경험 할 수 있어서 좋았다.
-
-회사에 이번에 배운 것을 차근차근 적용 해봐야 겠다.
 
 Dockefile , Github Actions workflow 파일 , phase 설정 들은 개선할 것이 많아 보인다.
 앞으로 과제를 진행 하면서 점차 개선해야 겠다.

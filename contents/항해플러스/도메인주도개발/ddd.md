@@ -1,12 +1,12 @@
 ---
 date: '2023-01-06'
-title: '도메인 주도 개발 리팩토링'
+title: '도메인 주도 개발 , 리팩토링'
 categories: ['항해플러스']
 summary: '도메인 주도 개발'
 thumbnail: './image.png'
 ---
 
-주문 도메인에 주문 항목을 표현하는 OrderProduct 객체를
+주문 도메인에 주문 항목을 표현하는 OrderProduct 객체
 
 ```java
 @Entity
@@ -69,7 +69,11 @@ public class OrderLine {
 }
 ```
 
-OrderService 가 의존하는 클래스가 많다.
+## 주문 비즈니스 로직
+
+OrderService 에서 createOrder 메서드로 주문을 생성한다.
+
+여기서 코드를 개선 해보자
 
 ```java
 @Service
@@ -84,8 +88,6 @@ public class OrderService {
     private final UserManager userManager;
     private final PaymentService paymentService;
     private final ApplicationEventPublisher publisher;
-    private final SystemTimeProvider timeProvider;
-    private final DataPlatformService dataPlatformService;
 
 
     @Transactional
@@ -107,6 +109,8 @@ public class OrderService {
     }
 }
 ```
+
+### 재고 차감 행위
 
 재고를 차감하는 행위를 StockManager 에서 수행한다.
 
@@ -148,4 +152,67 @@ public class ProductService {
 }
 ```
 
-.............. 추후에 내용 추가하기.........................
+### 잔액 차감 행위
+
+UserManager 클래스에서 잔액 차감을 하고 있다.
+
+UserManager 는 어떤 역할을 하는 지 이름도 모호하고 UserManager 클래스에서 도메인 로직을 구현하는 것은 옳지 않는 것 같다.
+
+잔액 차감이라는 로직은 User 도메인이 이미 하고 있다.
+
+```java
+@Entity
+@Table(name = "users")
+@NoArgsConstructor
+@Getter
+public class User extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
+    private Long id;
+    private String name;
+
+    private Long currentPoint;
+
+    @Version
+    private Long version;
+
+    // .. 생략
+
+    public void deductPoints(Long totalPrice) {
+        if (this.currentPoint < totalPrice) {
+            throw new UserException.InsufficientPointsException(INSUFFICIENT_POINT);
+        }
+        this.currentPoint -= totalPrice;
+    }
+
+    // .. 생략
+
+}
+```
+
+잔액이 부족한지 여부도 체크해서 응집도를 높인 코드이다.
+
+UserManager 라는 클래스를 따로 만들어서 비즈니스 로직을 괜히 복잡하게 할 필요가 없을 것 같다.
+
+그리고 잔액 차감은 결제 하기 전에 하는 것으로 정했기 때문에
+
+PaymentService execute 메서드에 파리미터로 넘긴 뒤에
+
+```java
+@Service
+@RequiredArgsConstructor
+public class PaymentService {
+    private final PaymentRepository paymentRepository;
+
+    public void execute(Order order , User user) {
+        user.deductPoints(order.getTotalPrice());
+        Payment payment = new Payment(order, user);
+        paymentRepository.save(payment);
+    }
+}
+
+```
+
+User 도메인 로직을 수행하는 식으로 코드 수를 줄여 나갔다.
