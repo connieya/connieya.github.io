@@ -753,21 +753,19 @@ OrderSerivce 안에 private 메서드로 되어 있다.</p>
 <h3 id="느낀점" style="position:relative;"><a href="#%EB%8A%90%EB%82%80%EC%A0%90" aria-label="느낀점 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>느낀점</h3>
 <p>이번에 TDD를 접하고 테스트 코드를 작성 하면서 테스트 코드를 왜 작성해야 하는지
 느낄 수 있었다.</p>
-<p>그 동안은 코드가 잘 동작하는 지 확인하기 위해 Postmand 을 사용했었는데
+<p>그 동안은 코드가 잘 동작하는 지 확인하기 위해 Postman 을 사용했었는데
 테스트 코드와 비교하면 상당히 수동적이고 불편한 방법이었다.</p>
 <p>내가 작성한 기능 하나를 테스트 하기 위해 api 를 만들고 DB 까지 연결해야 했다.
-하지만 유닛 테스트로 api 나 db 연결 할 필요없이 가짜 객체를 통해 내가 만든 기능이 잘 동작하는 지 확인할 수 있었다.</p>
+하지만 유닛 테스트로 api 나 db 연결 할 필요없이 가짜 객체를 통해 내가 만든 기능이 잘 동작하는 지 확인할 수 있다.</p>
 <p>만약 요구 사항이 변경되어 코드를 수정해야 하는 경우, 테스트 코드를
 실행 함으로써 코드 변경이 예상대로 이루어지고 기존 기능에 문제가 없는지
-빠르게 확인할 수 있었다.</p>
+빠르게 확인할 수 있다.</p>
 <p>수작업으로 진행되던 Postman 방식 보다 훨씬 효율적이다.</p>
-<p>요구 사항이 변경되어 코드를 수정할 때 마다 동작이 잘 안되지 않을까
-불안감이 많았는데, 기능이을 추가하거나 수정할 때마다 해당 기능의 동작을 보장하기 위한 테스트 코드를 테스트 코드를 잘 작성하여 실행 하면 앞으로 불안감이 없이 코드를 수정할 수 있을 것 같다.</p>
+<p>요구 사항이 변경되어 코드를 수정할 때 마다 동작이 잘 안되지 않을까 불안감이 많았는데, 기능을 추가하거나 수정할 때마다 해당 기능의 동작을 보장하기 위한 테스트 코드를 잘 작성하여 실행 하면 앞으로 불안감이 없이 코드를 수정할 수 있을 것 같다.</p>
 <p>그리고 항상 클린 코드와 객체지향적인 코드를 작성하기 위해 고민을 많이 했지만 ,실제로 어떻게 적용해야 할지 몰라 답답함을 느낄 때가 많았다.</p>
 <p>테스트 코드를 작성하다보면 테스트 코드하기 좋은 코드가 뭔지 고민하게 되었고,
-이로 인해 클린 코드와 객체지향적인 코드에 대한 원칙들이 실제로 어떻게 구현되어야 하는지에 대한 통찰을 얻을 수 있었습니다.</p>
-<p>테스트 코드를 작성하면서 코드의 모듈화 ,응집도 향상 ,결합도 감소 등에 대해서 고민 하면서 클린 코드와 객체지향적인 설계를 자연스럽게 향상시킬 수 있었습니다.</p>
-<p>앞으로 실무에서도 테스트 코드 작성을 생활화하고 팀원들에게도 전파할 생각입니다.</p></div><style data-emotion="css hx9xpc">@media (max-width: 768px){.css-hx9xpc{padding:0 20px;}}</style><div class="css-hx9xpc e12j4d8y0"></div><style data-emotion="css fmunkh">.css-fmunkh{position:absolute;top:0;left:768px;height:100%;padding-left:4rem;}@media (max-width: 1400px){.css-fmunkh{display:none;}}</style><aside class="css-fmunkh ek4ynda1"><style data-emotion="css 1s5ilwz">.css-1s5ilwz{position:-webkit-sticky;position:sticky;top:6rem;width:240px;overflow:hidden;font-size:0.8rem;}.css-1s5ilwz p{margin:0;}.css-1s5ilwz a{display:block;padding:0.5rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;border-radius:4px;-webkit-transition:all 0.1s ease-out;transition:all 0.1s ease-out;}.css-1s5ilwz a:hover{background-color:#badcff;}.css-1s5ilwz ul:first-child{border-left:none;}.css-1s5ilwz ul{margin-left:0.5rem;padding:0 0.5rem;list-style:none;border-left:2px solid #e2e5e6;}</style><nav class="css-1s5ilwz ek4ynda0"><ul>
+이로 인해 클린 코드와 객체지향적인 코드에 대한 원칙들이 실제로 어떻게 구현되어야 하는지에 대한 통찰을 얻을 수 있었다.</p>
+<p>테스트 코드를 작성하면서 코드의 모듈화 ,응집도 향상 ,결합도 감소 등에 대해서 고민 하면서 클린 코드와 객체지향적인 설계를 자연스럽게 향상시킬 수 있었다.</p></div><style data-emotion="css hx9xpc">@media (max-width: 768px){.css-hx9xpc{padding:0 20px;}}</style><div class="css-hx9xpc e12j4d8y0"></div><style data-emotion="css fmunkh">.css-fmunkh{position:absolute;top:0;left:768px;height:100%;padding-left:4rem;}@media (max-width: 1400px){.css-fmunkh{display:none;}}</style><aside class="css-fmunkh ek4ynda1"><style data-emotion="css 1s5ilwz">.css-1s5ilwz{position:-webkit-sticky;position:sticky;top:6rem;width:240px;overflow:hidden;font-size:0.8rem;}.css-1s5ilwz p{margin:0;}.css-1s5ilwz a{display:block;padding:0.5rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;border-radius:4px;-webkit-transition:all 0.1s ease-out;transition:all 0.1s ease-out;}.css-1s5ilwz a:hover{background-color:#badcff;}.css-1s5ilwz ul:first-child{border-left:none;}.css-1s5ilwz ul{margin-left:0.5rem;padding:0 0.5rem;list-style:none;border-left:2px solid #e2e5e6;}</style><nav class="css-1s5ilwz ek4ynda0"><ul>
 <li>
 <p><a href="#%EC%8B%9C%EB%82%98%EB%A6%AC%EC%98%A4-%EC%84%A0%EC%A0%95">시나리오 선정</a></p>
 <ul>
