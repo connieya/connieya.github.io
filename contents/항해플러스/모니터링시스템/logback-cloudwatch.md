@@ -278,6 +278,44 @@ ThreadLocal 을 사용하기 때문에 Thread 단위로 생성된다.
 
 ![Alt text](image.png)
 
+### JSON 형태로 저장하기
+
+로그를 텍스트 형식으로 저장했는데,
+
+로그 수집 과 분석을 위해서는 텍스트 형식 보다는 구조화 된 포맷을 사용하는 것이 좋다.
+
+구조화된 로그 형식 중 가장 일반적인 것이 JSON 이다.
+
+로그백에서 JSON으로 로그를 저장할 수 있다.
+
+#### 의존성 추가
+
+```groovy
+implementation 'ch.qos.logback:logback-classic'
+implementation 'ch.qos.logback.contrib:logback-json-classic:0.1.5'
+implementation 'ch.qos.logback.contrib:logback-jackson:0.1.5'
+```
+
+#### 로그백 설정 추가
+
+```xml
+ <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+    <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+        <timestampFormat>yyyy-MM-dd'T'HH:mm:ss.SSSX</timestampFormat>
+        <timestampFormatTimezoneId>Etc/UTC</timestampFormatTimezoneId>
+        <jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter">
+            <prettyPrint>true</prettyPrint>
+        </jsonFormatter>
+    </layout>
+</encoder>
+```
+
+설정을 추가하고 CloudWatch 에 로그를 전송해보자
+
+결과
+
+![Alt text](image-7.png)
+
 ## Slack Webhook API를 활용한 Alert 서비스
 
 https://api.slack.com/
@@ -311,4 +349,5 @@ https://newrelic.com/kr/blog/how-to-relic/what-is-log-management <br/>
 https://tecoble.techcourse.co.kr/post/2021-08-07-logback-tutorial/<br/>
 https://055055.tistory.com/96 <br/>
 https://0soo.tistory.com/246 <br/>
+https://newrelic.com/kr/resources/white-papers/log-management-best-practices <br/>
 https://www.youtube.com/watch?v=fkwb8coxBJM
