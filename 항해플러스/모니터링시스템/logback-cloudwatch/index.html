@@ -420,6 +420,75 @@ spring profile 에 따른 로그 레벨을 설정할 때 사용할 것 같다.</
         </picture>
   </a>
     </span></p>
+<h3 id="json-형태로-저장하기" style="position:relative;"><a href="#json-%ED%98%95%ED%83%9C%EB%A1%9C-%EC%A0%80%EC%9E%A5%ED%95%98%EA%B8%B0" aria-label="json 형태로 저장하기 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JSON 형태로 저장하기</h3>
+<p>로그를 텍스트 형식으로 저장했는데,</p>
+<p>로그 수집 과 분석을 위해서는 텍스트 형식 보다는 구조화 된 포맷을 사용하는 것이 좋다.</p>
+<p>구조화된 로그 형식 중 가장 일반적인 것이 JSON 이다.</p>
+<p>로그백에서 JSON으로 로그를 저장할 수 있다.</p>
+<h4 id="의존성-추가" style="position:relative;"><a href="#%EC%9D%98%EC%A1%B4%EC%84%B1-%EC%B6%94%EA%B0%80" aria-label="의존성 추가 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>의존성 추가</h4>
+<div class="gatsby-highlight" data-language="groovy"><pre class="language-groovy"><code class="language-groovy">implementation <span class="token string">'ch.qos.logback:logback-classic'</span>
+implementation <span class="token string">'ch.qos.logback.contrib:logback-json-classic:0.1.5'</span>
+implementation <span class="token string">'ch.qos.logback.contrib:logback-jackson:0.1.5'</span></code></pre></div>
+<h4 id="로그백-설정-추가" style="position:relative;"><a href="#%EB%A1%9C%EA%B7%B8%EB%B0%B1-%EC%84%A4%EC%A0%95-%EC%B6%94%EA%B0%80" aria-label="로그백 설정 추가 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>로그백 설정 추가</h4>
+<div class="gatsby-highlight" data-language="xml"><pre class="language-xml"><code class="language-xml"> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>encoder</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>ch.qos.logback.core.encoder.LayoutWrappingEncoder<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>layout</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>ch.qos.logback.contrib.json.classic.JsonLayout<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>timestampFormat</span><span class="token punctuation">></span></span>yyyy-MM-dd'T'HH:mm:ss.SSSX<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>timestampFormat</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>timestampFormatTimezoneId</span><span class="token punctuation">></span></span>Etc/UTC<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>timestampFormatTimezoneId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>jsonFormatter</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>ch.qos.logback.contrib.jackson.JacksonJsonFormatter<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>prettyPrint</span><span class="token punctuation">></span></span>true<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>prettyPrint</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>jsonFormatter</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>layout</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>encoder</span><span class="token punctuation">></span></span></code></pre></div>
+<p>설정을 추가하고 CloudWatch 에 로그를 전송해보자</p>
+<p>결과</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 768px; "
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/2357dce00343b4f1dbc8218fd2b709b4/2b42d/image-7.png"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 21.875%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAECAYAAACOXx+WAAAACXBIWXMAACToAAAk6AGCYwUcAAAAf0lEQVR42pWOyxKDIBAE+f+PTGFpFBbkIUgEDxPgYI7RQ192Z7qGbSFArwZCCChFIGtAprHCbR7t/wQW9x2LlOCcY5knvLXqQuc9Qg2EGDu3hS2stMYwjpiI8BJzl+q29FprYPy9taycJ6xzEJJgazGkhJRz5UA6fnzqLZfyly/I0TIjVBTHkQAAAABJRU5ErkJggg=='); background-size: cover; display: block;"
+  ></span>
+  <picture>
+          <source
+              srcset="/static/2357dce00343b4f1dbc8218fd2b709b4/a59e9/image-7.webp 192w,
+/static/2357dce00343b4f1dbc8218fd2b709b4/0ca9f/image-7.webp 384w,
+/static/2357dce00343b4f1dbc8218fd2b709b4/dc9b9/image-7.webp 768w,
+/static/2357dce00343b4f1dbc8218fd2b709b4/e2c2f/image-7.webp 1152w,
+/static/2357dce00343b4f1dbc8218fd2b709b4/f3efb/image-7.webp 1536w,
+/static/2357dce00343b4f1dbc8218fd2b709b4/8bc18/image-7.webp 2287w"
+              sizes="(max-width: 768px) 100vw, 768px"
+              type="image/webp"
+            />
+          <source
+            srcset="/static/2357dce00343b4f1dbc8218fd2b709b4/3b721/image-7.png 192w,
+/static/2357dce00343b4f1dbc8218fd2b709b4/66595/image-7.png 384w,
+/static/2357dce00343b4f1dbc8218fd2b709b4/fe486/image-7.png 768w,
+/static/2357dce00343b4f1dbc8218fd2b709b4/d2d74/image-7.png 1152w,
+/static/2357dce00343b4f1dbc8218fd2b709b4/e8464/image-7.png 1536w,
+/static/2357dce00343b4f1dbc8218fd2b709b4/2b42d/image-7.png 2287w"
+            sizes="(max-width: 768px) 100vw, 768px"
+            type="image/png"
+          />
+          <img
+            class="gatsby-resp-image-image"
+            src="/static/2357dce00343b4f1dbc8218fd2b709b4/fe486/image-7.png"
+            alt="Alt text"
+            title=""
+            loading="lazy"
+            decoding="async"
+            style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+          />
+        </picture>
+  </a>
+    </span></p>
 <h2 id="slack-webhook-api를-활용한-alert-서비스" style="position:relative;"><a href="#slack-webhook-api%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-alert-%EC%84%9C%EB%B9%84%EC%8A%A4" aria-label="slack webhook api를 활용한 alert 서비스 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Slack Webhook API를 활용한 Alert 서비스</h2>
 <p><a href="https://api.slack.com/" target="_blank" rel="nofollow">https://api.slack.com/</a></p>
 <p><span
@@ -901,6 +970,7 @@ spring profile 에 따른 로그 레벨을 설정할 때 사용할 것 같다.</
 <a href="https://tecoble.techcourse.co.kr/post/2021-08-07-logback-tutorial/" target="_blank" rel="nofollow">https://tecoble.techcourse.co.kr/post/2021-08-07-logback-tutorial/</a><br/>
 <a href="https://055055.tistory.com/96" target="_blank" rel="nofollow">https://055055.tistory.com/96</a> <br/>
 <a href="https://0soo.tistory.com/246" target="_blank" rel="nofollow">https://0soo.tistory.com/246</a> <br/>
+<a href="https://newrelic.com/kr/resources/white-papers/log-management-best-practices" target="_blank" rel="nofollow">https://newrelic.com/kr/resources/white-papers/log-management-best-practices</a> <br/>
 <a href="https://www.youtube.com/watch?v=fkwb8coxBJM" target="_blank" rel="nofollow">https://www.youtube.com/watch?v=fkwb8coxBJM</a></p></div><style data-emotion="css hx9xpc">@media (max-width: 768px){.css-hx9xpc{padding:0 20px;}}</style><div class="css-hx9xpc e12j4d8y0"></div><style data-emotion="css fmunkh">.css-fmunkh{position:absolute;top:0;left:768px;height:100%;padding-left:4rem;}@media (max-width: 1400px){.css-fmunkh{display:none;}}</style><aside class="css-fmunkh ek4ynda1"><style data-emotion="css 1s5ilwz">.css-1s5ilwz{position:-webkit-sticky;position:sticky;top:6rem;width:240px;overflow:hidden;font-size:0.8rem;}.css-1s5ilwz p{margin:0;}.css-1s5ilwz a{display:block;padding:0.5rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;border-radius:4px;-webkit-transition:all 0.1s ease-out;transition:all 0.1s ease-out;}.css-1s5ilwz a:hover{background-color:#badcff;}.css-1s5ilwz ul:first-child{border-left:none;}.css-1s5ilwz ul{margin-left:0.5rem;padding:0 0.5rem;list-style:none;border-left:2px solid #e2e5e6;}</style><nav class="css-1s5ilwz ek4ynda0"><ul>
 <li>
 <p><a href="#%ED%86%B5%ED%95%A9-%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EA%B5%AC%EC%B6%95">통합 모니터링 시스템 구축</a></p>
@@ -945,6 +1015,13 @@ spring profile 에 따른 로그 레벨을 설정할 때 사용할 것 같다.</
 <p><a href="#%EC%9D%98%EC%A1%B4%EC%84%B1-%EC%84%A4%EC%A0%95">의존성 설정</a></p>
 <ul>
 <li><a href="#%EC%8B%A4%ED%96%89">실행</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#json-%ED%98%95%ED%83%9C%EB%A1%9C-%EC%A0%80%EC%9E%A5%ED%95%98%EA%B8%B0">JSON 형태로 저장하기</a></p>
+<ul>
+<li><a href="#%EC%9D%98%EC%A1%B4%EC%84%B1-%EC%B6%94%EA%B0%80">의존성 추가</a></li>
+<li><a href="#%EB%A1%9C%EA%B7%B8%EB%B0%B1-%EC%84%A4%EC%A0%95-%EC%B6%94%EA%B0%80">로그백 설정 추가</a></li>
 </ul>
 </li>
 </ul>
