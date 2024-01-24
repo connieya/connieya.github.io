@@ -318,9 +318,15 @@ implementation 'ch.qos.logback.contrib:logback-jackson:0.1.5'
 
 ## Slack Webhook API를 활용한 Alert 서비스
 
+슬랙 채널에 특정 메시지를 외부에서 전송하기 위해 Webhook 설정을 진행하자
+
 https://api.slack.com/
 
 ![img_2.png](img_2.png)
+
+슬랙 APP을 생성한다.
+
+Workspace의 특정 채널 (Webhook 을 받을) 에 대한 API를 생성해 둔다.
 
 ![img_1.png](img_1.png)
 
@@ -328,19 +334,256 @@ Webhook API
 
 ![img_3.png](img_3.png)
 
+생성한 Webhook API가 잘 동작하는지, postman 으로 호출 해보자
+
 ![img_4.png](img_4.png)
+
+알림이 잘 온다.
 
 ![img_5.png](img_5.png)
 
+### Error Log Lambda 생성
+
+#### 람다 함수 생성
+
+언어는 Java 로 하려고 했는데 java 는 런타임 환경을 제공해주지 않아서 (소스 코드를 jar 빌드한 것을 업로드 하거나 S3에서 가져와야 한다.)
+
+Node.js 로 설정하였다.
+
+![Alt text](image-8.png)
+
+#### 환경 변수 생성
+
+위에서 설정한 slack webhook API를 환경 변수로 등록하였다.
+
 ![Alt text](image-2.png)
 
-![Alt text](image-3.png)
+작성한 람다 함수가 잘 동작하는지 테스트 해보자
+
+```javascript
+const axios = require('axios')
+
+exports.handler = async event => {
+  try {
+    const slackWebhookUrl = process.env.slack_webhook_url
+
+    if (!slackWebhookUrl) {
+      throw new Error('Slack webhook URL not found in environment variables')
+    }
+
+    const response = await axios.post(slackWebhookUrl, {
+      text: '람다 테스트 테스트',
+    })
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify('Successfully sent message to Slack!'),
+    }
+  } catch (error) {
+    console.error('Error sending message to Slack:', error.message)
+
+    return {
+      statusCode: 500,
+      body: JSON.stringify('Error sending message to Slack'),
+    }
+  }
+}
+```
+
+환경 변수에 등록 slack webhook API 에 post 요청을 보내는 코드이다.
+
+코드 Deploy 한다.
+
+![Alt text](image-11.png)
+
+Deploy 한 람다 함수가 잘 동작하는지 테스트 하기 위해 이벤트를 생성한다.
+
+![Alt text](image-9.png)
+
+테스트 해보면
+axios 모듈을 찾을 수 없다는 에러가 발생한다.
+
+axios 모듈을 사용하려면 node_modules 가 필요하고 node_modules 는 AWS lambda layer 에서 모듈화 해야 한다.
+
+아래 링크를 참고하여 layer 를 추가하였다.
+
+https://medium.com/@sunjang/aws-lambda-layer-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-node-js-8c299a1d0a6f <br/>
+
+layer 추가 후에 다시 테스트 해보면
+
+![Alt text](image-12.png)
+
+요청에 성공하였고
+
+![Alt text](image-13.png)
+
+슬랙에도 알림이 왔다.
+
+#### Error Log 알림 보내기
+
+CloudWatch 로그 그룹을 트리거에 추가한다.
 
 ![Alt text](image-4.png)
 
-![Alt text](image-6.png)
+그리고 CloudWatch 로그 그룹에 있는 로그 스트림의 마지막 event 에 있는 로그 메세지를
+가져와서 slack webhook API에 전송하는 코드를 작성한다.
 
-![Alt text](image-5.png)
+```javascript
+// imports
+const https = require('https')
+const AWS = require('aws-sdk')
+// get envarionment variables
+const ENV = process.env
+const webhookUrl = ENV.slack_webhook_url
+
+exports.handler = async (event, context) => {
+  const cloudwatchlogs = new AWS.CloudWatchLogs()
+  const logGroupName = 'hhplus-ecommerce'
+  const logStreamPrefix = 'error'
+  const logStreamName = 'error' // 여기에 로그 스트림 이름을 입력하세요
+
+  try {
+    const logStreamsResponse = await cloudwatchlogs
+      .describeLogStreams({
+        logGroupName,
+        logStreamNamePrefix: logStreamPrefix,
+        descending: true,
+        limit: 1,
+      })
+      .promise()
+
+    if (
+      logStreamsResponse.logStreams &&
+      logStreamsResponse.logStreams.length > 0
+    ) {
+      const latestLogStream = logStreamsResponse.logStreams[0]
+      const latestLogStreamName = latestLogStream.logStreamName
+
+      const data = await cloudwatchlogs
+        .getLogEvents({
+          logGroupName,
+          logStreamName: latestLogStreamName,
+          startFromHead: false,
+          limit: 1,
+        })
+        .promise()
+
+      console.log('event data ==> ', data)
+
+      if (data && data.events && data.events.length > 0) {
+        const latestLog = data.events[0].message
+        console.log('latestLog => ', latestLog)
+        await exports.handleLogMessage(latestLog)
+      } else {
+        console.log('No log events found.')
+      }
+    } else {
+      console.log('No log events found.')
+    }
+  } catch (err) {
+    console.error('Error fetching log events:', err)
+  }
+}
+
+// set handle event func
+exports.handleLogMessage = async logMessage => {
+  const slackMessage = exports.createSlackMessage(logMessage)
+  await exports.sendToSlack(slackMessage)
+}
+// create slack message
+exports.createSlackMessage = message => {
+  const time = exports.formatDate(message.StateChangeTime)
+  return {
+    attachments: [
+      {
+        title: `:warning: *[error]*`,
+        fields: [
+          {
+            title: '발생시각',
+            value: time,
+          },
+          {
+            title: '로그',
+            value: message,
+          },
+        ],
+      },
+    ],
+  }
+}
+// request slack webhook api
+exports.sendToSlack = async message => {
+  try {
+    const options = getSlackOptions()
+    const response = await requestSlackWebhook(options, message)
+  } catch (error) {
+    console.error('Error sending message to Slack:', error)
+  }
+}
+
+function getSlackOptions() {
+  const { host, pathname } = new URL(webhookUrl)
+  return {
+    hostname: host,
+    path: pathname,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }
+}
+function requestSlackWebhook(options, payload) {
+  return new Promise((resolve, reject) => {
+    const request = https.request(options, response => {
+      response.setEncoding('utf8')
+      let responseBody = ''
+      response.on('data', chunk => {
+        responseBody += chunk
+      })
+      response.on('end', () => {
+        resolve(responseBody)
+      })
+    })
+
+    request.on('error', e => {
+      console.error(e)
+      reject(e)
+    })
+
+    request.write(JSON.stringify(payload))
+    request.end()
+  })
+}
+
+// util - current timestamp
+exports.formatDate = () => {
+  function zerofill(n) {
+    return n < 10 ? '0' + n : n
+  }
+
+  const kstDate = new Date(new Date().getTime() + 9 * 60 * 60 * 1000)
+
+  return (
+    kstDate.getFullYear().toString() +
+    '-' +
+    zerofill(kstDate.getMonth() + 1) +
+    '-' +
+    zerofill(kstDate.getDate()) +
+    '-' +
+    zerofill(kstDate.getHours()) +
+    ':' +
+    zerofill(kstDate.getMinutes()) +
+    ':' +
+    zerofill(kstDate.getSeconds())
+  )
+}
+```
+
+코드를 작성하고 Deploy 한 뒤에 테스트를 해보면
+
+![Alt text](image-14.png)
+
+슬랙에 알림이 온다.
 
 ## 참고
 
@@ -350,4 +593,5 @@ https://tecoble.techcourse.co.kr/post/2021-08-07-logback-tutorial/<br/>
 https://055055.tistory.com/96 <br/>
 https://0soo.tistory.com/246 <br/>
 https://newrelic.com/kr/resources/white-papers/log-management-best-practices <br/>
+
 https://www.youtube.com/watch?v=fkwb8coxBJM
