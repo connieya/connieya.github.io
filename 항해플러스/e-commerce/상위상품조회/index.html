@@ -494,6 +494,50 @@
         </picture>
   </a>
     </span></p>
+<h3 id="캐싱-적용하기" style="position:relative;"><a href="#%EC%BA%90%EC%8B%B1-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0" aria-label="캐싱 적용하기 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>캐싱 적용하기</h3>
+<p>상위 상품 조회 요청 시, 해당 상품은 최근 3일 간 제일 많인 팔린 상품으로 설정되어 있다. 현재 API는 요청이 올 때마다 데이터베이스에서 오늘 날짜로부터 3일 전까지의 정보를 조회하여 반환한다.</p>
+<p>즉 하루가 지나기 전에는 같은 데이터를 반환한다. 그렇기 때문에 매번 데이터베이스에서 조회할 필요 없이 미리 캐싱해놓은 데이터를 가져오면 응답 속도를 높일 수 있다.</p>
+<h4 id="스프링-부트-cache-적용" style="position:relative;"><a href="#%EC%8A%A4%ED%94%84%EB%A7%81-%EB%B6%80%ED%8A%B8-cache-%EC%A0%81%EC%9A%A9" aria-label="스프링 부트 cache 적용 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>스프링 부트 Cache 적용</h4>
+<p>스프링 부트에서 기본 캐시 기능을 제공 해주는데,</p>
+<p>스프링 부트 애플리케이션에 @EnableCaching 어노테이션을 붙여주면 된다.</p>
+<div class="gatsby-highlight" data-language="java"><pre class="language-java"><code class="language-java"><span class="token annotation punctuation">@SpringBootApplication</span>
+<span class="token annotation punctuation">@EnableJpaAuditing</span>
+<span class="token annotation punctuation">@EnableCaching</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">HanghaePlusApplication</span> <span class="token punctuation">{</span>
+
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token class-name">SpringApplication</span><span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token class-name">HanghaePlusApplication</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span></code></pre></div>
+<p>캐시 정보 저장하기</p>
+<div class="gatsby-highlight" data-language="java"><pre class="language-java"><code class="language-java"><span class="token annotation punctuation">@Cacheable</span><span class="token punctuation">(</span><span class="token string">"rank_product"</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Transactional</span><span class="token punctuation">(</span>readOnly <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">OrderProductRankResponse</span><span class="token punctuation">></span></span> <span class="token function">getRankProduct</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    log<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"상위 상품 조회"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">LocalDate</span> today <span class="token operator">=</span> <span class="token class-name">LocalDate</span><span class="token punctuation">.</span><span class="token function">now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> orderLineRepository<span class="token punctuation">.</span><span class="token function">findTop3RankProductsInLast3Days</span><span class="token punctuation">(</span>today<span class="token punctuation">.</span><span class="token function">minusDays</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">atStartOfDay</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> today<span class="token punctuation">.</span><span class="token function">atStartOfDay</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">}</span></code></pre></div>
+<p>@Cacheable 어노테이션</p>
+<ul>
+<li>캐시 정보를 메모리 상에 ‘저장’ 하거나 ‘조회’ 해오는 기능을 수행할 때 사용한다.</li>
+<li>케시의 속성 값인 ‘값(value)’ 과 ‘키(key)’ 를 기반으로 수행이 된다.</li>
+<li>최초 호출이 된 경우에는 메서드가 호출되어 ‘캐시 정보를 저장’ 하며, 동일하게 재 호출이 된 경우는 메서드의 호출 없이 ‘저장된 캐시의 정보를 조회하여 반환’한다.</li>
+</ul>
+<p>캐시 정보 삭제하기</p>
+<p>하루가 지나면 메모리에 캐싱된 데이터를 삭제하고, 새로운 데이터를 캐싱 해야하기 때문에</p>
+<p>스프링 스케줄러를 사용하였다.</p>
+<div class="gatsby-highlight" data-language="java"><pre class="language-java"><code class="language-java"><span class="token annotation punctuation">@Scheduled</span><span class="token punctuation">(</span>cron <span class="token operator">=</span> <span class="token string">"0 0 0 * * *"</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@CacheEvict</span><span class="token punctuation">(</span><span class="token string">"rank_product"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">evictRankProduct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+
+<span class="token punctuation">}</span></code></pre></div>
+<p>@CacheEvict</p>
+<ul>
+<li>캐시 정보를 메모리상에 ‘삭제’하는 기능을 수행할 때 사용한다.</li>
+<li>@CacheEvict 에 캐시 이름을 넣어주면 메소드가 실행될 때 캐시의 내용이 제거 된다.</li>
+</ul>
 <h2 id="코드-점진적으로-개선하기" style="position:relative;"><a href="#%EC%BD%94%EB%93%9C-%EC%A0%90%EC%A7%84%EC%A0%81%EC%9C%BC%EB%A1%9C-%EA%B0%9C%EC%84%A0%ED%95%98%EA%B8%B0" aria-label="코드 점진적으로 개선하기 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>코드 점진적으로 개선하기</h2>
 <h3 id="주문하기-로직-관심사-분리-응집도-높이기" style="position:relative;"><a href="#%EC%A3%BC%EB%AC%B8%ED%95%98%EA%B8%B0-%EB%A1%9C%EC%A7%81-%EA%B4%80%EC%8B%AC%EC%82%AC-%EB%B6%84%EB%A6%AC-%EC%9D%91%EC%A7%91%EB%8F%84-%EB%86%92%EC%9D%B4%EA%B8%B0" aria-label="주문하기 로직 관심사 분리 응집도 높이기 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>주문하기 로직 관심사 분리, 응집도 높이기</h3>
 <div class="gatsby-highlight" data-language="java"><pre class="language-java"><code class="language-java"><span class="token annotation punctuation">@Service</span>
@@ -621,9 +665,10 @@
 <ul>
 <li>테스트 하기 좋은 설계에 대해 고민하기</li>
 <li>단위 테스트 비중을 높이기</li>
-<li>올바른 단위 테스트가 무엇인지 생각해보기</li>
 <li>Mockito 에 대해서 공부하기</li>
-</ul></div><style data-emotion="css hx9xpc">@media (max-width: 768px){.css-hx9xpc{padding:0 20px;}}</style><div class="css-hx9xpc e12j4d8y0"></div><style data-emotion="css fmunkh">.css-fmunkh{position:absolute;top:0;left:768px;height:100%;padding-left:4rem;}@media (max-width: 1400px){.css-fmunkh{display:none;}}</style><aside class="css-fmunkh ek4ynda1"><style data-emotion="css 1s5ilwz">.css-1s5ilwz{position:-webkit-sticky;position:sticky;top:6rem;width:240px;overflow:hidden;font-size:0.8rem;}.css-1s5ilwz p{margin:0;}.css-1s5ilwz a{display:block;padding:0.5rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;border-radius:4px;-webkit-transition:all 0.1s ease-out;transition:all 0.1s ease-out;}.css-1s5ilwz a:hover{background-color:#badcff;}.css-1s5ilwz ul:first-child{border-left:none;}.css-1s5ilwz ul{margin-left:0.5rem;padding:0 0.5rem;list-style:none;border-left:2px solid #e2e5e6;}</style><nav class="css-1s5ilwz ek4ynda0"><ul>
+</ul>
+<h2 id="참고" style="position:relative;"><a href="#%EC%B0%B8%EA%B3%A0" aria-label="참고 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>참고</h2>
+<p><a href="https://adjh54.tistory.com/165" target="_blank" rel="nofollow">https://adjh54.tistory.com/165</a> <br/></p></div><style data-emotion="css hx9xpc">@media (max-width: 768px){.css-hx9xpc{padding:0 20px;}}</style><div class="css-hx9xpc e12j4d8y0"></div><style data-emotion="css fmunkh">.css-fmunkh{position:absolute;top:0;left:768px;height:100%;padding-left:4rem;}@media (max-width: 1400px){.css-fmunkh{display:none;}}</style><aside class="css-fmunkh ek4ynda1"><style data-emotion="css 1s5ilwz">.css-1s5ilwz{position:-webkit-sticky;position:sticky;top:6rem;width:240px;overflow:hidden;font-size:0.8rem;}.css-1s5ilwz p{margin:0;}.css-1s5ilwz a{display:block;padding:0.5rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;border-radius:4px;-webkit-transition:all 0.1s ease-out;transition:all 0.1s ease-out;}.css-1s5ilwz a:hover{background-color:#badcff;}.css-1s5ilwz ul:first-child{border-left:none;}.css-1s5ilwz ul{margin-left:0.5rem;padding:0 0.5rem;list-style:none;border-left:2px solid #e2e5e6;}</style><nav class="css-1s5ilwz ek4ynda0"><ul>
 <li>
 <p><a href="#%EC%83%81%EC%9C%84-%EC%83%81%ED%92%88-%EC%A1%B0%ED%9A%8C-%EA%B8%B0%EB%8A%A5-%EC%B6%94%EA%B0%80--%EC%BD%94%EB%93%9C-%EC%A0%90%EC%A7%84%EC%A0%81%EC%9C%BC%EB%A1%9C-%EA%B0%9C%EC%84%A0%ED%95%98%EA%B8%B0">상위 상품 조회 기능 추가 , 코드 점진적으로 개선하기</a></p>
 <ul>
@@ -656,6 +701,12 @@
 <li><a href="#%EA%B2%B0%EA%B3%BC">결과</a></li>
 </ul>
 </li>
+<li>
+<p><a href="#%EC%BA%90%EC%8B%B1-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0">캐싱 적용하기</a></p>
+<ul>
+<li><a href="#%EC%8A%A4%ED%94%84%EB%A7%81-%EB%B6%80%ED%8A%B8-cache-%EC%A0%81%EC%9A%A9">스프링 부트 Cache 적용</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li>
@@ -665,6 +716,9 @@
 <li><a href="#%EC%9E%94%EC%95%A1%EA%B3%BC-%EC%B4%9D-%EA%B0%80%EA%B2%A9-%EB%B9%84%EA%B5%90--%EC%9E%94%EC%95%A1-%EC%B0%A8%EA%B0%90-%ED%86%B5%ED%95%A9%ED%95%98%EA%B8%B0">잔액과 총 가격 비교 , 잔액 차감 통합하기</a></li>
 <li><a href="#%EA%B0%9C%EC%84%A0-%ED%95%B4%EC%95%BC-%ED%95%A0-%EC%A0%90">개선 해야 할 점</a></li>
 </ul>
+</li>
+<li>
+<p><a href="#%EC%B0%B8%EA%B3%A0">참고</a></p>
 </li>
 </ul>
 </li>

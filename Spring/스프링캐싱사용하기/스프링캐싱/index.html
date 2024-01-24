@@ -182,7 +182,7 @@ A 서버에서는 이전 데이터를, B 서버에서는 최신 데이터를 반
 변경 하기 전 총점을 반환하게 되면서 일관성이 깨지게 된다.</p>
 <p>스케줄러를 통해 매일 사용자의 활동 로그를 저장하는 데,
 이때 캐시를 삭제 하면 일관성이 깨지지 않게 된다.</p>
-<div class="gatsby-highlight" data-language="java"><pre class="language-java"><code class="language-java"> <span class="token annotation punctuation">@Scheduled</span><span class="token punctuation">(</span>cron <span class="token operator">=</span> <span class="token string">"0 1 0 * * *"</span><span class="token punctuation">)</span>
+<div class="gatsby-highlight" data-language="java"><pre class="language-java"><code class="language-java">    <span class="token annotation punctuation">@Scheduled</span><span class="token punctuation">(</span>cron <span class="token operator">=</span> <span class="token string">"0 1 0 * * *"</span><span class="token punctuation">)</span>
     <span class="token keyword">public</span> <span class="token keyword">synchronized</span> <span class="token keyword">void</span> <span class="token function">saveActivityDailyHis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">try</span> <span class="token punctuation">{</span>
             scheduler<span class="token punctuation">.</span><span class="token function">saveActivityDailyHis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>

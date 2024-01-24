@@ -490,6 +490,7 @@ implementation <span class="token string">'ch.qos.logback.contrib:logback-jackso
   </a>
     </span></p>
 <h2 id="slack-webhook-api를-활용한-alert-서비스" style="position:relative;"><a href="#slack-webhook-api%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-alert-%EC%84%9C%EB%B9%84%EC%8A%A4" aria-label="slack webhook api를 활용한 alert 서비스 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Slack Webhook API를 활용한 Alert 서비스</h2>
+<p>슬랙 채널에 특정 메시지를 외부에서 전송하기 위해 Webhook 설정을 진행하자</p>
 <p><a href="https://api.slack.com/" target="_blank" rel="nofollow">https://api.slack.com/</a></p>
 <p><span
       class="gatsby-resp-image-wrapper"
@@ -539,6 +540,8 @@ implementation <span class="token string">'ch.qos.logback.contrib:logback-jackso
         </picture>
   </a>
     </span></p>
+<p>슬랙 APP을 생성한다.</p>
+<p>Workspace의 특정 채널 (Webhook 을 받을) 에 대한 API를 생성해 둔다.</p>
 <p><span
       class="gatsby-resp-image-wrapper"
       style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 768px; "
@@ -630,6 +633,7 @@ implementation <span class="token string">'ch.qos.logback.contrib:logback-jackso
         </picture>
   </a>
     </span></p>
+<p>생성한 Webhook API가 잘 동작하는지, postman 으로 호출 해보자</p>
 <p><span
       class="gatsby-resp-image-wrapper"
       style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 768px; "
@@ -678,6 +682,7 @@ implementation <span class="token string">'ch.qos.logback.contrib:logback-jackso
         </picture>
   </a>
     </span></p>
+<p>알림이 잘 온다.</p>
 <p><span
       class="gatsby-resp-image-wrapper"
       style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 768px; "
@@ -724,6 +729,60 @@ implementation <span class="token string">'ch.qos.logback.contrib:logback-jackso
         </picture>
   </a>
     </span></p>
+<h3 id="error-log-lambda-생성" style="position:relative;"><a href="#error-log-lambda-%EC%83%9D%EC%84%B1" aria-label="error log lambda 생성 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Error Log Lambda 생성</h3>
+<h4 id="람다-함수-생성" style="position:relative;"><a href="#%EB%9E%8C%EB%8B%A4-%ED%95%A8%EC%88%98-%EC%83%9D%EC%84%B1" aria-label="람다 함수 생성 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>람다 함수 생성</h4>
+<p>언어는 Java 로 하려고 했는데 java 는 런타임 환경을 제공해주지 않아서 (소스 코드를 jar 빌드한 것을 업로드 하거나 S3에서 가져와야 한다.)</p>
+<p>Node.js 로 설정하였다.</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 768px; "
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/a1f041bf9cc15ee635d15ae5d7125344/39733/image-8.png"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 47.39583333333333%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAJCAYAAAAywQxIAAAACXBIWXMAACToAAAk6AGCYwUcAAABFElEQVR42oWSi26DMAxF8/+/OGmqWrqtSSEPEpLwunMMo4xuKtJVjG2OH0F8fEmcLlecqytuUkEbA+scXNuyWu83e6///KK6SbydLng/V6hkDaktlHEwbYCxFo02W7J1D1Dxa2O3mA+BY+LmIj5tRDmVz2jiCJ0mNCEzUN1rSgyIKSHGiJQyQtdRzDEgFT9pGEc+haWPpFpG7YcBfd8j79QP67kq58zvwzGX/B0VEmVfSt3h1y5KB6XaNM+YpmnR3t5pxu+nNCRcAdYaHY3D6iJXGwl61BGIv4CeFqrpEiJ1lrjDtO6LbCoQWYnH28OX8ftnYEM3peoGMT/2VMQj0aiv9AS0rYeh32Fagz85M9uvIUfgN2PXvUl9eaM6AAAAAElFTkSuQmCC'); background-size: cover; display: block;"
+  ></span>
+  <picture>
+          <source
+              srcset="/static/a1f041bf9cc15ee635d15ae5d7125344/a59e9/image-8.webp 192w,
+/static/a1f041bf9cc15ee635d15ae5d7125344/0ca9f/image-8.webp 384w,
+/static/a1f041bf9cc15ee635d15ae5d7125344/dc9b9/image-8.webp 768w,
+/static/a1f041bf9cc15ee635d15ae5d7125344/e2c2f/image-8.webp 1152w,
+/static/a1f041bf9cc15ee635d15ae5d7125344/f3efb/image-8.webp 1536w,
+/static/a1f041bf9cc15ee635d15ae5d7125344/33036/image-8.webp 3505w"
+              sizes="(max-width: 768px) 100vw, 768px"
+              type="image/webp"
+            />
+          <source
+            srcset="/static/a1f041bf9cc15ee635d15ae5d7125344/3b721/image-8.png 192w,
+/static/a1f041bf9cc15ee635d15ae5d7125344/66595/image-8.png 384w,
+/static/a1f041bf9cc15ee635d15ae5d7125344/fe486/image-8.png 768w,
+/static/a1f041bf9cc15ee635d15ae5d7125344/d2d74/image-8.png 1152w,
+/static/a1f041bf9cc15ee635d15ae5d7125344/e8464/image-8.png 1536w,
+/static/a1f041bf9cc15ee635d15ae5d7125344/39733/image-8.png 3505w"
+            sizes="(max-width: 768px) 100vw, 768px"
+            type="image/png"
+          />
+          <img
+            class="gatsby-resp-image-image"
+            src="/static/a1f041bf9cc15ee635d15ae5d7125344/fe486/image-8.png"
+            alt="Alt text"
+            title=""
+            loading="lazy"
+            decoding="async"
+            style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+          />
+        </picture>
+  </a>
+    </span></p>
+<h4 id="환경-변수-생성" style="position:relative;"><a href="#%ED%99%98%EA%B2%BD-%EB%B3%80%EC%88%98-%EC%83%9D%EC%84%B1" aria-label="환경 변수 생성 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>환경 변수 생성</h4>
+<p>위에서 설정한 slack webhook API를 환경 변수로 등록하였다.</p>
 <p><span
       class="gatsby-resp-image-wrapper"
       style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 768px; "
@@ -772,45 +831,75 @@ implementation <span class="token string">'ch.qos.logback.contrib:logback-jackso
         </picture>
   </a>
     </span></p>
+<p>작성한 람다 함수가 잘 동작하는지 테스트 해보자</p>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token keyword">const</span> axios <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'axios'</span><span class="token punctuation">)</span>
+
+exports<span class="token punctuation">.</span><span class="token function-variable function">handler</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token parameter">event</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">try</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> slackWebhookUrl <span class="token operator">=</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>slack_webhook_url
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>slackWebhookUrl<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string">'Slack webhook URL not found in environment variables'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">const</span> response <span class="token operator">=</span> <span class="token keyword">await</span> axios<span class="token punctuation">.</span><span class="token function">post</span><span class="token punctuation">(</span>slackWebhookUrl<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">text</span><span class="token operator">:</span> <span class="token string">'람다 테스트 테스트'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">return</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">statusCode</span><span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">body</span><span class="token operator">:</span> <span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span><span class="token string">'Successfully sent message to Slack!'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">'Error sending message to Slack:'</span><span class="token punctuation">,</span> error<span class="token punctuation">.</span>message<span class="token punctuation">)</span>
+
+    <span class="token keyword">return</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">statusCode</span><span class="token operator">:</span> <span class="token number">500</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">body</span><span class="token operator">:</span> <span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span><span class="token string">'Error sending message to Slack'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre></div>
+<p>환경 변수에 등록 slack webhook API 에 post 요청을 보내는 코드이다.</p>
+<p>코드 Deploy 한다.</p>
 <p><span
       class="gatsby-resp-image-wrapper"
       style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 768px; "
     >
       <a
     class="gatsby-resp-image-link"
-    href="/static/be0cfb57c6c19158f9da9b6bd8468808/4abe3/image-3.png"
+    href="/static/ade94be1ce301c1d775c4f3148faee8f/cf8f0/image-11.png"
     style="display: block"
     target="_blank"
     rel="noopener"
   >
     <span
     class="gatsby-resp-image-background-image"
-    style="padding-bottom: 71.875%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAOCAYAAAAvxDzwAAAACXBIWXMAAA7DAAAOwwHHb6hkAAACNklEQVR42pVSzWoUQRDeNxCFxJsYNEtOiSBe9BYfQ5/BgywrKCF69wEED5705gOoBwkkwejmpqIIopudze7OzM5/z0xP93xW1U6WRIxoz3xUdXX1V3/duvP0Fq7cX8bNhytY32zjxuYSrm20cf3RKq4+uIjVe2ew3F0UrHQWsdY5j8vdBbS7F3Cps4Clu2cJ5+ZofXc/4vHbl1h/8gy3XzzHm8+vsPXlNfadXewP9/D+sIeesyP7D4Nt7BF6gx2ybZON7MPdE2hZbZGqGoch4CU1ZNUzaaIJ9NctZEmFNFSoLdnpt8bitNVKshS6KpttTZ+FsUZ2STBB/9M7jD0fYRxBFTmyXCGKY9jaCNi/bj5bW7QypVCUJeIkRRjFRF7No1WUidIGxvDlmgJZQWXM3EflhdzlIEVREmGWoSTCnA4SOqiOEf7L0lqDk0rTVHQh/F+Svy0hLIpCSi0pApMfwZoKhqQW6EZWkslxlA0kQ0Xper4P1/PgT6eYkByNx5j4Ab45LoYe2VxXfMYTl3SPepZIz/4EGUoQRZiGIaZBQIOJEJI+oss/BkM4o7EEYp+jSwn16zQIYRiSM10IiEjluUydMx4cHMBxHPzs9yVrPssJXBXrKp9JHqo+WTJlQKTazHrEQbgs7i/rCekMzl5sv4GJ+Glx32UoQVNuTsPhaByE92znpyTOBJceOFfC5HHMiGXPLQqCUCqdl8wGLqdqMmQy7p0/DaRvnDEH8Robn7HO1c3gi/wFMBcJSsA4KWIAAAAASUVORK5CYII='); background-size: cover; display: block;"
+    style="padding-bottom: 58.854166666666664%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAMCAYAAABiDJ37AAAACXBIWXMAACToAAAk6AGCYwUcAAABvElEQVR42o1Ta4sTQRDc//9j/AsihwqCn7ycIkg8L1z2NbMz2/PYJ2X1hoRLPDg/FM1kZqurqzqF9x5N26JzDiIBIZyQYoD1Ae9/CnaHHtI7VFWN+4cf+Lb7jv3vR+SckVK6QlGWFaw1aElqjNlQVRUOT39wKFu8+2pwt3vG0+Mev/Z7fPz8BR/uPuF+98DGghjjFQpHZaX1OB6PULWRypzjuWp5dpiyQEIH4eNlnrEsywXjOGKapktVFJHjxTxuZHoxDMOmsjbapMThuUJjHXzfI9ASfScimEm+LutGrER6VhQhRF6cOuoPStp1dmvSdIKaVjj656NHH+lllK2eEVO8JQwXMq1qdF3XyFQaYiJxhvAjCVRIOxQpJ97nbZphHK5HviXUpKqyhHE9jiRuO0OlHVrToLPdZoeOrI3PKWsYl5RfU6iJ+57jNpo6ldGWNPKD4YQ4MFHW85hvjty2NWyfqdBxPy2ceFhhDY6+0UOui6XPquiVUP4lNKpQElenoUJP3yI9Uz/jSSU9VP/m6T8U6sO6aRB1aalAx93+OSSSJAgpbMQaxJsjK5Sw587NL5Z4XderhX75/pbwL4/XnJNmeYw4AAAAAElFTkSuQmCC'); background-size: cover; display: block;"
   ></span>
   <picture>
           <source
-              srcset="/static/be0cfb57c6c19158f9da9b6bd8468808/a59e9/image-3.webp 192w,
-/static/be0cfb57c6c19158f9da9b6bd8468808/0ca9f/image-3.webp 384w,
-/static/be0cfb57c6c19158f9da9b6bd8468808/dc9b9/image-3.webp 768w,
-/static/be0cfb57c6c19158f9da9b6bd8468808/e2c2f/image-3.webp 1152w,
-/static/be0cfb57c6c19158f9da9b6bd8468808/f3efb/image-3.webp 1536w,
-/static/be0cfb57c6c19158f9da9b6bd8468808/a2ebf/image-3.webp 2346w"
+              srcset="/static/ade94be1ce301c1d775c4f3148faee8f/a59e9/image-11.webp 192w,
+/static/ade94be1ce301c1d775c4f3148faee8f/0ca9f/image-11.webp 384w,
+/static/ade94be1ce301c1d775c4f3148faee8f/dc9b9/image-11.webp 768w,
+/static/ade94be1ce301c1d775c4f3148faee8f/e2c2f/image-11.webp 1152w,
+/static/ade94be1ce301c1d775c4f3148faee8f/f3efb/image-11.webp 1536w,
+/static/ade94be1ce301c1d775c4f3148faee8f/3b3b3/image-11.webp 2402w"
               sizes="(max-width: 768px) 100vw, 768px"
               type="image/webp"
             />
           <source
-            srcset="/static/be0cfb57c6c19158f9da9b6bd8468808/3b721/image-3.png 192w,
-/static/be0cfb57c6c19158f9da9b6bd8468808/66595/image-3.png 384w,
-/static/be0cfb57c6c19158f9da9b6bd8468808/fe486/image-3.png 768w,
-/static/be0cfb57c6c19158f9da9b6bd8468808/d2d74/image-3.png 1152w,
-/static/be0cfb57c6c19158f9da9b6bd8468808/e8464/image-3.png 1536w,
-/static/be0cfb57c6c19158f9da9b6bd8468808/4abe3/image-3.png 2346w"
+            srcset="/static/ade94be1ce301c1d775c4f3148faee8f/3b721/image-11.png 192w,
+/static/ade94be1ce301c1d775c4f3148faee8f/66595/image-11.png 384w,
+/static/ade94be1ce301c1d775c4f3148faee8f/fe486/image-11.png 768w,
+/static/ade94be1ce301c1d775c4f3148faee8f/d2d74/image-11.png 1152w,
+/static/ade94be1ce301c1d775c4f3148faee8f/e8464/image-11.png 1536w,
+/static/ade94be1ce301c1d775c4f3148faee8f/cf8f0/image-11.png 2402w"
             sizes="(max-width: 768px) 100vw, 768px"
             type="image/png"
           />
           <img
             class="gatsby-resp-image-image"
-            src="/static/be0cfb57c6c19158f9da9b6bd8468808/fe486/image-3.png"
+            src="/static/ade94be1ce301c1d775c4f3148faee8f/fe486/image-11.png"
             alt="Alt text"
             title=""
             loading="lazy"
@@ -820,6 +909,153 @@ implementation <span class="token string">'ch.qos.logback.contrib:logback-jackso
         </picture>
   </a>
     </span></p>
+<p>Deploy 한 람다 함수가 잘 동작하는지 테스트 하기 위해 이벤트를 생성한다.</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 768px; "
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/335a0a0a05b5edf67f73836d22dc668f/d6468/image-9.png"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 77.60416666666667%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAQCAYAAAAWGF8bAAAACXBIWXMAACToAAAk6AGCYwUcAAAB/klEQVR42o2T3XLbIBCF/d6575v1pq/QyYXHsV1HSAhJ/Amkk7MIK0lnatfjbxYQ7M9hOfw+vaLRCnYaYUyPcRwwTRPtWGwZDwPnU8FaW9a89/j79/Z+xuHSndGNPW56wkVpdJOHmxe4tMKSu40pw9KJ4IgPAa5iSYgz1KBwkKiTCzhpj1s/EgvtEoZ53YgrDK3lgZ6ZamIke8m0MjJjCeKcx8Fwgyyq5h1a65L6sixYct7skisLsK78b2zfviN+DgOjiS7GGHS6px04dwXnXIla5hxPk0WMEZnBhC1o3ueyhw4H9KPFn6ajQ42BGaeU96hZyHVMu37JMq9AWmS8XUp1SD2YhWF00XOeU8kikK82zjO/zWV+X7MxF73F6e5QBJYWsHQoGYq4IcSK3F7Y53Kz+3rFxYTep+Jc/Owadp2GatvSf0tedl2ekchMiaSyvWRxONZWEM3mlMrGp3Bfrlay30uWge57HI9HKNWWC5By4l2/fyDnWlbW8IwP/rNtpDGVUlCdYeMatKblgcAy4mO4R3QTZH8teYK0zvl8wena43RTeL2+8TU4DHyG/4fDaP2nhpJh06iy4H3kTUs54Tk+1PedeNu1scWZXIo4ljJS2vpN7GNS2S9aJtcVisPz5QozjNsblhdA+wj5+RBLv4qDntL4Xz/gfr6wjzt8AG5K213ITpbYAAAAAElFTkSuQmCC'); background-size: cover; display: block;"
+  ></span>
+  <picture>
+          <source
+              srcset="/static/335a0a0a05b5edf67f73836d22dc668f/a59e9/image-9.webp 192w,
+/static/335a0a0a05b5edf67f73836d22dc668f/0ca9f/image-9.webp 384w,
+/static/335a0a0a05b5edf67f73836d22dc668f/dc9b9/image-9.webp 768w,
+/static/335a0a0a05b5edf67f73836d22dc668f/e2c2f/image-9.webp 1152w,
+/static/335a0a0a05b5edf67f73836d22dc668f/f3efb/image-9.webp 1536w,
+/static/335a0a0a05b5edf67f73836d22dc668f/40abd/image-9.webp 2387w"
+              sizes="(max-width: 768px) 100vw, 768px"
+              type="image/webp"
+            />
+          <source
+            srcset="/static/335a0a0a05b5edf67f73836d22dc668f/3b721/image-9.png 192w,
+/static/335a0a0a05b5edf67f73836d22dc668f/66595/image-9.png 384w,
+/static/335a0a0a05b5edf67f73836d22dc668f/fe486/image-9.png 768w,
+/static/335a0a0a05b5edf67f73836d22dc668f/d2d74/image-9.png 1152w,
+/static/335a0a0a05b5edf67f73836d22dc668f/e8464/image-9.png 1536w,
+/static/335a0a0a05b5edf67f73836d22dc668f/d6468/image-9.png 2387w"
+            sizes="(max-width: 768px) 100vw, 768px"
+            type="image/png"
+          />
+          <img
+            class="gatsby-resp-image-image"
+            src="/static/335a0a0a05b5edf67f73836d22dc668f/fe486/image-9.png"
+            alt="Alt text"
+            title=""
+            loading="lazy"
+            decoding="async"
+            style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+          />
+        </picture>
+  </a>
+    </span></p>
+<p>테스트 해보면
+axios 모듈을 찾을 수 없다는 에러가 발생한다.</p>
+<p>axios 모듈을 사용하려면 node_modules 가 필요하고 node_modules 는 AWS lambda layer 에서 모듈화 해야 한다.</p>
+<p>아래 링크를 참고하여 layer 를 추가하였다.</p>
+<p><a href="https://medium.com/@sunjang/aws-lambda-layer-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-node-js-8c299a1d0a6f" target="_blank" rel="nofollow">https://medium.com/@sunjang/aws-lambda-layer-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-node-js-8c299a1d0a6f</a> <br/></p>
+<p>layer 추가 후에 다시 테스트 해보면</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 768px; "
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/9989865a36379674b78ac509bc6bc7b3/7383e/image-12.png"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 32.8125%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAHCAYAAAAIy204AAAACXBIWXMAACToAAAk6AGCYwUcAAABA0lEQVR42o1SWYuEMBjz//80d0R8ceoFCl71Xg/UemT7FZ192BnYQvhqmyYhqOm6DsMw8Ph6oCxLzPOMcRwxTdO/MQzDua4r7bkW+AGSJKFDHMeBbds+Yt/3txBCnJBLcrgWhiF4wekQ5EIPSZiI97zxyUi+U4JSg2ucc8RxjCzLEEUR0jRF0zRo2xZ0V8s9fVdVhWVZXiLiwh/Bvu9VZ9SdIl5JhdiuKV54l/ri/wqapgnLssAYQ13Xss9YJSuKQqVOJfI8V8kpZdd1Kj2l7rpvZXB3KA245rougiCA53qIZJ+2bcP3fXi+B8dhYI4D4jD2RJImqgIyIkH6K655kpGc/AfD2BaGreTspwAAAABJRU5ErkJggg=='); background-size: cover; display: block;"
+  ></span>
+  <picture>
+          <source
+              srcset="/static/9989865a36379674b78ac509bc6bc7b3/a59e9/image-12.webp 192w,
+/static/9989865a36379674b78ac509bc6bc7b3/0ca9f/image-12.webp 384w,
+/static/9989865a36379674b78ac509bc6bc7b3/dc9b9/image-12.webp 768w,
+/static/9989865a36379674b78ac509bc6bc7b3/e2c2f/image-12.webp 1152w,
+/static/9989865a36379674b78ac509bc6bc7b3/33007/image-12.webp 1535w"
+              sizes="(max-width: 768px) 100vw, 768px"
+              type="image/webp"
+            />
+          <source
+            srcset="/static/9989865a36379674b78ac509bc6bc7b3/3b721/image-12.png 192w,
+/static/9989865a36379674b78ac509bc6bc7b3/66595/image-12.png 384w,
+/static/9989865a36379674b78ac509bc6bc7b3/fe486/image-12.png 768w,
+/static/9989865a36379674b78ac509bc6bc7b3/d2d74/image-12.png 1152w,
+/static/9989865a36379674b78ac509bc6bc7b3/7383e/image-12.png 1535w"
+            sizes="(max-width: 768px) 100vw, 768px"
+            type="image/png"
+          />
+          <img
+            class="gatsby-resp-image-image"
+            src="/static/9989865a36379674b78ac509bc6bc7b3/fe486/image-12.png"
+            alt="Alt text"
+            title=""
+            loading="lazy"
+            decoding="async"
+            style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+          />
+        </picture>
+  </a>
+    </span></p>
+<p>요청에 성공하였고</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 690px; "
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/635555e399121321bd07dd85baddee3d/97114/image-13.png"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 26.041666666666668%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAFCAYAAABFA8wzAAAACXBIWXMAACToAAAk6AGCYwUcAAAAkklEQVR42pWQQQ5CIQxEuf+pPIE7NwaD0bhi5Q9QCoWR8o26MfqbTGYW5HWKOVzv2O2PuF0crD3h7By890gpIWfGn9Oebg1xQYgRnDMy0YAQWmvovU8XkZ+qtU6gSLVGap1tVETpI9NUHovUmfmrxpsJHNkabRFHw2VZJkizQjbO+2StHEJ4STeu/7c22wIspdgHLaaHbIfwMCcAAAAASUVORK5CYII='); background-size: cover; display: block;"
+  ></span>
+  <picture>
+          <source
+              srcset="/static/635555e399121321bd07dd85baddee3d/a59e9/image-13.webp 192w,
+/static/635555e399121321bd07dd85baddee3d/0ca9f/image-13.webp 384w,
+/static/635555e399121321bd07dd85baddee3d/ffce4/image-13.webp 690w"
+              sizes="(max-width: 690px) 100vw, 690px"
+              type="image/webp"
+            />
+          <source
+            srcset="/static/635555e399121321bd07dd85baddee3d/3b721/image-13.png 192w,
+/static/635555e399121321bd07dd85baddee3d/66595/image-13.png 384w,
+/static/635555e399121321bd07dd85baddee3d/97114/image-13.png 690w"
+            sizes="(max-width: 690px) 100vw, 690px"
+            type="image/png"
+          />
+          <img
+            class="gatsby-resp-image-image"
+            src="/static/635555e399121321bd07dd85baddee3d/97114/image-13.png"
+            alt="Alt text"
+            title=""
+            loading="lazy"
+            decoding="async"
+            style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+          />
+        </picture>
+  </a>
+    </span></p>
+<p>슬랙에도 알림이 왔다.</p>
+<h4 id="error-log-알림-보내기" style="position:relative;"><a href="#error-log-%EC%95%8C%EB%A6%BC-%EB%B3%B4%EB%82%B4%EA%B8%B0" aria-label="error log 알림 보내기 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Error Log 알림 보내기</h4>
+<p>CloudWatch 로그 그룹을 트리거에 추가한다.</p>
 <p><span
       class="gatsby-resp-image-wrapper"
       style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 768px; "
@@ -868,45 +1104,192 @@ implementation <span class="token string">'ch.qos.logback.contrib:logback-jackso
         </picture>
   </a>
     </span></p>
+<p>그리고 CloudWatch 로그 그룹에 있는 로그 스트림의 마지막 event 에 있는 로그 메세지를
+가져와서 slack webhook API에 전송하는 코드를 작성한다.</p>
+<div class="gatsby-highlight" data-language="javascript"><pre class="language-javascript"><code class="language-javascript"><span class="token comment">// imports</span>
+<span class="token keyword">const</span> https <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'https'</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> <span class="token constant">AWS</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'aws-sdk'</span><span class="token punctuation">)</span>
+<span class="token comment">// get envarionment variables</span>
+<span class="token keyword">const</span> <span class="token constant">ENV</span> <span class="token operator">=</span> process<span class="token punctuation">.</span>env
+<span class="token keyword">const</span> webhookUrl <span class="token operator">=</span> <span class="token constant">ENV</span><span class="token punctuation">.</span>slack_webhook_url
+
+exports<span class="token punctuation">.</span><span class="token function-variable function">handler</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token parameter">event<span class="token punctuation">,</span> context</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> cloudwatchlogs <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AWS<span class="token punctuation">.</span>CloudWatchLogs</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token keyword">const</span> logGroupName <span class="token operator">=</span> <span class="token string">'hhplus-ecommerce'</span>
+  <span class="token keyword">const</span> logStreamPrefix <span class="token operator">=</span> <span class="token string">'error'</span>
+  <span class="token keyword">const</span> logStreamName <span class="token operator">=</span> <span class="token string">'error'</span> <span class="token comment">// 여기에 로그 스트림 이름을 입력하세요</span>
+
+  <span class="token keyword">try</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> logStreamsResponse <span class="token operator">=</span> <span class="token keyword">await</span> cloudwatchlogs
+      <span class="token punctuation">.</span><span class="token function">describeLogStreams</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        logGroupName<span class="token punctuation">,</span>
+        <span class="token literal-property property">logStreamNamePrefix</span><span class="token operator">:</span> logStreamPrefix<span class="token punctuation">,</span>
+        <span class="token literal-property property">descending</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">limit</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span><span class="token function">promise</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>
+      logStreamsResponse<span class="token punctuation">.</span>logStreams <span class="token operator">&amp;&amp;</span>
+      logStreamsResponse<span class="token punctuation">.</span>logStreams<span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">0</span>
+    <span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">const</span> latestLogStream <span class="token operator">=</span> logStreamsResponse<span class="token punctuation">.</span>logStreams<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+      <span class="token keyword">const</span> latestLogStreamName <span class="token operator">=</span> latestLogStream<span class="token punctuation">.</span>logStreamName
+
+      <span class="token keyword">const</span> data <span class="token operator">=</span> <span class="token keyword">await</span> cloudwatchlogs
+        <span class="token punctuation">.</span><span class="token function">getLogEvents</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+          logGroupName<span class="token punctuation">,</span>
+          <span class="token literal-property property">logStreamName</span><span class="token operator">:</span> latestLogStreamName<span class="token punctuation">,</span>
+          <span class="token literal-property property">startFromHead</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+          <span class="token literal-property property">limit</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token function">promise</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'event data ==> '</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span>
+
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>data <span class="token operator">&amp;&amp;</span> data<span class="token punctuation">.</span>events <span class="token operator">&amp;&amp;</span> data<span class="token punctuation">.</span>events<span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> latestLog <span class="token operator">=</span> data<span class="token punctuation">.</span>events<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>message
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'latestLog => '</span><span class="token punctuation">,</span> latestLog<span class="token punctuation">)</span>
+        <span class="token keyword">await</span> exports<span class="token punctuation">.</span><span class="token function">handleLogMessage</span><span class="token punctuation">(</span>latestLog<span class="token punctuation">)</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'No log events found.'</span><span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'No log events found.'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">'Error fetching log events:'</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// set handle event func</span>
+exports<span class="token punctuation">.</span><span class="token function-variable function">handleLogMessage</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token parameter">logMessage</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> slackMessage <span class="token operator">=</span> exports<span class="token punctuation">.</span><span class="token function">createSlackMessage</span><span class="token punctuation">(</span>logMessage<span class="token punctuation">)</span>
+  <span class="token keyword">await</span> exports<span class="token punctuation">.</span><span class="token function">sendToSlack</span><span class="token punctuation">(</span>slackMessage<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token comment">// create slack message</span>
+exports<span class="token punctuation">.</span><span class="token function-variable function">createSlackMessage</span> <span class="token operator">=</span> <span class="token parameter">message</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> time <span class="token operator">=</span> exports<span class="token punctuation">.</span><span class="token function">formatDate</span><span class="token punctuation">(</span>message<span class="token punctuation">.</span>StateChangeTime<span class="token punctuation">)</span>
+  <span class="token keyword">return</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">attachments</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">{</span>
+        <span class="token literal-property property">title</span><span class="token operator">:</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">:warning: *[error]*</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
+        <span class="token literal-property property">fields</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+          <span class="token punctuation">{</span>
+            <span class="token literal-property property">title</span><span class="token operator">:</span> <span class="token string">'발생시각'</span><span class="token punctuation">,</span>
+            <span class="token literal-property property">value</span><span class="token operator">:</span> time<span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token punctuation">{</span>
+            <span class="token literal-property property">title</span><span class="token operator">:</span> <span class="token string">'로그'</span><span class="token punctuation">,</span>
+            <span class="token literal-property property">value</span><span class="token operator">:</span> message<span class="token punctuation">,</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment">// request slack webhook api</span>
+exports<span class="token punctuation">.</span><span class="token function-variable function">sendToSlack</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token parameter">message</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">try</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> options <span class="token operator">=</span> <span class="token function">getSlackOptions</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">const</span> response <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">requestSlackWebhook</span><span class="token punctuation">(</span>options<span class="token punctuation">,</span> message<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">'Error sending message to Slack:'</span><span class="token punctuation">,</span> error<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">getSlackOptions</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> <span class="token punctuation">{</span> host<span class="token punctuation">,</span> pathname <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">URL</span><span class="token punctuation">(</span>webhookUrl<span class="token punctuation">)</span>
+  <span class="token keyword">return</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">hostname</span><span class="token operator">:</span> host<span class="token punctuation">,</span>
+    <span class="token literal-property property">path</span><span class="token operator">:</span> pathname<span class="token punctuation">,</span>
+    <span class="token literal-property property">method</span><span class="token operator">:</span> <span class="token string">'POST'</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">headers</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token string-property property">'Content-Type'</span><span class="token operator">:</span> <span class="token string">'application/json'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">function</span> <span class="token function">requestSlackWebhook</span><span class="token punctuation">(</span><span class="token parameter">options<span class="token punctuation">,</span> payload</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">resolve<span class="token punctuation">,</span> reject</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> request <span class="token operator">=</span> https<span class="token punctuation">.</span><span class="token function">request</span><span class="token punctuation">(</span>options<span class="token punctuation">,</span> <span class="token parameter">response</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+      response<span class="token punctuation">.</span><span class="token function">setEncoding</span><span class="token punctuation">(</span><span class="token string">'utf8'</span><span class="token punctuation">)</span>
+      <span class="token keyword">let</span> responseBody <span class="token operator">=</span> <span class="token string">''</span>
+      response<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">,</span> <span class="token parameter">chunk</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+        responseBody <span class="token operator">+=</span> chunk
+      <span class="token punctuation">}</span><span class="token punctuation">)</span>
+      response<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'end'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+        <span class="token function">resolve</span><span class="token punctuation">(</span>responseBody<span class="token punctuation">)</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    request<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'error'</span><span class="token punctuation">,</span> <span class="token parameter">e</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+      console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span>
+      <span class="token function">reject</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    request<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>payload<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    request<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// util - current timestamp</span>
+exports<span class="token punctuation">.</span><span class="token function-variable function">formatDate</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">function</span> <span class="token function">zerofill</span><span class="token punctuation">(</span><span class="token parameter">n</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> n <span class="token operator">&lt;</span> <span class="token number">10</span> <span class="token operator">?</span> <span class="token string">'0'</span> <span class="token operator">+</span> n <span class="token operator">:</span> n
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">const</span> kstDate <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">9</span> <span class="token operator">*</span> <span class="token number">60</span> <span class="token operator">*</span> <span class="token number">60</span> <span class="token operator">*</span> <span class="token number">1000</span><span class="token punctuation">)</span>
+
+  <span class="token keyword">return</span> <span class="token punctuation">(</span>
+    kstDate<span class="token punctuation">.</span><span class="token function">getFullYear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    <span class="token string">'-'</span> <span class="token operator">+</span>
+    <span class="token function">zerofill</span><span class="token punctuation">(</span>kstDate<span class="token punctuation">.</span><span class="token function">getMonth</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    <span class="token string">'-'</span> <span class="token operator">+</span>
+    <span class="token function">zerofill</span><span class="token punctuation">(</span>kstDate<span class="token punctuation">.</span><span class="token function">getDate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    <span class="token string">'-'</span> <span class="token operator">+</span>
+    <span class="token function">zerofill</span><span class="token punctuation">(</span>kstDate<span class="token punctuation">.</span><span class="token function">getHours</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    <span class="token string">':'</span> <span class="token operator">+</span>
+    <span class="token function">zerofill</span><span class="token punctuation">(</span>kstDate<span class="token punctuation">.</span><span class="token function">getMinutes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span>
+    <span class="token string">':'</span> <span class="token operator">+</span>
+    <span class="token function">zerofill</span><span class="token punctuation">(</span>kstDate<span class="token punctuation">.</span><span class="token function">getSeconds</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span>
+<span class="token punctuation">}</span></code></pre></div>
+<p>코드를 작성하고 Deploy 한 뒤에 테스트를 해보면</p>
 <p><span
       class="gatsby-resp-image-wrapper"
       style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 768px; "
     >
       <a
     class="gatsby-resp-image-link"
-    href="/static/6b08e6d7ae096b312246f15a5626c192/756c7/image-6.png"
+    href="/static/978035292ff044fd29dedff76c1aab3c/78d47/image-14.png"
     style="display: block"
     target="_blank"
     rel="noopener"
   >
     <span
     class="gatsby-resp-image-background-image"
-    style="padding-bottom: 43.22916666666667%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAJCAYAAAAywQxIAAAACXBIWXMAAA7DAAAOwwHHb6hkAAABDUlEQVR42oWSC0/EIBCE+f//0kSjfXG8aUthnOU0pnr2mnyBwmZ3ZxbljUMIEa021Fo7rTVcfWvOMC78iTuOAyrxMqaEzHXdtk7frys27h8hd+uD88xzNS0aM5nmGW/DhHcyaw1tDLtw/2K/1pu1p1XFGHtFHwLGcYRmsloP7PuO7QkpZTgW9tZB30zPoaIP1F7gvIeLiaxI24FITg6JX78QD5t43r1vKOKhd77r90zo6eWwLPQ004+zZ9JxKeUSif2RHAPyQi9eB2hr+uRlWJFdB0oRiQc7uUJilExUcCli/7AILxMs/3dWvCu9S6vPoOSeUKYV2KV4KEkSu9Uu8rL0NylSvt/nFVJUYj8BNmy+5D22spQAAAAASUVORK5CYII='); background-size: cover; display: block;"
+    style="padding-bottom: 46.875%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAJCAYAAAAywQxIAAAACXBIWXMAACToAAAk6AGCYwUcAAAA2klEQVR42qWRS27DMAwFc6T0OnXv3F3RnbtLGkuwbP0sk/IrzSS7AHEdAQ8UuBgMyUPz1oBmRuUMZ1r4kPDCK4f3YwOmijIFfH99whiLGALmmXYCxZDFcJomGNuLKSPnDJa6C3gdmQRAYtfBWoO+7+F9wDiMGuecGM//BTLOpxO6rsPv5YJhFJjkDlqWZSvwA1QItVZY2V+IQXcYY9TeRtBjoHOD7s+LmR89kvxTSrrftb9m7RHRk5FvwJ+2lbHPaKXqtVNEENucshrfswnIldWmlKKAWpddV/4DLd2xTzE1NesAAAAASUVORK5CYII='); background-size: cover; display: block;"
   ></span>
   <picture>
           <source
-              srcset="/static/6b08e6d7ae096b312246f15a5626c192/a59e9/image-6.webp 192w,
-/static/6b08e6d7ae096b312246f15a5626c192/0ca9f/image-6.webp 384w,
-/static/6b08e6d7ae096b312246f15a5626c192/dc9b9/image-6.webp 768w,
-/static/6b08e6d7ae096b312246f15a5626c192/e2c2f/image-6.webp 1152w,
-/static/6b08e6d7ae096b312246f15a5626c192/f3efb/image-6.webp 1536w,
-/static/6b08e6d7ae096b312246f15a5626c192/86ec0/image-6.webp 3491w"
+              srcset="/static/978035292ff044fd29dedff76c1aab3c/a59e9/image-14.webp 192w,
+/static/978035292ff044fd29dedff76c1aab3c/0ca9f/image-14.webp 384w,
+/static/978035292ff044fd29dedff76c1aab3c/dc9b9/image-14.webp 768w,
+/static/978035292ff044fd29dedff76c1aab3c/cf465/image-14.webp 800w"
               sizes="(max-width: 768px) 100vw, 768px"
               type="image/webp"
             />
           <source
-            srcset="/static/6b08e6d7ae096b312246f15a5626c192/3b721/image-6.png 192w,
-/static/6b08e6d7ae096b312246f15a5626c192/66595/image-6.png 384w,
-/static/6b08e6d7ae096b312246f15a5626c192/fe486/image-6.png 768w,
-/static/6b08e6d7ae096b312246f15a5626c192/d2d74/image-6.png 1152w,
-/static/6b08e6d7ae096b312246f15a5626c192/e8464/image-6.png 1536w,
-/static/6b08e6d7ae096b312246f15a5626c192/756c7/image-6.png 3491w"
+            srcset="/static/978035292ff044fd29dedff76c1aab3c/3b721/image-14.png 192w,
+/static/978035292ff044fd29dedff76c1aab3c/66595/image-14.png 384w,
+/static/978035292ff044fd29dedff76c1aab3c/fe486/image-14.png 768w,
+/static/978035292ff044fd29dedff76c1aab3c/78d47/image-14.png 800w"
             sizes="(max-width: 768px) 100vw, 768px"
             type="image/png"
           />
           <img
             class="gatsby-resp-image-image"
-            src="/static/6b08e6d7ae096b312246f15a5626c192/fe486/image-6.png"
+            src="/static/978035292ff044fd29dedff76c1aab3c/fe486/image-14.png"
             alt="Alt text"
             title=""
             loading="lazy"
@@ -916,62 +1299,15 @@ implementation <span class="token string">'ch.qos.logback.contrib:logback-jackso
         </picture>
   </a>
     </span></p>
-<p><span
-      class="gatsby-resp-image-wrapper"
-      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 768px; "
-    >
-      <a
-    class="gatsby-resp-image-link"
-    href="/static/2fd0ae6045439f7555249a9944e49cb0/970df/image-5.png"
-    style="display: block"
-    target="_blank"
-    rel="noopener"
-  >
-    <span
-    class="gatsby-resp-image-background-image"
-    style="padding-bottom: 67.1875%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAANCAYAAACpUE5eAAAACXBIWXMAAA7DAAAOwwHHb6hkAAABi0lEQVR42qVTW27DIBDs/S/Um/Snv/EjtY0BgwEDnu6uk1SRoqZRLY0wxpqdnR3eFuexLA5aG2jr4PyKECJeedYQYKyFXRa8MSFvlJqhjKPDCL+ussaUEOMGFzNMyNj/SuhJ1QEP5w61Scgi9n0Xov0VhdoYDJOCWgLWmBDSButZaRDinDO2bZM150LfNiqWpINSinRzI3SkalQKbX9GO0xoBoVu0jgNM87jhJmKWVJt6GcGvzNxrZXIqnRwR8gKmZQ3gVoMJJ+HUkpGqeVQJ8qOlcEkTz1kkqO9Im38a8raWBkE+8L+/Ph1eMeIVMinQ2H9TSF7MmiHpu0wDKNk0hISkbDSa7sxVyHMz1p2l6gYUskxkenFKGQSF47NA9S6y2D2R4RMNlJsjF3kcKW4OPHWy5Ak7Jes8veFBLBVXDjnROfrPaGlTd9/oTl1aJseXT/g1I/oJ/ppTbeYMLYtS1Ee4GMP2TN3QIbDmDU0ZVDRoBSpdt5JtK7gq2n5yuoJ9vMdtvugixCI0OIbtPPzgS4SDusAAAAASUVORK5CYII='); background-size: cover; display: block;"
-  ></span>
-  <picture>
-          <source
-              srcset="/static/2fd0ae6045439f7555249a9944e49cb0/a59e9/image-5.webp 192w,
-/static/2fd0ae6045439f7555249a9944e49cb0/0ca9f/image-5.webp 384w,
-/static/2fd0ae6045439f7555249a9944e49cb0/dc9b9/image-5.webp 768w,
-/static/2fd0ae6045439f7555249a9944e49cb0/e2c2f/image-5.webp 1152w,
-/static/2fd0ae6045439f7555249a9944e49cb0/f3efb/image-5.webp 1536w,
-/static/2fd0ae6045439f7555249a9944e49cb0/b9a53/image-5.webp 2421w"
-              sizes="(max-width: 768px) 100vw, 768px"
-              type="image/webp"
-            />
-          <source
-            srcset="/static/2fd0ae6045439f7555249a9944e49cb0/3b721/image-5.png 192w,
-/static/2fd0ae6045439f7555249a9944e49cb0/66595/image-5.png 384w,
-/static/2fd0ae6045439f7555249a9944e49cb0/fe486/image-5.png 768w,
-/static/2fd0ae6045439f7555249a9944e49cb0/d2d74/image-5.png 1152w,
-/static/2fd0ae6045439f7555249a9944e49cb0/e8464/image-5.png 1536w,
-/static/2fd0ae6045439f7555249a9944e49cb0/970df/image-5.png 2421w"
-            sizes="(max-width: 768px) 100vw, 768px"
-            type="image/png"
-          />
-          <img
-            class="gatsby-resp-image-image"
-            src="/static/2fd0ae6045439f7555249a9944e49cb0/fe486/image-5.png"
-            alt="Alt text"
-            title=""
-            loading="lazy"
-            decoding="async"
-            style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
-          />
-        </picture>
-  </a>
-    </span></p>
+<p>슬랙에 알림이 온다.</p>
 <h2 id="참고" style="position:relative;"><a href="#%EC%B0%B8%EA%B3%A0" aria-label="참고 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>참고</h2>
 <p><a href="https://www.whatap.io/ko/blog/5/" target="_blank" rel="nofollow">https://www.whatap.io/ko/blog/5/</a> <br/>
 <a href="https://newrelic.com/kr/blog/how-to-relic/what-is-log-management" target="_blank" rel="nofollow">https://newrelic.com/kr/blog/how-to-relic/what-is-log-management</a> <br/>
 <a href="https://tecoble.techcourse.co.kr/post/2021-08-07-logback-tutorial/" target="_blank" rel="nofollow">https://tecoble.techcourse.co.kr/post/2021-08-07-logback-tutorial/</a><br/>
 <a href="https://055055.tistory.com/96" target="_blank" rel="nofollow">https://055055.tistory.com/96</a> <br/>
 <a href="https://0soo.tistory.com/246" target="_blank" rel="nofollow">https://0soo.tistory.com/246</a> <br/>
-<a href="https://newrelic.com/kr/resources/white-papers/log-management-best-practices" target="_blank" rel="nofollow">https://newrelic.com/kr/resources/white-papers/log-management-best-practices</a> <br/>
-<a href="https://www.youtube.com/watch?v=fkwb8coxBJM" target="_blank" rel="nofollow">https://www.youtube.com/watch?v=fkwb8coxBJM</a></p></div><style data-emotion="css hx9xpc">@media (max-width: 768px){.css-hx9xpc{padding:0 20px;}}</style><div class="css-hx9xpc e12j4d8y0"></div><style data-emotion="css fmunkh">.css-fmunkh{position:absolute;top:0;left:768px;height:100%;padding-left:4rem;}@media (max-width: 1400px){.css-fmunkh{display:none;}}</style><aside class="css-fmunkh ek4ynda1"><style data-emotion="css 1s5ilwz">.css-1s5ilwz{position:-webkit-sticky;position:sticky;top:6rem;width:240px;overflow:hidden;font-size:0.8rem;}.css-1s5ilwz p{margin:0;}.css-1s5ilwz a{display:block;padding:0.5rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;border-radius:4px;-webkit-transition:all 0.1s ease-out;transition:all 0.1s ease-out;}.css-1s5ilwz a:hover{background-color:#badcff;}.css-1s5ilwz ul:first-child{border-left:none;}.css-1s5ilwz ul{margin-left:0.5rem;padding:0 0.5rem;list-style:none;border-left:2px solid #e2e5e6;}</style><nav class="css-1s5ilwz ek4ynda0"><ul>
+<a href="https://newrelic.com/kr/resources/white-papers/log-management-best-practices" target="_blank" rel="nofollow">https://newrelic.com/kr/resources/white-papers/log-management-best-practices</a> <br/></p>
+<p><a href="https://www.youtube.com/watch?v=fkwb8coxBJM" target="_blank" rel="nofollow">https://www.youtube.com/watch?v=fkwb8coxBJM</a></p></div><style data-emotion="css hx9xpc">@media (max-width: 768px){.css-hx9xpc{padding:0 20px;}}</style><div class="css-hx9xpc e12j4d8y0"></div><style data-emotion="css fmunkh">.css-fmunkh{position:absolute;top:0;left:768px;height:100%;padding-left:4rem;}@media (max-width: 1400px){.css-fmunkh{display:none;}}</style><aside class="css-fmunkh ek4ynda1"><style data-emotion="css 1s5ilwz">.css-1s5ilwz{position:-webkit-sticky;position:sticky;top:6rem;width:240px;overflow:hidden;font-size:0.8rem;}.css-1s5ilwz p{margin:0;}.css-1s5ilwz a{display:block;padding:0.5rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;border-radius:4px;-webkit-transition:all 0.1s ease-out;transition:all 0.1s ease-out;}.css-1s5ilwz a:hover{background-color:#badcff;}.css-1s5ilwz ul:first-child{border-left:none;}.css-1s5ilwz ul{margin-left:0.5rem;padding:0 0.5rem;list-style:none;border-left:2px solid #e2e5e6;}</style><nav class="css-1s5ilwz ek4ynda0"><ul>
 <li>
 <p><a href="#%ED%86%B5%ED%95%A9-%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EA%B5%AC%EC%B6%95">통합 모니터링 시스템 구축</a></p>
 <ul>
@@ -1028,6 +1364,16 @@ implementation <span class="token string">'ch.qos.logback.contrib:logback-jackso
 </li>
 <li>
 <p><a href="#slack-webhook-api%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-alert-%EC%84%9C%EB%B9%84%EC%8A%A4">Slack Webhook API를 활용한 Alert 서비스</a></p>
+<ul>
+<li>
+<p><a href="#error-log-lambda-%EC%83%9D%EC%84%B1">Error Log Lambda 생성</a></p>
+<ul>
+<li><a href="#%EB%9E%8C%EB%8B%A4-%ED%95%A8%EC%88%98-%EC%83%9D%EC%84%B1">람다 함수 생성</a></li>
+<li><a href="#%ED%99%98%EA%B2%BD-%EB%B3%80%EC%88%98-%EC%83%9D%EC%84%B1">환경 변수 생성</a></li>
+<li><a href="#error-log-%EC%95%8C%EB%A6%BC-%EB%B3%B4%EB%82%B4%EA%B8%B0">Error Log 알림 보내기</a></li>
+</ul>
+</li>
+</ul>
 </li>
 <li>
 <p><a href="#%EC%B0%B8%EA%B3%A0">참고</a></p>
