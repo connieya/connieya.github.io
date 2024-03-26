@@ -1,8 +1,8 @@
 ---
 date: '2024-03-25'
-title: '스파게티 코드 리팩토링 하기 (feat. 전략 패턴 ,객체지향)'
+title: '전략 패턴과 객체지향적인 코드로 가독성과 유지보수성 높이기'
 categories: ['Project', 'refactoring']
-summary: '상태 패턴과 객체지향 코드로 스파게티 코드 리팩토링 하기'
+summary: '전략 패턴과 객체지향적인 코드를 적용하여 리팩토링을 진행하였습니다.'
 thumbnail: './image.png'
 ---
 
@@ -483,7 +483,7 @@ public class ChatService {
 }
 ```
 
-ChatService는 콘텍스트로 챗봇 이벤트에 따른 응답을 처리하는 책임을 갖고 있다.
+ChatService는 콘텍스트로 챗봇 이벤트에 따른 응답을 반환하는 책임을 갖고 있다.
 
 전략 패턴에서 콘텍스트는 사용할 전략을 직접 선택하지 않는다.
 
@@ -506,7 +506,7 @@ public class EventActionProvider {
     public ChatEventStrategy getEventStrategy(String event) {
         ChatEventStrategy strategy = eventActions.get(event);
         if (strategy == null) {
-            strategy = eventActions.get("DEFAULT"); // Get DEFAULT strategy if event not found
+            strategy = eventActions.get("DEFAULT");
         }
         return strategy;
     }
@@ -534,7 +534,7 @@ OCP 를 따르는 구조를 갖게 된다.
 위에서 작성한 코드가 완벽한 코드라고 생각하지 않는다.
 아직은 역량이 부족해서 위의 방법 보다 조금 더 깔끔하게 리팩토링 할 수 있는 방법은 잘 모르겠다.
 
-그래도 리팩토링 한 결과를 팀원에게 공유하고, 고민한 내용과 코드에 대한 설명을 전달 했을 때 뿌듯함을 느꼈다.
+그래도 리팩토링 한 결과를 팀원에게 공유하고, 고민한 내용과 코드에 대한 설명을 했을 때 뿌듯함을 느꼈다.
 
 ### No Silver Bullet
 
