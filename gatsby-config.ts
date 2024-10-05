@@ -3,17 +3,18 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
+const SITE_URL = 'https://connieya.github.io'
+
 const config: GatsbyConfig = {
   siteMetadata: {
-    title: `my blog`,
-    siteUrl: `https://www.yourdomain.tld`,
+    title: `박건희`,
+    description: '블로그',
+    siteUrl: `https://connieya.github.io`,
   },
-  // More easily incorporate content into your pages through automatic TypeScript type generation and better GraphQL IntelliSense.
-  // If you use VSCode you can also use the GraphQL plugin
-  // Learn more at: https://gatsby.dev/graphql-typegen
   graphqlTypegen: true,
   jsxRuntime: 'automatic',
   plugins: [
+    'gatsby-plugin-sitemap',
     {
       resolve: 'gatsby-source-contentful',
       options: {
@@ -33,6 +34,19 @@ const config: GatsbyConfig = {
         path: './src/images/',
       },
       __key: 'images',
+    },
+    {
+      resolve: 'gatsby-plugin-canonical-urls',
+      options: {
+        siteUrl: SITE_URL,
+        stripQueryString: true,
+      },
+    },
+    {
+      resolve: 'gatsby-plugin-robots-txt',
+      options: {
+        policy: [{ userAgent: '*', allow: '/' }],
+      },
     },
   ],
 }
