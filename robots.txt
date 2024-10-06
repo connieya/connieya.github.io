@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://connieya.github.io/sitemap-index.xml
+Host: https://connieya.github.io
