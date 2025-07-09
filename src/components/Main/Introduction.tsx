@@ -38,7 +38,8 @@ const Introduction: FunctionComponent<IntroductionProps> = function ({
   return (
     <Container>
       <ContentContainer>
-        <ProfileImage profileImage={profileImage} />
+        {/* <ProfileImage profileImage={profileImage} /> */}
+        박건희
         <InfoContainer>
           <StyledReactIconLink
             href="https://github.com/connieya"

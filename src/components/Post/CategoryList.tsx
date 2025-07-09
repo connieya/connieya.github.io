@@ -35,7 +35,7 @@ const Container = styled.div`
   flex-wrap: wrap;
   width: 768px;
   margin: 5px auto 0;
-  background-color: #f4f4f4;
+  // background-color: #f4f4f4;
 
   @media (max-width: 768px) {
     width: 100%;

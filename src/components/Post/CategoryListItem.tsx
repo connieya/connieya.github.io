@@ -22,7 +22,7 @@ const CategoryListItem = ({ active = false, category, innerText }: Props) => {
         aria-label={`${innerText || category} 카테고리`}
         to={`/?category=${encodeURI(category)}`}
       >
-        {category}
+        #{category}
       </StyledLink>
     </Container>
   )
@@ -45,14 +45,14 @@ const StyledLink = styled(({ active, ...props }: GatsbyLinkProps) => (
 ))<{ active: boolean }>`
   z-index: 9;
   display: inline-block;
-  padding: 0.25rem 0.75rem;
+  padding: 0.25rem 0.65rem;
   color: ${COLORS.BLACK}
-  font-size: 0.9rem;
-  font-weight : ${({ active }) => (active ? '900' : '600')};
+  font-size: 0.85rem;
+  font-weight : ${({ active }) => (active ? '800' : '400')};
   white-space: nowrap;
   background-color: ${({ active }) => (active ? COLORS : COLORS)};
   border: ${({ active }) =>
-    active ? '2px solid #909da1' : '1px solid #b5a5a5'};
+    active ? '1px solid #909da1' : '1px solid #b5a5a5'};
   border-radius: 1rem;
   transform: scale(${({ active }) => (active ? 1.15 : 1)});
   cursor: pointer;
@@ -68,6 +68,6 @@ const StyledLink = styled(({ active, ...props }: GatsbyLinkProps) => (
   }
 
   @media (max-width: 768px) {
-    font-size: 0.75rem;
+    font-size: 0.55rem;
   }
 `

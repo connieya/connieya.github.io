@@ -9,7 +9,7 @@
  */
 module.exports = {
   siteMetadata: {
-    title: `connieya.io`,
+    title: `박건희`,
     description: `gatsby 로 나만의 블로그 만들기`,
     author: `Park Geon Hee`,
     siteUrl: `https://connieya.github.io/`,

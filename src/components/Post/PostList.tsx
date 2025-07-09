@@ -27,7 +27,7 @@ const Container = styled.div`
   display: grid;
   width: 780px;
   margin: 0 auto;
-  padding: 50px 0 100px;
+  padding: 40px 0 100px;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
