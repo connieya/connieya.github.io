@@ -1,10 +1,8 @@
-import React, { useMemo } from 'react'
-import Introduction from 'components/Main/Introduction'
-import CategoryList, { CategoryListProps } from 'components/Post/CategoryList'
+import React from 'react'
 import PostList, { PostType } from 'components/Post/PostList'
 import { graphql } from 'gatsby'
 import { IGatsbyImageData } from 'gatsby-plugin-image'
-import queryString, { ParsedQuery } from 'query-string'
+import styled from '@emotion/styled' // PostList를 감쌀 컨테이너를 위해 추가
 import Template from 'components/Common/Template'
 import { PostItem } from 'types/Post'
 type Props = {
@@ -42,36 +40,7 @@ const Home = ({
     },
   },
 }: Props) => {
-  const parsed: ParsedQuery<string> = queryString.parse(search)
-  const selectedCategory: string =
-    typeof parsed.category !== 'string' || !parsed.category
-      ? 'All'
-      : parsed.category
-
-  const categoryList = useMemo(
-    () =>
-      posts.reduce(
-        (
-          list: CategoryListProps['categoryList'],
-          {
-            node: {
-              frontmatter: { categories },
-            },
-          }: PostType,
-        ) => {
-          categories?.forEach(category => {
-            if (list[category] === undefined) list[category] = 1
-            else list[category]++
-          })
-
-          list['All']++
-
-          return list
-        },
-        { All: 0 },
-      ),
-    [],
-  )
+  const selectedCategory: string = 'All'
 
   return (
     <Template
@@ -81,11 +50,11 @@ const Home = ({
       image={publicURL}
     >
       {/* <Introduction /> */}
-      <CategoryList
-        selectedCategory={selectedCategory}
-        categoryList={categoryList}
-      />
-      <PostList selectedCategory={selectedCategory} posts={posts} />
+      <PostListContainer>
+        {' '}
+        {/* PostList를 감싸서 너비 및 마진 조정 */}
+        <PostList selectedCategory={selectedCategory} posts={posts} />
+      </PostListContainer>
     </Template>
   )
 }
@@ -127,3 +96,4 @@ export const getPostList = graphql`
     }
   }
 `
+const PostListContainer = styled.div``
