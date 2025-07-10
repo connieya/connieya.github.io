@@ -40,8 +40,6 @@ const Home = ({
     },
   },
 }: Props) => {
-  const selectedCategory: string = 'All'
-
   return (
     <Template
       title={title}
@@ -53,7 +51,7 @@ const Home = ({
       <PostListContainer>
         {' '}
         {/* PostList를 감싸서 너비 및 마진 조정 */}
-        <PostList selectedCategory={selectedCategory} posts={posts} />
+        <PostList posts={posts} />
       </PostListContainer>
     </Template>
   )

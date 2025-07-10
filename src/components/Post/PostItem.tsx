@@ -3,11 +3,10 @@ import { navigate } from 'gatsby'
 import styled from '@emotion/styled'
 import { Link } from 'gatsby'
 import { PostFrontMatterType } from 'components/types/PostItem.types'
-import CategoryListItem from './CategoryListItem'
 
 type Props = PostFrontMatterType & { link: string }
 
-const PostItem = ({ categories, date, summary, title, link }: Props) => {
+const PostItem = ({ date, summary, title, link }: Props) => {
   const handleClick = () => {
     navigate(link)
   }
@@ -15,11 +14,6 @@ const PostItem = ({ categories, date, summary, title, link }: Props) => {
     <Container to={link}>
       {/* 텍스트 정보 컨테이너가 이제 전체 공간을 사용 */}
       <TextInfoContainer>
-        <CategoriesContainer>
-          {categories?.map(category => (
-            <CategoryListItem key={category} category={category} />
-          ))}
-        </CategoriesContainer>
         <Title onClick={handleClick}>{title}</Title>
         <Description>{summary}</Description>
         <CreatedAtAndTimeToReadContainer>
@@ -34,13 +28,9 @@ export default PostItem
 
 const Container = styled(Link)`
   display: block; /* Flexbox 대신 블록 요소로 변경 */
-  padding: 2rem 0;
+  padding: 1.5rem 0;
 
   transition: all 0.1s ease-out;
-
-  &:first-of-type {
-    border-top: 1px solid #757575;
-  }
 `
 
 const TextInfoContainer = styled.div`

@@ -19,7 +19,6 @@ export type PostType = {
 }
 
 type PostListProps = {
-  selectedCategory: string
   posts: PostType[]
 }
 
@@ -38,29 +37,11 @@ const Container = styled.div`
 
 const PostListContainer = styled.div``
 
-const PostList: FunctionComponent<PostListProps> = function ({
-  selectedCategory,
-  posts,
-}) {
-  const postListData = useMemo(
-    () =>
-      posts.filter(
-        ({
-          node: {
-            frontmatter: { categories },
-          },
-        }: PostListItemType) =>
-          selectedCategory !== 'All'
-            ? categories.includes(selectedCategory)
-            : true,
-      ),
-    [selectedCategory],
-  )
-
+const PostList: FunctionComponent<PostListProps> = function ({ posts }) {
   return (
     <Container>
       <PostListContainer>
-        {postListData.map(
+        {posts.map(
           ({
             node: {
               id,
