@@ -20,6 +20,7 @@ module.exports = {
     `gatsby-transformer-sharp`,
     `gatsby-plugin-react-helmet`,
     'gatsby-plugin-sitemap',
+    'gatsby-plugin-sharp',
 
     {
       resolve: 'gatsby-plugin-typescript',
@@ -38,6 +39,13 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
+        name: `content-images`, // 'images' 라는 이름으로 노드를 생성
+        path: `${__dirname}/images`, // 실제 이미지가 있는 경로는 static 폴더
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
         name: `images`,
         path: `${__dirname}/static`,
       },
@@ -47,12 +55,12 @@ module.exports = {
       options: {
         plugins: [
           'gatsby-remark-autolink-headers',
-          {
-            resolve: 'gatsby-remark-smartypants',
-            options: {
-              dashes: 'oldschool',
-            },
-          },
+          // {
+          //   resolve: 'gatsby-remark-smartypants',
+          //   options: {
+          //     dashes: 'oldschool',
+          //   },
+          // },
           {
             resolve: 'gatsby-remark-prismjs',
             options: {
@@ -78,16 +86,16 @@ module.exports = {
               rel: 'nofollow',
             },
           },
-          {
-            resolve: `gatsby-plugin-sharp`,
-            options: {
-              defaults: {
-                formats: ['auto', 'webp'],
-                quality: 100,
-                placeholder: 'blurred',
-              },
-            },
-          },
+          // {
+          //   resolve: `gatsby-plugin-sharp`,
+          //   options: {
+          //     defaults: {
+          //       formats: ['auto', 'webp'],
+          //       quality: 100,
+          //       placeholder: 'blurred',
+          //     },
+          //   },
+          // },
           {
             resolve: 'gatsby-plugin-robots-txt',
             options: {

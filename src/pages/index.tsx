@@ -37,7 +37,7 @@ const Home = ({
     },
     allMarkdownRemark: { edges: posts },
     file: {
-      childImageSharp: { gatsbyImageData },
+      childImageSharp: { gatsbyImageData: any },
       publicURL,
     },
   },
@@ -115,12 +115,6 @@ export const getPostList = graphql`
             summary
             date(formatString: "YYYY.MM.DD.")
             categories
-            thumbnail {
-              childImageSharp {
-                gatsbyImageData
-              }
-              publicURL
-            }
           }
         }
       }

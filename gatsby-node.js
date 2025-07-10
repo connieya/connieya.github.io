@@ -98,3 +98,30 @@ exports.onCreateBabelConfig = ({ actions }) => {
     },
   })
 }
+
+exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes } = actions
+  const typeDefs = `
+    
+    type MarkdownRemarkFrontmatter @dontInfer {
+      title: String! 
+      date: Date! @dateformat # 날짜도 항상 있어야 하므로 !
+      categories: [String!]! # 카테고리 배열도 항상 있어야 하므로 !
+      summary: String # 요약은 없을 수도 있으므로 ! 없음
+      thumbnail: File @fileByRelativePath
+    }
+
+     type Fields { # <-- 이 부분을 새로 추가합니다.
+      slug: String! # slug 필드가 String 타입임을 명시
+    }
+    # MarkdownRemark 노드 타입의 스키마를 명시적으로 정의합니다.
+    # @dontInfer를 사용하여 자동 추론을 막고, frontmatter 필드에 위에서 정의한 타입을 연결합니다.
+    type MarkdownRemark implements Node @dontInfer {
+      frontmatter: MarkdownRemarkFrontmatter
+      html: String
+      excerpt: String
+      fields: Fields # <-- 여기에 fields 필드를 추가합니다.
+    }
+  `
+  createTypes(typeDefs)
+}
