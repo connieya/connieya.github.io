@@ -80,7 +80,7 @@ const Home = ({
       url={siteUrl}
       image={publicURL}
     >
-      {/* <Introduction profileImage={gatsbyImageData} /> */}
+      {/* <Introduction /> */}
       <CategoryList
         selectedCategory={selectedCategory}
         categoryList={categoryList}

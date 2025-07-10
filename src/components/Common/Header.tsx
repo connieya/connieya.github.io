@@ -1,30 +1,14 @@
 import styled from '@emotion/styled'
 import React from 'react'
 import { Link } from 'gatsby'
-import {
-  AiFillGithub,
-  //   AiOutlineInstagram,
-  AiFillLinkedin,
-} from 'react-icons/ai'
+
 const Header = () => {
   return (
     <Container>
-      <TextWrapper to="/">박건희</TextWrapper>
-      <Menu>
-        <a href="https://github.com/connieya" target="_blank" rel="noreferrer">
-          <AiFillGithub />
-        </a>
-        {/* <a href="#" target="_blank">
-          <AiOutlineInstagram />
-        </a> */}
-        <a
-          href="https://www.linkedin.com/in/%EA%B1%B4%ED%9D%AC-%EB%B0%95-6ab959238/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <AiFillLinkedin />
-        </a>
-      </Menu>
+      <ContentContainer>
+        {/* <ProfileImage profileImage={profileImage} /> */}
+        <InfoContainer to="/">박건희</InfoContainer>
+      </ContentContainer>
     </Container>
   )
 }
@@ -33,31 +17,33 @@ export default Header
 
 const Container = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 80px;
-  );
+  height: 10rem;
 `
 
-const TextWrapper = styled(Link)`
-  font-size: 20px;
-  font-weight: 700;
-  text-decoration: none;
-  color: inherit;
+const ContentContainer = styled.div`
+  width: 100%;
+  max-width: 768px;
+  margin: 0 auto;
 `
 
-const Menu = styled.div`
-  display: flex;
-  gap: 15px;
-  font-size: 25px;
-
-  & > a {
-    display: flex;
-    color: initial;
-  }
-
-  @media (max-width: 768px) {
-    font-size: 20px;
-  }
+const InfoContainer = styled(Link)`
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    Segoe UI,
+    Roboto,
+    Helvetica Neue,
+    Arial,
+    Noto Sans,
+    sans-serif,
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    'Noto Color Emoji';
 `

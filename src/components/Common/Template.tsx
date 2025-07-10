@@ -27,7 +27,7 @@ const Template: FunctionComponent<TemplateProps> = function ({
 }) {
   return (
     <Container>
-      {/* <Header /> */}
+      <Header />
       <Helmet>
         <title>{title}</title>
 
