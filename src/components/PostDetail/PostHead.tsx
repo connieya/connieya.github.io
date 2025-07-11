@@ -6,14 +6,21 @@ import CategoryListItem from 'components/Post/CategoryListItem'
 
 type PostHeadProps = PostHeadInfoProps & {}
 
-const PostHead: FunctionComponent<PostHeadProps> = function ({ title, date }) {
+const PostHead: FunctionComponent<PostHeadProps> = function ({
+  title,
+  date,
+  timeToRead,
+}) {
   return (
     <Container>
       <Title>{title}</Title>
       <CreatedAtContainer>
         {' '}
         {/* 카테고리가 없어지므로 이름 변경 및 구조 간소화 */}
-        <CreatedAt>{date}</CreatedAt>
+        <CreatedAt>
+          {date}
+          <TimeInfo>약 {timeToRead}분</TimeInfo>
+        </CreatedAt>
       </CreatedAtContainer>
     </Container>
   )
@@ -36,8 +43,8 @@ const Container = styled.div`
 const Title = styled.h1`
   word-break: keep-all;
   line-height: 1.3; /* 제목 줄 간격 조정 (이전 1.4에서 1.3으로) */
-  font-size: 1.8rem; /* 제목 크기 키우기 (이전 1.6rem에서 2.2rem으로) */
-  margin-bottom: 1rem; /* 제목 아래 여백 (이전 1.5rem에서 1rem으로) */
+  font-size: 1.9rem; /* 제목 크기 키우기 (이전 1.6rem에서 2.2rem으로) */
+  margin-bottom: 1.3rem; /* 제목 아래 여백 (이전 1.5rem에서 1rem으로) */
 
   @media (max-width: 768px) {
     font-size: 1.8rem; /* 모바일 제목 크기 조정 (이전 2rem에서 1.8rem으로) */
@@ -49,7 +56,7 @@ const Title = styled.h1`
 const CreatedAtContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-end; /* 날짜를 우측으로 정렬 */
+  justify-content: flex-start;
   color: ${COLORS.GRAY_BOLD};
   font-size: 0.9rem; /* 날짜 폰트 사이즈 유지 */
 
@@ -60,4 +67,10 @@ const CreatedAtContainer = styled.div`
 
 const CreatedAt = styled.div`
   white-space: nowrap; /* 날짜 줄바꿈 방지 */
+`
+
+const TimeInfo = styled.span`
+  margin-left: 0.5rem; /* 왼쪽에 0.5rem (약 8px) 간격 추가 */
+  /* 또는 padding-left를 사용할 수도 있습니다. */
+  /* padding-left: 0.5rem; */
 `

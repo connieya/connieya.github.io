@@ -29,6 +29,7 @@ const PostTemplate = ({
     node: {
       tableOfContents,
       html,
+      timeToRead,
       frontmatter: { title, summary, date, categories },
     },
   } = edges[0]
@@ -36,7 +37,12 @@ const PostTemplate = ({
   return (
     <Template title={title} description={summary} url={href}>
       <Container>
-        <PostHead title={title} date={date} categories={categories} />
+        <PostHead
+          title={title}
+          date={date}
+          categories={categories}
+          timeToRead={timeToRead}
+        />
         <PostBody ref={contentRef} html={html} />
         <PostComment />
         <TableOfContents ref={contentRef} tableOfContents={tableOfContents} />
@@ -53,10 +59,11 @@ export const queryMarkdownDataBySlug = graphql`
         node {
           tableOfContents
           html
+          timeToRead
           frontmatter {
             title
             summary
-            date(formatString: "YYYY.MM.DD.")
+            date(formatString: "YYYY-MM-DD")
             categories
             thumbnail {
               childImageSharp {

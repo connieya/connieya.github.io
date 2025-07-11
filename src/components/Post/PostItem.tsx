@@ -6,7 +6,7 @@ import { PostFrontMatterType } from 'components/types/PostItem.types'
 
 type Props = PostFrontMatterType & { link: string }
 
-const PostItem = ({ date, summary, title, link }: Props) => {
+const PostItem = ({ date, summary, title, link, timeToRead }: Props) => {
   const handleClick = () => {
     navigate(link)
   }
@@ -17,7 +17,10 @@ const PostItem = ({ date, summary, title, link }: Props) => {
         <Title onClick={handleClick}>{title}</Title>
         <Description>{summary}</Description>
         <CreatedAtAndTimeToReadContainer>
-          <CreatedAt>{date}</CreatedAt>
+          <CreatedAt>
+            {date}
+            <TimeInfo>약 {timeToRead}분</TimeInfo>
+          </CreatedAt>
         </CreatedAtAndTimeToReadContainer>
       </TextInfoContainer>
     </Container>
@@ -68,13 +71,6 @@ const Title = styled.h3`
   }
 `
 
-const CategoriesContainer = styled.div`
-  display: flex; /* 카테고리 아이템이 가로로 나열되도록 */
-  flex-wrap: wrap; /* 공간 부족 시 다음 줄로 넘어가도록 */
-  gap: 0.2rem; /* 카테고리 아이템 간 간격 */
-  margin-bottom: 0.5rem; /* 제목 위 여백 */
-`
-
 const Description = styled.div`
   /* stylelint-disable-next-line value-no-vendor-prefix */
   display: -webkit-box;
@@ -98,4 +94,10 @@ const CreatedAtAndTimeToReadContainer = styled.div`
 
 const CreatedAt = styled.span`
   white-space: nowrap;
+`
+
+const TimeInfo = styled.span`
+  margin-left: 0.5rem; /* 왼쪽에 0.5rem (약 8px) 간격 추가 */
+  /* 또는 padding-left를 사용할 수도 있습니다. */
+  /* padding-left: 0.5rem; */
 `

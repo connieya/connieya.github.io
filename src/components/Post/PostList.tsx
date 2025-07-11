@@ -10,6 +10,7 @@ export type PostType = {
       title: string
       summary: string
       date: string
+      timeToRead: number
       categories: string[]
       thumbnail: {
         publicURL: string
@@ -46,10 +47,16 @@ const PostList: FunctionComponent<PostListProps> = function ({ posts }) {
             node: {
               id,
               fields: { slug },
+              timeToRead,
               frontmatter,
             },
           }: PostListItemType) => (
-            <PostItem {...frontmatter} link={slug} key={id} />
+            <PostItem
+              {...frontmatter}
+              link={slug}
+              key={id}
+              timeToRead={timeToRead}
+            />
           ),
         )}
       </PostListContainer>

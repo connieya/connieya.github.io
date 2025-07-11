@@ -7,6 +7,7 @@ export type PostHeadInfoProps = {
   title: string
   date: string
   categories: string[]
+  timeToRead: number
 }
 
 const PostHeadInfoWrapper = styled.div`

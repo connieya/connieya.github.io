@@ -77,10 +77,11 @@ export const getPostList = graphql`
           fields {
             slug
           }
+          timeToRead
           frontmatter {
             title
             summary
-            date(formatString: "YYYY.MM.DD.")
+            date(formatString: "YYYY-MM-DD")
             categories
           }
         }

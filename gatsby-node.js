@@ -106,7 +106,7 @@ exports.createSchemaCustomization = ({ actions }) => {
     type MarkdownRemarkFrontmatter @dontInfer {
       title: String! 
       date: Date! @dateformat # 날짜도 항상 있어야 하므로 !
-      categories: [String!]! # 카테고리 배열도 항상 있어야 하므로 !
+      categories: [String!] # 카테고리 배열도 항상 있어야 하므로 !
       summary: String # 요약은 없을 수도 있으므로 ! 없음
       thumbnail: File @fileByRelativePath
     }
