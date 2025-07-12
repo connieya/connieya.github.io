@@ -1,8 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import styled from '@emotion/styled'
-import PostHeadInfo, { PostHeadInfoProps } from './PostHeadInfo'
+import { PostHeadInfoProps } from './PostHeadInfo'
 import COLORS from 'utils/constant/colors'
-import CategoryListItem from 'components/Post/CategoryListItem'
 
 type PostHeadProps = PostHeadInfoProps & {}
 

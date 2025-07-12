@@ -95,4 +95,6 @@ export const getPostList = graphql`
     }
   }
 `
-const PostListContainer = styled.div``
+const PostListContainer = styled.div`
+  width: 100%;
+`

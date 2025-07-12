@@ -17,7 +17,7 @@ const MarkdownRenderer = styled.div`
   flex-direction: column;
   width: 100%;
   margin: 0 auto;
-  padding: 5rem 0;
+  padding: 1.5rem 0;
   line-height: 1.75;
   word-break: break-all;
 
@@ -100,8 +100,9 @@ const MarkdownRenderer = styled.div`
   code[class*='language-'] {
     color: #d4d4d4;
     font-size: 13px;
-    font-family: Menlo, Monaco, Consolas, 'Andale Mono', 'Ubuntu Mono',
-      'Courier New', monospace;
+    font-family:
+      Menlo, Monaco, Consolas, 'Andale Mono', 'Ubuntu Mono', 'Courier New',
+      monospace;
     direction: ltr;
     white-space: pre;
     text-align: left;
