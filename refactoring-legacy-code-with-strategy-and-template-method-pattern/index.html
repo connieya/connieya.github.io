@@ -1,0 +1,301 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><meta name="generator" content="Gatsby 5.14.5"/><meta data-react-helmet="true" name="description"/><meta data-react-helmet="true" name="viewport" content="width=device-width, initial-scale=1.0"/><meta data-react-helmet="true" http-equiv="Content-Type" content="text/html;charset=UTF-8"/><meta data-react-helmet="true" property="og:type" content="website"/><meta data-react-helmet="true" property="og:title" content="레거시 코드 리팩토링: 전략 패턴과 템플릿 메소드 패턴 적용기 "/><meta data-react-helmet="true" property="og:description"/><meta data-react-helmet="true" property="og:image"/><meta data-react-helmet="true" property="og:url"/><meta data-react-helmet="true" property="og:site_name" content="레거시 코드 리팩토링: 전략 패턴과 템플릿 메소드 패턴 적용기 "/><meta data-react-helmet="true" name="twitter:card" content="summary"/><meta data-react-helmet="true" name="twitter:title" content="레거시 코드 리팩토링: 전략 패턴과 템플릿 메소드 패턴 적용기 "/><meta data-react-helmet="true" name="twitter:description"/><meta data-react-helmet="true" name="twitter:image"/><meta data-react-helmet="true" name="twitter:site" content="@사용자이름"/><meta data-react-helmet="true" name="twitter:creator" content="@사용자이름"/><meta data-react-helmet="true" name="google-site-verification" content="웹 마스터 도구가 제공하는 Meta 태그"/><meta data-react-helmet="true" name="naver-site-verification" content="웹 마스터 도구가 제공하는 Meta 태그"/><style data-href="/styles.9e907bc32054b7771552.css" data-identity="gatsby-global-css">code[class*=language-],pre[class*=language-]{word-wrap:normal;background:none;color:#ccc;font-family:Consolas,Monaco,Andale Mono,Ubuntu Mono,monospace;font-size:1em;-webkit-hyphens:none;hyphens:none;line-height:1.5;tab-size:4;text-align:left;white-space:pre;word-break:normal;word-spacing:normal}pre[class*=language-]{margin:.5em 0;overflow:auto;padding:1em}:not(pre)>code[class*=language-],pre[class*=language-]{background:#2d2d2d}:not(pre)>code[class*=language-]{border-radius:.3em;padding:.1em;white-space:normal}.token.block-comment,.token.cdata,.token.comment,.token.doctype,.token.prolog{color:#999}.token.punctuation{color:#ccc}.token.attr-name,.token.deleted,.token.namespace,.token.tag{color:#e2777a}.token.function-name{color:#6196cc}.token.boolean,.token.function,.token.number{color:#f08d49}.token.class-name,.token.constant,.token.property,.token.symbol{color:#f8c555}.token.atrule,.token.builtin,.token.important,.token.keyword,.token.selector{color:#cc99cd}.token.attr-value,.token.char,.token.regex,.token.string,.token.variable{color:#7ec699}.token.entity,.token.operator,.token.url{color:#67cdcc}.token.bold,.token.important{font-weight:700}.token.italic{font-style:italic}.token.entity{cursor:help}.token.inserted{color:green}</style><style>.gatsby-image-wrapper{position:relative;overflow:hidden}.gatsby-image-wrapper picture.object-fit-polyfill{position:static!important}.gatsby-image-wrapper img{bottom:0;height:100%;left:0;margin:0;max-width:none;padding:0;position:absolute;right:0;top:0;width:100%;object-fit:cover}.gatsby-image-wrapper [data-main-image]{opacity:0;transform:translateZ(0);transition:opacity .25s linear;will-change:opacity}.gatsby-image-wrapper-constrained{display:inline-block;vertical-align:top}</style><noscript><style>.gatsby-image-wrapper noscript [data-main-image]{opacity:1!important}.gatsby-image-wrapper [data-placeholder-image]{opacity:0!important}</style></noscript><script type="module">const e="undefined"!=typeof HTMLImageElement&&"loading"in HTMLImageElement.prototype;e&&document.body.addEventListener("load",(function(e){const t=e.target;if(void 0===t.dataset.mainImage)return;if(void 0===t.dataset.gatsbyImageSsr)return;let a=null,n=t;for(;null===a&&n;)void 0!==n.parentNode.dataset.gatsbyImageWrapper&&(a=n.parentNode),n=n.parentNode;const o=a.querySelector("[data-placeholder-image]"),r=new Image;r.src=t.currentSrc,r.decode().catch((()=>{})).then((()=>{t.style.opacity=1,o&&(o.style.opacity=0,o.style.transition="opacity 500ms linear")}))}),!0);</script><title data-react-helmet="true">레거시 코드 리팩토링: 전략 패턴과 템플릿 메소드 패턴 적용기 </title><link rel="sitemap" type="application/xml" href="/sitemap-index.xml"/><style type="text/css">
+    .anchor.before {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translateX(-100%);
+      padding-right: 4px;
+    }
+    .anchor.after {
+      display: inline-block;
+      padding-left: 4px;
+    }
+    h1 .anchor svg,
+    h2 .anchor svg,
+    h3 .anchor svg,
+    h4 .anchor svg,
+    h5 .anchor svg,
+    h6 .anchor svg {
+      visibility: hidden;
+    }
+    h1:hover .anchor svg,
+    h2:hover .anchor svg,
+    h3:hover .anchor svg,
+    h4:hover .anchor svg,
+    h5:hover .anchor svg,
+    h6:hover .anchor svg,
+    h1 .anchor:focus svg,
+    h2 .anchor:focus svg,
+    h3 .anchor:focus svg,
+    h4 .anchor:focus svg,
+    h5 .anchor:focus svg,
+    h6 .anchor:focus svg {
+      visibility: visible;
+    }
+  </style><script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+      var hash = window.decodeURI(location.hash.replace('#', ''))
+      if (hash !== '') {
+        var element = document.getElementById(hash)
+        if (element) {
+          var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+          var clientTop = document.documentElement.clientTop || document.body.clientTop || 0
+          var offset = element.getBoundingClientRect().top + scrollTop - clientTop
+          // Wait for the browser to finish rendering before scrolling.
+          setTimeout((function() {
+            window.scrollTo(0, offset - 0)
+          }), 0)
+        }
+      }
+    })
+  </script><link rel="canonical" href="https://connieya.github.io/refactoring-legacy-code-with-strategy-and-template-method-pattern/" data-baseprotocol="https:" data-basehost="connieya.github.io"/></head><body><div id="___gatsby"><div style="outline:none" tabindex="-1" id="gatsby-focus-wrapper"><style data-emotion="css 11pfcjj">.css-11pfcjj{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;min-height:100vh;}</style><div class="css-11pfcjj esjg9ma0"><style data-emotion="css 123clne">.css-123clne{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;width:100%;height:7rem;}</style><div class="css-123clne e1o8p83g2"><style data-emotion="css 1dg0t7z">.css-1dg0t7z{width:100%;max-width:768px;margin:0 auto;}</style><div class="css-1dg0t7z e1o8p83g1"><style data-emotion="css 1yk9l7f">.css-1yk9l7f{font-size:1.5rem;font-weight:bold;font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji';}</style><a class="css-1yk9l7f e1o8p83g0" href="/">박건희</a></div></div><style data-emotion="css-global 4cqo99">*{padding:0;margin:0;box-sizing:border-box;font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji';}html,body,#___gatsby{height:100%;font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji';}a,a:hover{color:inherit;-webkit-text-decoration:none;text-decoration:none;cursor:pointer;}</style><style data-emotion="css 11k3q87">.css-11k3q87{position:relative;width:100%;max-width:768px;margin:0 auto;}</style><div class="css-11k3q87 e17f455w0"><style data-emotion="css jwelnu">.css-jwelnu{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;padding:2.5rem 1rem 2rem;max-width:768px;margin:0 auto;}@media (max-width: 768px){.css-jwelnu{padding:2rem 0.75rem 1.5rem;}}</style><div class="css-jwelnu ehbuenk4"><style data-emotion="css gjsprg">.css-gjsprg{word-break:keep-all;line-height:1.3;font-size:1.9rem;margin-bottom:1.3rem;}@media (max-width: 768px){.css-gjsprg{font-size:1.8rem;margin-bottom:0.8rem;}}</style><h1 class="css-gjsprg ehbuenk3">레거시 코드 리팩토링: 전략 패턴과 템플릿 메소드 패턴 적용기 </h1><style data-emotion="css 1r9pax5">.css-1r9pax5{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:start;-ms-flex-pack:start;-webkit-justify-content:flex-start;justify-content:flex-start;color:#757575;font-size:0.9rem;}@media (max-width: 768px){.css-1r9pax5{-webkit-box-pack:start;-ms-flex-pack:start;-webkit-justify-content:flex-start;justify-content:flex-start;}}</style><div class="css-1r9pax5 ehbuenk2"> <style data-emotion="css 1bmnxg7">.css-1bmnxg7{white-space:nowrap;}</style><div class="css-1bmnxg7 ehbuenk1">2024-11-17<style data-emotion="css uaob3j">.css-uaob3j{margin-left:0.5rem;}</style><span class="css-uaob3j ehbuenk0">약 <!-- -->5<!-- -->분</span></div></div></div><style data-emotion="css n5jjl">.css-n5jjl{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;width:100%;margin:0 auto;padding:1.5rem 0;line-height:1.75;word-break:break-all;}.css-n5jjl h1,.css-n5jjl h2,.css-n5jjl h3{margin-bottom:1.5rem;font-weight:700;}.css-n5jjl h1{padding-left:0.2rem;font-size:2rem;border-bottom:1px solid #e2e5e6;}.css-n5jjl h2{font-size:1.75rem;border-bottom:1px solid #e2e5e6;}.css-n5jjl h3{font-size:1.25rem;}.css-n5jjl *+h1,.css-n5jjl *+h2,.css-n5jjl *+h3{margin-top:2rem;margin-bottom:0.5rem;}.css-n5jjl hr+h1,.css-n5jjl hr+h2,.css-n5jjl hr+h3{margin-top:0;}.css-n5jjl blockquote{margin:30px 0;padding:0 1rem;color:#757575;font-weight:800;border-left:2px solid #e2e5e6;}.css-n5jjl ol,.css-n5jjl ul{margin-top:0rem;margin-bottom:0rem;margin-left:1rem;padding:0.5rem 0;}.css-n5jjl li{font-weight:300;}.css-n5jjl hr{margin:100px 0;border:1px solid #000;}.css-n5jjl a{color:#0E68C8;}.css-n5jjl p{margin:0;padding:0.5rem 0;font-weight:300;}.css-n5jjl img{margin:3rem 0;}.css-n5jjl pre[class*='language-'],.css-n5jjl code[class*='language-']{color:#d4d4d4;font-size:13px;font-family:Menlo,Monaco,Consolas,'Andale Mono','Ubuntu Mono','Courier New',monospace;direction:ltr;white-space:pre;text-align:left;text-shadow:none;word-break:normal;word-spacing:normal;tab-size:4;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none;border-radius:0.5rem;}.css-n5jjl pre[class*='language-']::selection,.css-n5jjl code[class*='language-']::selection,.css-n5jjl pre[class*='language-'] *::selection,.css-n5jjl code[class*='language-'] *::selection{text-shadow:none;background:#264f78;}@media print{.css-n5jjl pre[class*='language-'],.css-n5jjl code[class*='language-']{text-shadow:none;}}.css-n5jjl pre[class*='language-']{padding:1rem;overflow:auto;background:#1e1e1e;}.css-n5jjl:not(pre)>code[class*='language-']{padding:0.1em 0.3em;background:#1e1e1e;border-radius:0;border-radius:0.3em;}.css-n5jjl .namespace{opacity:0.7;}.css-n5jjl .token.doctype .token.doctype-tag{color:#569cd6;}.css-n5jjl .token.doctype .token.name{color:#9cdcfe;}.css-n5jjl .token.comment,.css-n5jjl .token.prolog{color:#6a9955;}.css-n5jjl .token.punctuation,.css-n5jjl .language-html .language-css .token.punctuation,.css-n5jjl .language-html .language-javascript .token.punctuation{color:#d4d4d4;}.css-n5jjl .token.property,.css-n5jjl .token.tag,.css-n5jjl .token.boolean,.css-n5jjl .token.number,.css-n5jjl .token.constant,.css-n5jjl .token.symbol,.css-n5jjl .token.inserted,.css-n5jjl .token.unit{color:#b5cea8;}.css-n5jjl .token.selector,.css-n5jjl .token.attr-name,.css-n5jjl .token.string,.css-n5jjl .token.char,.css-n5jjl .token.builtin,.css-n5jjl .token.deleted{color:#ce9178;}.css-n5jjl .language-css .token.string.url{-webkit-text-decoration:underline;text-decoration:underline;}.css-n5jjl .token.operator,.css-n5jjl .token.entity{color:#d4d4d4;}.css-n5jjl .token.operator.arrow{color:#569cd6;}.css-n5jjl .token.atrule{color:#ce9178;}.css-n5jjl .token.atrule .token.rule{color:#c586c0;}.css-n5jjl .token.atrule .token.url{color:#9cdcfe;}.css-n5jjl .token.atrule .token.url .token.function{color:#dcdcaa;}.css-n5jjl .token.atrule .token.url .token.punctuation{color:#d4d4d4;}.css-n5jjl .token.keyword{color:#569cd6;}.css-n5jjl .token.keyword.module,.css-n5jjl .token.keyword.control-flow{color:#c586c0;}.css-n5jjl .token.function,.css-n5jjl .token.function .token.maybe-class-name{color:#dcdcaa;}.css-n5jjl .token.regex{color:#d16969;}.css-n5jjl .token.important{color:#569cd6;}.css-n5jjl .token.italic{font-style:italic;}.css-n5jjl .token.constant{color:#9cdcfe;}.css-n5jjl .token.class-name,.css-n5jjl .token.maybe-class-name{color:#4ec9b0;}.css-n5jjl .token.console{color:#9cdcfe;}.css-n5jjl .token.parameter{color:#9cdcfe;}.css-n5jjl .token.interpolation{color:#9cdcfe;}.css-n5jjl .token.punctuation.interpolation-punctuation{color:#569cd6;}.css-n5jjl .token.boolean{color:#569cd6;}.css-n5jjl .token.property,.css-n5jjl .token.variable,.css-n5jjl .token.imports .token.maybe-class-name,.css-n5jjl .token.exports .token.maybe-class-name{color:#9cdcfe;}.css-n5jjl .token.selector{color:#d7ba7d;}.css-n5jjl .token.escape{color:#d7ba7d;}.css-n5jjl .token.tag{color:#569cd6;}.css-n5jjl .token.tag .token.punctuation{color:#808080;}.css-n5jjl .token.cdata{color:#808080;}.css-n5jjl .token.attr-name{color:#9cdcfe;}.css-n5jjl .token.attr-value,.css-n5jjl .token.attr-value .token.punctuation{color:#ce9178;}.css-n5jjl .token.attr-value .token.punctuation.attr-equals{color:#d4d4d4;}.css-n5jjl .token.entity{color:#569cd6;}.css-n5jjl .token.namespace{color:#4ec9b0;}.css-n5jjl pre[class*='language-javascript'],.css-n5jjl code[class*='language-javascript'],.css-n5jjl pre[class*='language-jsx'],.css-n5jjl code[class*='language-jsx'],.css-n5jjl pre[class*='language-typescript'],.css-n5jjl code[class*='language-typescript'],.css-n5jjl pre[class*='language-tsx'],.css-n5jjl code[class*='language-tsx']{color:#9cdcfe;}.css-n5jjl pre[class*='language-css'],.css-n5jjl code[class*='language-css']{color:#ce9178;}.css-n5jjl pre[class*='language-html'],.css-n5jjl code[class*='language-html']{color:#d4d4d4;}.css-n5jjl .language-regex .token.anchor{color:#dcdcaa;}.css-n5jjl .language-html .token.punctuation{color:#808080;}.css-n5jjl pre[class*='language-']>code[class*='language-']{position:relative;z-index:1;}.css-n5jjl .line-highlight.line-highlight{z-index:0;background:#f7ebc6;box-shadow:inset 5px 0 0 #f7d87c;}.css-n5jjl pre[class*='language-text'],.css-n5jjl code[class*='language-text']{padding:0.25rem;color:#000000;background-color:#e2e5e6;}@media (max-width: 768px){.css-n5jjl img{width:100%;}.css-n5jjl pre[class*='language-']{width:100%;overflow-x:auto;}}</style><div class="css-n5jjl e13plzdv0"><p>최근 10년이 넘은 레거시 인증 서버를 스프링 부트 환경으로 전환하는 고도화 프로젝트를 진행했습니다. 저는 단순히 기술을 바꾸는 것을 넘어 어떻게 하면 더 유연하고 유지보수하기 좋은 구조를 만들 수 있을지 고민했습니다.</p>
+<p>리팩토링 과정에서 끝없이 늘어나는 if-else 분기문과 여러 클래스에 걸쳐 반복되는 중복 코드를 마주하게 되었습니다.</p>
+<h3 id="파일-규격에-따라-끝없이-늘어나는-if-else-지옥" style="position:relative;"><a href="#%ED%8C%8C%EC%9D%BC-%EA%B7%9C%EA%B2%A9%EC%97%90-%EB%94%B0%EB%9D%BC-%EB%81%9D%EC%97%86%EC%9D%B4-%EB%8A%98%EC%96%B4%EB%82%98%EB%8A%94-if-else-%EC%A7%80%EC%98%A5" aria-label="파일 규격에 따라 끝없이 늘어나는 if else 지옥 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>파일 규격에 따라 끝없이 늘어나는 if-else 지옥</h3>
+<p>리팩토링의 첫 번째 타겟은 파일의 각 레코드(거래 내역)를 처리하는 핵심 Worker 클래스였습니다. 이 Worker는 파일의 각 줄을 읽어 처리하는데, 문제는 파일 규격 ID나 기관 코드에 따라 데이터를 가공하고 검증하는 방식이 천차만별이라는 점이었습니다.</p>
+<p>리팩토링 전 execute 메소드 내부의 일부 코드입니다.</p>
+<p>의사코드(Pseudocode)</p>
+<div class="gatsby-highlight" data-language="java"><pre class="language-java"><code class="language-java"><span class="token comment">// Legacy Worker 클래스의 execute() 메소드 내부 , 의사코드(Pseudocode)</span>
+<span class="token keyword">while</span> <span class="token punctuation">(</span>파일에서_다음_레코드가_존재하는가<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// ... 레코드 읽기 ...</span>
+    데이터_객체 record <span class="token operator">=</span> 파싱된_레코드<span class="token punctuation">;</span>
+    <span class="token comment">// ... (이하 의사코드) ...</span>
+
+    <span class="token comment">// (규칙 1) 특정 기관 코드에 대한 예외 처리</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>record<span class="token punctuation">.</span>get기관코드<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token string">"기관A"</span><span class="token punctuation">)</span> <span class="token operator">||</span> record<span class="token punctuation">.</span>get기관코드<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token string">"기관B"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// ... 기관 A, B만의 특별한 스킵 로직 ...</span>
+        <span class="token keyword">continue</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// (규칙 2) 특정 파일 규격 ID에 대한 데이터 가공</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>record<span class="token punctuation">.</span>get파일규격<span class="token function">ID</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token string">"규격-001"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// ... 랜덤 데이터를 생성해서 레코드에 추가 ...</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// (규칙 3) 또 다른 파일 규격 ID에 대한 데이터 가공</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>record<span class="token punctuation">.</span>get파일규격<span class="token function">ID</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span><span class="token string">"규격-002"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// ... 특정 필드를 조합해서 검증용 데이터를 생성 ...</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// ... 수십 개의 if-else 분기문이 계속 이어짐 ...</span>
+
+<span class="token punctuation">}</span></code></pre></div>
+<p>이 코드는 몇 가지 명확한 문제점을 가지고 있었습니다.</p>
+<ul>
+<li>하나의 메소드가 수백 줄에 달하며 너무 많은 책임을 지고 있었습니다. (SRP 위반)</li>
+<li>새로운 파일 규격이 추가될 때마다 이 메소드에 if-else 블록을 계속 추가해야 했습니다. (OCP 위반)</li>
+<li>로직의 복잡성으로 인해 코드를 파악하고 수정에 따른 영향을 예측하기가 어려웠습니다.</li>
+</ul>
+<h4 id="if-else를-어떻게-제거할-수-있을까" style="position:relative;"><a href="#if-else%EB%A5%BC-%EC%96%B4%EB%96%BB%EA%B2%8C-%EC%A0%9C%EA%B1%B0%ED%95%A0-%EC%88%98-%EC%9E%88%EC%9D%84%EA%B9%8C" aria-label="if else를 어떻게 제거할 수 있을까 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>if-else를 어떻게 제거할 수 있을까?</h4>
+<p>가장 먼저 든 생각은 "어떻게 하면 이 if-else 문을 제거하고, 새로운 규격이 추가되어도 Worker 코드를 수정하지 않을 수 있을까?" 였습니다. 이를 위해서는 각 파일 규격에 따른 처리 로직을 Worker 클래스로부터 분리해야 했습니다</p>
+<p>저는 각 if 블록의 내용이 '하나의 레코드를 처리하는 구체적인 방법(알고리즘)'이라는 점에 주목했습니다. 그렇다면 이 알고리즘들을 각각 별개의 객체로 만들고, 공통된 방식으로 다룰 수 있도록 추상화하면 어떨까 하는 생각에 이르렀습니다.</p>
+<p>예를 들어, "레코드를 처리한다"는 공통 행위를 인터페이스로 정의하는 것입니다</p>
+<div class="gatsby-highlight" data-language="java"><pre class="language-java"><code class="language-java"><span class="token comment">// "레코드를 처리한다"는 행위를 추상화한 인터페이스</span>
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">RecordProcessingStrategy</span> <span class="token punctuation">{</span>
+    <span class="token keyword">void</span> <span class="token function">process</span><span class="token punctuation">(</span><span class="token class-name">ProcessingData</span> context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre></div>
+<p>이렇게 하면 파일 규격별 처리 로직을 이 인터페이스를 구현한 독립적인 클래스로 각각 만들어낼 수 있습니다.</p>
+<div class="gatsby-highlight" data-language="java"><pre class="language-java"><code class="language-java"><span class="token comment">// 파일 규격 "규격-001"을 처리하는 구체적인 로직</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Format001Strategy</span> <span class="token keyword">implements</span> <span class="token class-name">RecordProcessingStrategy</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">process</span><span class="token punctuation">(</span><span class="token class-name">ProcessingContext</span> context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// "규격-001"에 해당하는 처리 로직만 여기에 존재</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre></div>
+<p>이제 Worker는 전체적인 작업 흐름을 제어하는 <strong>문맥(Context)</strong> 의 역할만 맡게 됩니다. 그리고 실제 레코드 처리라는 핵심 알고리즘은 외부의 독립된 Strategy 객체에게 위임하는 구조가 됩니다.</p>
+<p>이처럼 특정 Context에서 알고리즘을 별도로 분리하고, 런타임에 필요에 따라 교체할 수 있도록 설계하는 방법을 <strong>전략 패턴(Strategy Pattern)</strong> 이라고 합니다. 이 패턴을 적용하여, 파일 규격 ID에 따라 달라지는 처리 로직을 각각의 Strategy 클래스로 분리했습니다.</p>
+<h4 id="provider-클래스를-이용한-전략-분리" style="position:relative;"><a href="#provider-%ED%81%B4%EB%9E%98%EC%8A%A4%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EC%A0%84%EB%9E%B5-%EB%B6%84%EB%A6%AC" aria-label="provider 클래스를 이용한 전략 분리 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Provider 클래스를 이용한 전략 분리</h4>
+<p>if-else를 피하기 위해 처음부터 Map을 사용하기로 마음먹었습니다. 파일 규격 ID를 key로, 해당 전략 객체를 value로 가지는 Map을 만들고, 이 Map을 제공하는 StrategyProvider 클래스를 구현했습니다</p>
+<div class="gatsby-highlight" data-language="java"><pre class="language-java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">StrategyProvider</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">RecordProcessingStrategy</span><span class="token punctuation">></span></span> strategyMap <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 생성자에서 모든 전략을 수동으로 등록</span>
+    <span class="token keyword">public</span> <span class="token class-name">StrategyProvider</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        strategyMap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"규격-001"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Format001Strategy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        strategyMap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"규격-002"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Format002Strategy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        strategyMap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"규격-003"</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Format003Strategy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 새로운 전략이 추가될 때마다 여기에 put 코드를 추가해야 했다.</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">RecordProcessingStrategy</span> <span class="token function">getStrategy</span><span class="token punctuation">(</span><span class="token class-name">String</span> formatId<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> strategyMap<span class="token punctuation">.</span><span class="token function">getOrDefault</span><span class="token punctuation">(</span>formatId<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">DefaultStrategy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre></div>
+<p>if-else 지옥에서는 벗어났지만, 이내 새로운 문제가 보였습니다.</p>
+<p>새로운 Strategy 클래스를 만들 때마다, Provider의 생성자에 strategyMap.put(...) 코드를 추가하는 것을 잊으면 안 됐습니다.
+결국 Provider 클래스도 변경에 닫혀 있어야 한다는 OCP 원칙을 위반하고 있었습니다.</p>
+<h3 id="spring의-자동-주입-기능으로-provider-대체하기" style="position:relative;"><a href="#spring%EC%9D%98-%EC%9E%90%EB%8F%99-%EC%A3%BC%EC%9E%85-%EA%B8%B0%EB%8A%A5%EC%9C%BC%EB%A1%9C-provider-%EB%8C%80%EC%B2%B4%ED%95%98%EA%B8%B0" aria-label="spring의 자동 주입 기능으로 provider 대체하기 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Spring의 자동 주입 기능으로 Provider 대체하기</h3>
+<p>Provider를 직접 관리하는 방식도 나쁘진 않았지만, '더 나은 방법은 없을까' 하는 고민이 들었습니다. 그때 마침 이전에 Spring의 의존성 주입(DI)에 대해 공부했던 내용이 떠올랐습니다. 바로 특정 타입의 모든 Bean을 List나 Map으로 한 번에 주입받을 수 있는 기능이었습니다.
+이 기능을 활용하면, 제가 직접 Provider를 만들고 Map에 전략 객체들을 수동으로 등록하는 작업을 Spring에게 전부 맡길 수 있었습니다.</p>
+<p>"모든 전략 클래스를 Spring Bean으로 등록하기만 하면, Spring 컨테이너가 알아서 이들을 모아 Map으로 만들어 주입해줄 것이다!"</p>
+<p>새로운 접근 방식은 다음과 같았습니다. 먼저, 기존의 StrategyProvider 클래스를 삭제하고 각 전략 클래스에 @Component 어노테이션을 붙여주었습니다. 이때, Bean의 이름을 처리해야 할 파일 규격 ID로 지정하는 것이 핵심이었습니다.</p>
+<div class="gatsby-highlight" data-language="java"><pre class="language-java"><code class="language-java"><span class="token comment">// 각 전략에 파일 규격 ID를 Bean 이름으로 부여하고 등록</span>
+<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">RecordProcessingStrategy</span> <span class="token punctuation">{</span>
+    <span class="token keyword">void</span> <span class="token function">process</span><span class="token punctuation">(</span><span class="token class-name">ProcessingContext</span> context<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token annotation punctuation">@Component</span><span class="token punctuation">(</span><span class="token string">"규격-001"</span><span class="token punctuation">)</span> <span class="token comment">// Bean의 이름을 파일 규격 ID로 지정</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Format001Strategy</span> <span class="token keyword">implements</span> <span class="token class-name">RecordProcessingStrategy</span> <span class="token punctuation">{</span> <span class="token comment">/* ... */</span> <span class="token punctuation">}</span>
+
+<span class="token annotation punctuation">@Component</span><span class="token punctuation">(</span><span class="token string">"규격-002"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Format002Strategy</span> <span class="token keyword">implements</span> <span class="token class-name">RecordProcessingStrategy</span> <span class="token punctuation">{</span> <span class="token comment">/* ... */</span> <span class="token punctuation">}</span></code></pre></div>
+<p>그리고 Worker(Context 역할)에서 Map과 기본 전략을 주입받도록 구성했습니다</p>
+<div class="gatsby-highlight" data-language="java"><pre class="language-java"><code class="language-java"><span class="token annotation punctuation">@Component</span>
+<span class="token annotation punctuation">@RequiredArgsConstructor</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RefactoredWorker</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">RecordProcessingStrategy</span><span class="token punctuation">></span></span> strategyMap<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">RecordProcessingStrategy</span> defaultStrategy<span class="token punctuation">;</span> <span class="token comment">// 기본 전략 Bean</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">processRecord</span><span class="token punctuation">(</span><span class="token class-name">ProcessingData</span> data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">String</span> formatId <span class="token operator">=</span> data<span class="token punctuation">.</span><span class="token function">getFileFormatId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Spring이 주입해준 Map에서 바로 전략을 찾아 실행</span>
+        <span class="token class-name">RecordProcessingStrategy</span> strategy <span class="token operator">=</span> strategyMap<span class="token punctuation">.</span><span class="token function">getOrDefault</span><span class="token punctuation">(</span>formatId<span class="token punctuation">,</span> defaultStrategy<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        strategy<span class="token punctuation">.</span><span class="token function">process</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre></div>
+<p>이제 새로운 파일 규격이 추가되어도 기존 코드는 전혀 수정할 필요가 없습니다. 그냥 새로운 Strategy 클래스를 만들고 @Component("새로운_규격_ID") 어노테이션만 붙이면, Spring 컨테이너가 마법처럼 Map에 담아주기 때문입니다. OCP 원칙을 완벽하게 지키는 유연하고 확장 가능한 구조가 완성된 것입니다.</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 768px; "
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/b0644522acba9e538cfc2dd5c46494e2/f6909/strategy.png"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 39.583333333333336%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAICAYAAAD5nd/tAAAACXBIWXMAAAsTAAALEwEAmpwYAAABJUlEQVR42pVRa2/CMAzk//+9McYYD1FK32vStGlC4uTmtkxCkzaNk/whduw7+1a4I8Y4x294rIcQ4JyH6oDsqnFJOnzWUw5Y8Vcs8X9oPUKpEXk24nAQOHLkuVsG3myENUDXWVRVh6H3MCM4t5A4FzEMAU2j0LYjeq4HirMGPXhIaSDFyH0EIh54SXq8b1tsNhXWLwU+dgKnk0FdETcPvIrDYa/wui6wfatxTQlCGBagWSFhv5Pc3yA5u1nIqmkGpKngWwgUecefHbMSswdQ4KHKcb5HWfDwxrIawu02qQn81ihLhbru+QQE7+N0w+cQIx/fe1hL6OTdlLNEVXomYoXf7v3l8s+6MXY2Jb1oPkeL41Eiy/zsxdMKH0E0relBnhDDQvYFUBduRBAV4cQAAAAASUVORK5CYII='); background-size: cover; display: block;"
+  ></span>
+  <picture>
+          <source
+              srcset="/static/b0644522acba9e538cfc2dd5c46494e2/a59e9/strategy.webp 192w,
+/static/b0644522acba9e538cfc2dd5c46494e2/0ca9f/strategy.webp 384w,
+/static/b0644522acba9e538cfc2dd5c46494e2/dc9b9/strategy.webp 768w,
+/static/b0644522acba9e538cfc2dd5c46494e2/e2c2f/strategy.webp 1152w,
+/static/b0644522acba9e538cfc2dd5c46494e2/8866f/strategy.webp 1181w"
+              sizes="(max-width: 768px) 100vw, 768px"
+              type="image/webp"
+            />
+          <source
+            srcset="/static/b0644522acba9e538cfc2dd5c46494e2/3b721/strategy.png 192w,
+/static/b0644522acba9e538cfc2dd5c46494e2/66595/strategy.png 384w,
+/static/b0644522acba9e538cfc2dd5c46494e2/fe486/strategy.png 768w,
+/static/b0644522acba9e538cfc2dd5c46494e2/d2d74/strategy.png 1152w,
+/static/b0644522acba9e538cfc2dd5c46494e2/f6909/strategy.png 1181w"
+            sizes="(max-width: 768px) 100vw, 768px"
+            type="image/png"
+          />
+          <img
+            class="gatsby-resp-image-image"
+            src="/static/b0644522acba9e538cfc2dd5c46494e2/fe486/strategy.png"
+            alt="alt text"
+            title=""
+            loading="lazy"
+            decoding="async"
+            style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+          />
+        </picture>
+  </a>
+    </span></p>
+<h3 id="전체적인-처리-흐름은-같고-세부-구현만-다른-worker들" style="position:relative;"><a href="#%EC%A0%84%EC%B2%B4%EC%A0%81%EC%9D%B8-%EC%B2%98%EB%A6%AC-%ED%9D%90%EB%A6%84%EC%9D%80-%EA%B0%99%EA%B3%A0-%EC%84%B8%EB%B6%80-%EA%B5%AC%ED%98%84%EB%A7%8C-%EB%8B%A4%EB%A5%B8-worker%EB%93%A4" aria-label="전체적인 처리 흐름은 같고 세부 구현만 다른 worker들 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>전체적인 처리 흐름은 같고, 세부 구현만 다른 Worker들</h3>
+<p>전략 패턴으로 복잡한 레코드 처리 로직을 개선하고 나자, 이제는 더 큰 구조가 눈에 들어왔습니다. 애플리케이션에는 이미 공통 추상 클래스를 상속받는 다양한 종류의 Worker가 존재했는데, 그럼에도 불구하고 각 자식 클래스의 execute 메소드 내부 코드가 거의 복사-붙여넣기 수준으로 똑같았던 것입니다</p>
+<p>세 종류의 Worker 모두 다음과 같은 동일한 처리 흐름을 가지고 있었습니다.</p>
+<ol>
+<li>초기 설정 및 캐시 데이터 로딩</li>
+<li>파일 리더(Reader) 초기화</li>
+<li>while 루프를 돌며 파일 레코드 처리</li>
+<li>통계 처리 및 후처리</li>
+</ol>
+<p>차이점은 단지 알고리즘의 일부 단계뿐이었습니다.</p>
+<ul>
+<li>어떤 Worker는 다른 방식의 FileReader를 사용한다.</li>
+<li>각 Worker의 핵심 레코드 처리 로직이 조금씩 다르다.</li>
+</ul>
+<p>이 구조는 심각한 코드 중복 문제를 야기했고, 공통 로직을 수정하려면 여러 클래스를 모두 고쳐야 했습니다.</p>
+<h4 id="공통된-처리-흐름을-재사용할-순-없을까" style="position:relative;"><a href="#%EA%B3%B5%ED%86%B5%EB%90%9C-%EC%B2%98%EB%A6%AC-%ED%9D%90%EB%A6%84%EC%9D%84-%EC%9E%AC%EC%82%AC%EC%9A%A9%ED%95%A0-%EC%88%9C-%EC%97%86%EC%9D%84%EA%B9%8C" aria-label="공통된 처리 흐름을 재사용할 순 없을까 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>공통된 처리 흐름을 재사용할 순 없을까?</h4>
+<p>"이 Worker들은 서로 완전히 다른 전략이라기보다는, 같은 처리 흐름을 공유하는 형제에 가깝다. 그렇다면, 공통된 흐름은 부모 클래스에서 정의하고, 각자 다른 부분만 자식이 구현하게 만들자."</p>
+<p>처리 흐름의 공통된 부분은 부모 클래스에 두고, 달라지는 특정 단계만 자식 클래스가 각자 상황에 맞게 구현하도록 <strong>상속과 재정의(Overriding)</strong> 를 활용하는 아이디어를 떠올렸습니다.
+이렇게 부모 클래스에서 처리 과정의 뼈대를 정의하고, 일부 단계를 하위 클래스에 위임하는 설계 방식을 <strong>템플릿 메소드 패턴(Template Method Pattern)</strong> 이라고 합니다.</p>
+<h4 id="구조의-재설계-상속과-추상화의-힘" style="position:relative;"><a href="#%EA%B5%AC%EC%A1%B0%EC%9D%98-%EC%9E%AC%EC%84%A4%EA%B3%84-%EC%83%81%EC%86%8D%EA%B3%BC-%EC%B6%94%EC%83%81%ED%99%94%EC%9D%98-%ED%9E%98" aria-label="구조의 재설계 상속과 추상화의 힘 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>구조의 재설계: 상속과 추상화의 힘</h4>
+<p>여러 Worker의 공통 부모인 AbstractWorker를 리팩토링하여 템플릿 메소드 패턴의 '템플릿' 역할을 하도록 만들었습니다.</p>
+<div class="gatsby-highlight" data-language="java"><pre class="language-java"><code class="language-java"><span class="token comment">// 리팩토링된 추상 Worker 클래스</span>
+<span class="token keyword">public</span> <span class="token keyword">abstract</span> <span class="token keyword">class</span> <span class="token class-name">AbstractWorker</span> <span class="token keyword">implements</span> <span class="token class-name">WorkerInterface</span> <span class="token punctuation">{</span>
+
+    <span class="token comment">// final 키워드로 알고리즘의 뼈대를 고정</span>
+    <span class="token keyword">public</span> <span class="token keyword">final</span> <span class="token keyword">boolean</span> <span class="token function">execute</span><span class="token punctuation">(</span><span class="token class-name">JobContext</span> jobContext<span class="token punctuation">,</span> <span class="token class-name">CryptoService</span> crypto<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 1. 사전 준비 (공통)</span>
+        <span class="token function">prepare</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// 2. 파일 리더 초기화 (자식에게 위임)</span>
+        <span class="token keyword">try</span> <span class="token punctuation">(</span><span class="token class-name">RecordReader</span> reader <span class="token operator">=</span> <span class="token function">initializeReader</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span>reader<span class="token punctuation">.</span><span class="token function">isRecordNext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment">// ... 공통 레코드 읽기 로직 ...</span>
+
+                <span class="token comment">// 3. 핵심 레코드 처리 (자식에게 위임)</span>
+                <span class="token class-name">ProcessingResult</span> result <span class="token operator">=</span> <span class="token function">processRecord</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                <span class="token comment">// ... 공통 결과 처리 로직 ...</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment">// 4. 후처리 (공통)</span>
+        <span class="token function">finalizeProcessing</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// --- 자식 클래스가 반드시 구현해야 할 추상 메소드 ---</span>
+    <span class="token keyword">protected</span> <span class="token keyword">abstract</span> <span class="token class-name">RecordReader</span> <span class="token function">initializeReader</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">protected</span> <span class="token keyword">abstract</span> <span class="token class-name">ProcessingResult</span> <span class="token function">processRecord</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div>
+<p>이제 각 Worker 클래스는 자신만의 핵심 역할에 집중할 수 있게 되었습니다.</p>
+<div class="gatsby-highlight" data-language="java"><pre class="language-java"><code class="language-java"><span class="token annotation punctuation">@Component</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SpecialFormatWorker</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractWorker</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token class-name">RecordReader</span> <span class="token function">initializeReader</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 자신에게 맞는 특별한 파일 리더를 반환</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">SpecialFileReader</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token class-name">ProcessingResult</span> <span class="token function">processRecord</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 이 Worker만의 핵심 로직만 여기에!</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre></div>
+<p>템플릿 메소드 패턴을 적용함으로써 수백 줄의 중복 코드를 제거하고, 각 Worker의 책임을 명확하게 분리할 수 있었습니다.</p>
+<h3 id="맺으며" style="position:relative;"><a href="#%EB%A7%BA%EC%9C%BC%EB%A9%B0" aria-label="맺으며 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>맺으며</h3>
+<p>프로젝트를 고도화 하면서 도서와 인터넷 강의로 공부했던 객체지향 설계 원칙과 디자인 패턴을 실제 복잡한 레거시 코드에 적용해볼 수 있었던 의미 있는 경험이었습니다. 특히 두 가지 패턴의 쓰임새를 명확히 구분하고 적용할 수 있었습니다.</p>
+<ul>
+<li>전략 패턴은 if-else로 얽혀있던 알고리즘들을 독립적인 객체로 분리하여 교체 가능한 부품으로 만드는 데 효과적이었습니다. (has-a 관계, 위임)</li>
+<li>템플릿 메소드 패턴은 여러 클래스에 걸쳐 중복되던 처리 흐름의 뼈대를 통일하고, 변경이 필요한 부분만 자식에게 맡기는 데 유용했습니다. (is-a 관계, 상속)</li>
+</ul>
+<p>이 과정들을 통해 중복되고 복잡했던 Worker 관련 코드를 수백 라인 이상 줄이고, 더 명확한 구조로 개선할 수 있었습니다</p></div><style data-emotion="css hx9xpc">@media (max-width: 768px){.css-hx9xpc{padding:0 20px;}}</style><div class="css-hx9xpc e12j4d8y0"></div><style data-emotion="css fmunkh">.css-fmunkh{position:absolute;top:0;left:768px;height:100%;padding-left:4rem;}@media (max-width: 1400px){.css-fmunkh{display:none;}}</style><aside class="css-fmunkh ek4ynda1"><style data-emotion="css 1s5ilwz">.css-1s5ilwz{position:-webkit-sticky;position:sticky;top:6rem;width:240px;overflow:hidden;font-size:0.8rem;}.css-1s5ilwz p{margin:0;}.css-1s5ilwz a{display:block;padding:0.5rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;border-radius:4px;-webkit-transition:all 0.1s ease-out;transition:all 0.1s ease-out;}.css-1s5ilwz a:hover{background-color:#badcff;}.css-1s5ilwz ul:first-child{border-left:none;}.css-1s5ilwz ul{margin-left:0.5rem;padding:0 0.5rem;list-style:none;border-left:2px solid #e2e5e6;}</style><nav class="css-1s5ilwz ek4ynda0"><ul>
+<li>
+<p><a href="#%ED%8C%8C%EC%9D%BC-%EA%B7%9C%EA%B2%A9%EC%97%90-%EB%94%B0%EB%9D%BC-%EB%81%9D%EC%97%86%EC%9D%B4-%EB%8A%98%EC%96%B4%EB%82%98%EB%8A%94-if-else-%EC%A7%80%EC%98%A5">파일 규격에 따라 끝없이 늘어나는 if-else 지옥</a></p>
+<ul>
+<li><a href="#if-else%EB%A5%BC-%EC%96%B4%EB%96%BB%EA%B2%8C-%EC%A0%9C%EA%B1%B0%ED%95%A0-%EC%88%98-%EC%9E%88%EC%9D%84%EA%B9%8C">if-else를 어떻게 제거할 수 있을까?</a></li>
+<li><a href="#provider-%ED%81%B4%EB%9E%98%EC%8A%A4%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EC%A0%84%EB%9E%B5-%EB%B6%84%EB%A6%AC">Provider 클래스를 이용한 전략 분리</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#spring%EC%9D%98-%EC%9E%90%EB%8F%99-%EC%A3%BC%EC%9E%85-%EA%B8%B0%EB%8A%A5%EC%9C%BC%EB%A1%9C-provider-%EB%8C%80%EC%B2%B4%ED%95%98%EA%B8%B0">Spring의 자동 주입 기능으로 Provider 대체하기</a></p>
+</li>
+<li>
+<p><a href="#%EC%A0%84%EC%B2%B4%EC%A0%81%EC%9D%B8-%EC%B2%98%EB%A6%AC-%ED%9D%90%EB%A6%84%EC%9D%80-%EA%B0%99%EA%B3%A0-%EC%84%B8%EB%B6%80-%EA%B5%AC%ED%98%84%EB%A7%8C-%EB%8B%A4%EB%A5%B8-worker%EB%93%A4">전체적인 처리 흐름은 같고, 세부 구현만 다른 Worker들</a></p>
+<ul>
+<li><a href="#%EA%B3%B5%ED%86%B5%EB%90%9C-%EC%B2%98%EB%A6%AC-%ED%9D%90%EB%A6%84%EC%9D%84-%EC%9E%AC%EC%82%AC%EC%9A%A9%ED%95%A0-%EC%88%9C-%EC%97%86%EC%9D%84%EA%B9%8C">공통된 처리 흐름을 재사용할 순 없을까?</a></li>
+<li><a href="#%EA%B5%AC%EC%A1%B0%EC%9D%98-%EC%9E%AC%EC%84%A4%EA%B3%84-%EC%83%81%EC%86%8D%EA%B3%BC-%EC%B6%94%EC%83%81%ED%99%94%EC%9D%98-%ED%9E%98">구조의 재설계: 상속과 추상화의 힘</a></li>
+</ul>
+</li>
+<li>
+<p><a href="#%EB%A7%BA%EC%9C%BC%EB%A9%B0">맺으며</a></p>
+</li>
+</ul></nav></aside></div><style data-emotion="css 3xgn3f">.css-3xgn3f{display:grid;place-items:center;margin-top:auto;padding:50px 0;font-size:15px;color:#aaa;font-weight:bold;text-align:center;line-height:1.5;background-color:#f0f0f0;}@media (max-width: 768px){.css-3xgn3f{font-size:13px;}}</style><div class="css-3xgn3f ehmnl591"><br/>© <!-- -->2025<!-- --> 박건희<style data-emotion="css 1tmvi1x">.css-1tmvi1x{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;gap:5px;font-size:25px;}.css-1tmvi1x>a{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;color:inherit;}@media (max-width: 768px){.css-1tmvi1x{font-size:20px;}}</style><div class="css-1tmvi1x ehmnl590"><a href="https://github.com/connieya" target="_blank" rel="noreferrer"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M511.6 76.3C264.3 76.2 64 276.4 64 523.5 64 718.9 189.3 885 363.8 946c23.5 5.9 19.9-10.8 19.9-22.2v-77.5c-135.7 15.9-141.2-73.9-150.3-88.9C215 726 171.5 718 184.5 703c30.9-15.9 62.4 4 98.9 57.9 26.4 39.1 77.9 32.5 104 26 5.7-23.5 17.9-44.5 34.7-60.8-140.6-25.2-199.2-111-199.2-213 0-49.5 16.3-95 48.3-131.7-20.4-60.5 1.9-112.3 4.9-120 58.1-5.2 118.5 41.6 123.2 45.3 33-8.9 70.7-13.6 112.9-13.6 42.4 0 80.2 4.9 113.5 13.9 11.3-8.6 67.3-48.8 121.3-43.9 2.9 7.7 24.7 58.3 5.5 118 32.4 36.8 48.9 82.7 48.9 132.3 0 102.2-59 188.1-200 212.9a127.5 127.5 0 0 1 38.1 91v112.5c.8 9 0 17.9 15 17.9 177.1-59.7 304.6-227 304.6-424.1 0-247.2-200.4-447.3-447.5-447.3z"></path></svg></a><a href="https://www.linkedin.com/in/%EA%B1%B4%ED%9D%AC-%EB%B0%95-6ab959238/" target="_blank" rel="noreferrer"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zM349.3 793.7H230.6V411.9h118.7v381.8zm-59.3-434a68.8 68.8 0 1 1 68.8-68.8c-.1 38-30.9 68.8-68.8 68.8zm503.7 434H675.1V608c0-44.3-.8-101.2-61.7-101.2-61.7 0-71.2 48.2-71.2 98v188.9H423.7V411.9h113.8v52.2h1.6c15.8-30 54.5-61.7 112.3-61.7 120.2 0 142.3 79.1 142.3 181.9v209.4z"></path></svg></a></div></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/refactoring-legacy-code-with-strategy-and-template-method-pattern/";/*]]>*/</script><!-- slice-start id="_gatsby-scripts-1" -->
+          <script
+            id="gatsby-chunk-mapping"
+          >
+            window.___chunkMapping="{\"app\":[\"/app-2a6f470a6ad9d828a849.js\"],\"component---src-pages-404-tsx\":[\"/component---src-pages-404-tsx-8535dbf06a13c1090bd2.js\"],\"component---src-pages-index-tsx\":[\"/component---src-pages-index-tsx-7226e26e24a45d3f8ba1.js\"],\"component---src-templates-post-template-tsx\":[\"/component---src-templates-post-template-tsx-767855da760b602a3e98.js\"]}";
+          </script>
+        <script>window.___webpackCompilationHash="b419e03fc8649d9cbdbe";</script><script src="/webpack-runtime-34793d79c4ff3bd9a082.js" async></script><script src="/framework-a02ced70e77b2a7c030d.js" async></script><script src="/app-2a6f470a6ad9d828a849.js" async></script><!-- slice-end id="_gatsby-scripts-1" --></body></html>
