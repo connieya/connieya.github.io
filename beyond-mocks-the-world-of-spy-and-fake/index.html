@@ -72,12 +72,12 @@
 </li>
 </ul>
 <br/>
-<h3 id="도구의-이름보다-중요한-것은-역할" style="position:relative;"><a href="#%EB%8F%84%EA%B5%AC%EC%9D%98-%EC%9D%B4%EB%A6%84%EB%B3%B4%EB%8B%A4-%EC%A4%91%EC%9A%94%ED%95%9C-%EA%B2%83%EC%9D%80-%EC%97%AD%ED%95%A0" aria-label="도구의 이름보다 중요한 것은 역할 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>도구의 이름보다 중요한 것은 역할</h3>
-<p>저는 오랫동안 테스트 더블의 '역할'과 Mockito가 제공하는 '도구'의 정체성을 혼동했습니다</p>
-<p>@Mock 어노테이션을 썼으니 당연히 Mock의 역할일 것이고, spy() 메서드를 썼으니 Spy일 것이라 단정했습니다.</p>
-<p>when-then 구문은 Mock의 전유물이고, doReturn-when은 Spy만 쓰는 특별한 문법이라는 틀에도 갇혀 있었습니다.</p>
-<p>하지만 @Mock으로 만든 객체가 verify 없이 값만 반환하며 Stub처럼 동작하고, spy()로 만든 객체 역시 실제 로직을 실행하지 못하는 Stub으로 전락하는 것을 보며, 이 모든 공식이 무너지는 경험을 했습니다.</p>
-<p>중요한 것은 사용한 도구의 이름이 아니라 그 도구를 통해 어떤 역할을 수행하게 만들었는지 즉, 달성하려는 테스트의 목적이라는 것을 깨닫게 되었습니다.</p>
+<h3 id="도구의-이름보다-중요한-것은-역할" style="position:relative;"><a href="#%EB%8F%84%EA%B5%AC%EC%9D%98-%EC%9D%B4%EB%A6%84%EB%B3%B4%EB%8B%A4-%EC%A4%91%EC%9A%94%ED%95%9C-%EA%B2%83%EC%9D%80-%EC%97%AD%ED%95%A0" aria-label="도구의 이름보다 중요한 것은 역할 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>도구의 이름보다 중요한 것은 '역할'</h3>
+<p>저는 오랫동안 테스트 더블의 <strong>'역할'</strong> 과 Mockito가 제공하는 <strong>'도구'</strong> 의 정체성을 혼동했습니다.
+<code class="language-text">@Mock</code> 어노테이션을 썼으니 당연히 <strong>Mock의 역할</strong>일 것이고, <code class="language-text">spy()</code> 메서드를 썼으니 <strong>Spy</strong>일 것이라 단정했습니다.</p>
+<p><code class="language-text">when-then</code> 구문은 Mock의 전유물이고, <code class="language-text">doReturn-when</code> 은 Spy만 쓰는 특별한 문법이라는 틀에도 갇혀 있었습니다.</p>
+<p>하지만 <code class="language-text">@Mock</code>으로 만든 객체가 <code class="language-text">verify</code> 없이 값만 반환하며 <code class="language-text">Stub</code>처럼 동작하고, <code class="language-text">spy()</code>로 만든 객체 역시 실제 로직을 실행하지 못하는 stub으로 전락하는 것을 보며, 이 모든 공식이 무너지는 경험을 했습니다.</p>
+<p>중요한 것은 사용한 도구의 이름이 아니라 그 도구를 통해 <strong>어떤 역할을 수행하게 만들었는지</strong> 즉, 달성하려는 <strong>테스트의 목적이</strong>라는 것을 깨닫게 되었습니다.</p>
 <p><br/><br/></p>
 <h4 id="테스트-더블-사용하기-전-도메인-구조-간단히-살펴보기" style="position:relative;"><a href="#%ED%85%8C%EC%8A%A4%ED%8A%B8-%EB%8D%94%EB%B8%94-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-%EC%A0%84-%EB%8F%84%EB%A9%94%EC%9D%B8-%EA%B5%AC%EC%A1%B0-%EA%B0%84%EB%8B%A8%ED%9E%88-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0" aria-label="테스트 더블 사용하기 전 도메인 구조 간단히 살펴보기 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>테스트 더블 사용하기 전, 도메인 구조 간단히 살펴보기</h4>
 <p>테스트 더블(mock, spy, fake 등)을 다루기 전, 이들이 어떻게 사용되는지를 이해하기 위해 먼저 애플리케이션의 도메인 구조를 간단히 짚고 넘어가겠습니다.</p>
@@ -352,15 +352,15 @@
 <p>이 모든 경험을 통해 나는 테스트 더블을 선택하는 명확한 기준을 세울 수 있었다.</p>
 <p>그것은 “어떤 어노테이션을 쓸까?”가 아니라, “내가 검증하려는 핵심 관심사가 무엇인가?” 입니다.</p>
 <ul>
-<li>관심사 1 : 상호작용 검증 -> Mock</li>
+<li>관심사 1 : <strong>상호작용 검증</strong> 👉 <strong>Mock</strong></li>
 </ul>
 <p>SUT가 의존 객체의 올바른 메서드를 호출했는지를 확인하고자 할 때 적합합니다. 가장 순수한 단위 테스트에 사용됩니다.</p>
 <ul>
-<li>관심사 2 : 최종 상태 검증 -> Fake</li>
+<li>관심사 2 : <strong>최종 상태 검증</strong> 👉 <strong>Fake</strong></li>
 </ul>
 <p>로직 실행 후 시스템의 상태가 올바른지 확인하고자 할 때, 리팩토링에 강건하고 신뢰도가 높습니다.</p>
 <ul>
-<li>관심사 3 : SUT 또는 협력 객체의 복잡한 실제 로직 검증 -> Spy</li>
+<li>관심사 3 : <strong>SUT 또는 협력 객체의 복잡한 실제 로직 검증</strong> 👉 <strong>Spy</strong></li>
 </ul>
 <p>복잡한 도메인 로직 또는 협력 객체의 실제 동작이 핵심일 경우, 외부 I/O만 정밀하게 차단하며 현실적인 단위 테스트를 구성할 수 있습니다.</p>
 <br/>
@@ -375,7 +375,7 @@
 <p><a href="#%ED%85%8C%EC%8A%A4%ED%8A%B8-%EB%8D%94%EB%B8%94-%EB%AC%B4%EC%97%87%EC%9D%84-%EC%9C%84%ED%95%9C-%EB%8C%80%EC%97%AD%EC%9D%B8%EA%B0%80">테스트 더블: 무엇을 위한 대역인가?</a></p>
 </li>
 <li>
-<p><a href="#%EB%8F%84%EA%B5%AC%EC%9D%98-%EC%9D%B4%EB%A6%84%EB%B3%B4%EB%8B%A4-%EC%A4%91%EC%9A%94%ED%95%9C-%EA%B2%83%EC%9D%80-%EC%97%AD%ED%95%A0">도구의 이름보다 중요한 것은 역할</a></p>
+<p><a href="#%EB%8F%84%EA%B5%AC%EC%9D%98-%EC%9D%B4%EB%A6%84%EB%B3%B4%EB%8B%A4-%EC%A4%91%EC%9A%94%ED%95%9C-%EA%B2%83%EC%9D%80-%EC%97%AD%ED%95%A0">도구의 이름보다 중요한 것은 '역할'</a></p>
 <ul>
 <li><a href="#%ED%85%8C%EC%8A%A4%ED%8A%B8-%EB%8D%94%EB%B8%94-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-%EC%A0%84-%EB%8F%84%EB%A9%94%EC%9D%B8-%EA%B5%AC%EC%A1%B0-%EA%B0%84%EB%8B%A8%ED%9E%88-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0">테스트 더블 사용하기 전, 도메인 구조 간단히 살펴보기</a></li>
 </ul>
