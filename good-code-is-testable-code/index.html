@@ -108,7 +108,6 @@
 <p>하지만 막상 실제 프로젝트에 적용하려고 하면 생각만큼 쉽지 않은 것이 TDD였습니다.</p>
 <p>그래서 저는 TDD의 큰 그림보다는, 우선 테스트 코드를 작성하는 것부터 시작하기로 했습니다.</p>
 <p>"일단 테스트를 해보자!"는 마음으로요.</p>
-<br/>
 <h2 id="테스트-코드-그-시작부터-쉽지-않네" style="position:relative;"><a href="#%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%BD%94%EB%93%9C-%EA%B7%B8-%EC%8B%9C%EC%9E%91%EB%B6%80%ED%84%B0-%EC%89%BD%EC%A7%80-%EC%95%8A%EB%84%A4" aria-label="테스트 코드 그 시작부터 쉽지 않네 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>테스트 코드, 그 시작부터 쉽지 않네?</h2>
 <p>테스트 코드 작성이 분명 코드의 안정성을 높여주고 미래의 버그를 방지해 줄 것이라 믿었습니다.</p>
 <p>그래서 막 새로 추가한 주문 생성 로직에 대한 단위 테스트를 작성하기 시작했습니다.</p>
@@ -158,7 +157,6 @@
 <p>createOrder 메서드는 주문 생성의 전체적인 흐름을 담고 있습니다. 그런데 문제가 발생했습니다.</p>
 <p>이 메서드 안에는 deductQuantity라는 재고 차감 로직을 담당하는 private 메서드가 포함되어 있었습니다.</p>
 <p>이 deductQuantity 메서드만을 독립적으로 테스트하고 싶었는데, private 접근 제어자 때문에 외부에서 직접 호출할 수 없는 겁니다!</p>
-<br/>
 <br/>
 <h2 id="코드가-신호를-보내고-있다-리팩토링-해달라고" style="position:relative;"><a href="#%EC%BD%94%EB%93%9C%EA%B0%80-%EC%8B%A0%ED%98%B8%EB%A5%BC-%EB%B3%B4%EB%82%B4%EA%B3%A0-%EC%9E%88%EB%8B%A4-%EB%A6%AC%ED%8C%A9%ED%86%A0%EB%A7%81-%ED%95%B4%EB%8B%AC%EB%9D%BC%EA%B3%A0" aria-label="코드가 신호를 보내고 있다 리팩토링 해달라고 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>코드가 신호를 보내고 있다: "리팩토링 해달라고!"</h2>
 <p>테스트 코드를 작성하기 어렵다는 것은 단순히 테스트 작성 방법을 몰라서가 아닐 수도 있습니다.</p>
@@ -336,7 +334,7 @@
 <p>굳이 필요 없는 findAllByPessimisticLock 같은 메서드까지 구현할 필요가 없어지는 것이죠.</p>
 <p>덕분에 OrderService의 단위 테스트는 외부 환경에 의존하지 않고 독립적으로 실행할 수 있게 되었고, 테스트 코드 작성도 훨씬 용이해졌습니다.</p>
 <br/>
-<h2 id="결론-테스트-코드가-이끄는-더-나은-코드" style="position:relative;"><a href="#%EA%B2%B0%EB%A1%A0-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%BD%94%EB%93%9C%EA%B0%80-%EC%9D%B4%EB%81%84%EB%8A%94-%EB%8D%94-%EB%82%98%EC%9D%80-%EC%BD%94%EB%93%9C" aria-label="결론 테스트 코드가 이끄는 더 나은 코드 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>결론: 테스트 코드가 이끄는 더 나은 코드</h2>
+<h2 id="테스트-코드가-알려주는-신호들" style="position:relative;"><a href="#%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%BD%94%EB%93%9C%EA%B0%80-%EC%95%8C%EB%A0%A4%EC%A3%BC%EB%8A%94-%EC%8B%A0%ED%98%B8%EB%93%A4" aria-label="테스트 코드가 알려주는 신호들 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>테스트 코드가 알려주는 신호들</h2>
 <p>처음에는 단순히 테스트 코드를 작성하려 했을 뿐인데, 그 과정에서 의미 있는 발견들을 할 수 있었습니다.</p>
 <ul>
 <li>
@@ -350,20 +348,14 @@
 </li>
 </ul>
 <p>이 외에도 테스트 코드를 작성하면서 얻을 수 있는 장점은 많습니다.</p>
+<h2 id="테스트-코드가-주는-실질적인-이점들" style="position:relative;"><a href="#%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%BD%94%EB%93%9C%EA%B0%80-%EC%A3%BC%EB%8A%94-%EC%8B%A4%EC%A7%88%EC%A0%81%EC%9D%B8-%EC%9D%B4%EC%A0%90%EB%93%A4" aria-label="테스트 코드가 주는 실질적인 이점들 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>테스트 코드가 주는 실질적인 이점들</h2>
 <ul>
-<li>
-<p><strong>버그 감소 및 안정성 향상</strong>: 테스트 코드는 잠재적인 버그를 미리 발견하고, 코드 변경 시 기존 기능이 망가지지 않도록 안전망 역할을 합니다.</p>
-</li>
-<li>
-<p><strong>문서화 효과</strong>: 테스트 코드는 해당 기능이 어떻게 동작해야 하는지에 대한 살아있는 문서 역할을 합니다.</p>
-</li>
-<li>
-<p><strong>빠른 피드백</strong>: 변경된 코드가 올바르게 작동하는지 즉각적인 피드백을 받을 수 있습니다.</p>
-</li>
-<li>
-<p><strong>자신감 있는 리팩토링</strong>: 테스트 코드가 있다면 코드 변경에 대한 두려움을 줄이고 자신감 있게 리팩토링을 할 수 있습니다.</p>
-</li>
+<li><strong>버그 감소 및 안정성 향상</strong>: 테스트 코드는 잠재적인 버그를 미리 발견하고, 코드 변경 시 기존 기능이 망가지지 않도록 안전망 역할을 합니다.</li>
+<li><strong>문서화 효과</strong>: 테스트 코드는 해당 기능이 어떻게 동작해야 하는지에 대한 살아있는 문서 역할을 합니다.</li>
+<li><strong>빠른 피드백</strong>: 변경된 코드가 올바르게 작동하는지 즉각적인 피드백을 받을 수 있습니다.</li>
+<li><strong>자신감 있는 리팩토링</strong>: 테스트 코드가 있다면 코드 변경에 대한 두려움을 줄이고 자신감 있게 리팩토링을 할 수 있습니다.</li>
 </ul>
+<h2 id="맺으며" style="position:relative;"><a href="#%EB%A7%BA%EC%9C%BC%EB%A9%B0" aria-label="맺으며 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>맺으며</h2>
 <p>테스트 코드는 단순히 버그를 잡는 도구가 아닙니다. 좋은 테스트 코드를 작성하려는 노력은 곧 좋은 코드를 작성하려는 노력과 직결됩니다.</p>
 <p>만약 테스트 코드 작성이 어렵게 느껴진다면, 그 어려움이 코드가 보내는 리팩토링 신호일 수 있다는 점을 기억하고 코드를 개선하는 기회로 삼아보세요.</p>
 <p>분명 더 나은 개발 경험과 높은 품질의 코드를 만날 수 있을 겁니다!</p></div><style data-emotion="css hx9xpc">@media (max-width: 768px){.css-hx9xpc{padding:0 20px;}}</style><div class="css-hx9xpc e12j4d8y0"></div><style data-emotion="css fmunkh">.css-fmunkh{position:absolute;top:0;left:768px;height:100%;padding-left:4rem;}@media (max-width: 1400px){.css-fmunkh{display:none;}}</style><aside class="css-fmunkh ek4ynda1"><style data-emotion="css 1s5ilwz">.css-1s5ilwz{position:-webkit-sticky;position:sticky;top:6rem;width:240px;overflow:hidden;font-size:0.8rem;}.css-1s5ilwz p{margin:0;}.css-1s5ilwz a{display:block;padding:0.5rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;border-radius:4px;-webkit-transition:all 0.1s ease-out;transition:all 0.1s ease-out;}.css-1s5ilwz a:hover{background-color:#badcff;}.css-1s5ilwz ul:first-child{border-left:none;}.css-1s5ilwz ul{margin-left:0.5rem;padding:0 0.5rem;list-style:none;border-left:2px solid #e2e5e6;}</style><nav class="css-1s5ilwz ek4ynda0"><ul>
@@ -381,7 +373,13 @@
 </ul>
 </li>
 <li>
-<p><a href="#%EA%B2%B0%EB%A1%A0-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%BD%94%EB%93%9C%EA%B0%80-%EC%9D%B4%EB%81%84%EB%8A%94-%EB%8D%94-%EB%82%98%EC%9D%80-%EC%BD%94%EB%93%9C">결론: 테스트 코드가 이끄는 더 나은 코드</a></p>
+<p><a href="#%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%BD%94%EB%93%9C%EA%B0%80-%EC%95%8C%EB%A0%A4%EC%A3%BC%EB%8A%94-%EC%8B%A0%ED%98%B8%EB%93%A4">테스트 코드가 알려주는 신호들</a></p>
+</li>
+<li>
+<p><a href="#%ED%85%8C%EC%8A%A4%ED%8A%B8-%EC%BD%94%EB%93%9C%EA%B0%80-%EC%A3%BC%EB%8A%94-%EC%8B%A4%EC%A7%88%EC%A0%81%EC%9D%B8-%EC%9D%B4%EC%A0%90%EB%93%A4">테스트 코드가 주는 실질적인 이점들</a></p>
+</li>
+<li>
+<p><a href="#%EB%A7%BA%EC%9C%BC%EB%A9%B0">맺으며</a></p>
 </li>
 </ul></nav></aside></div><style data-emotion="css 3xgn3f">.css-3xgn3f{display:grid;place-items:center;margin-top:auto;padding:50px 0;font-size:15px;color:#aaa;font-weight:bold;text-align:center;line-height:1.5;background-color:#f0f0f0;}@media (max-width: 768px){.css-3xgn3f{font-size:13px;}}</style><div class="css-3xgn3f ehmnl591"><br/>© <!-- -->2025<!-- --> 박건희<style data-emotion="css 1tmvi1x">.css-1tmvi1x{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;gap:5px;font-size:25px;}.css-1tmvi1x>a{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;color:inherit;}@media (max-width: 768px){.css-1tmvi1x{font-size:20px;}}</style><div class="css-1tmvi1x ehmnl590"><a href="https://github.com/connieya" target="_blank" rel="noreferrer"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M511.6 76.3C264.3 76.2 64 276.4 64 523.5 64 718.9 189.3 885 363.8 946c23.5 5.9 19.9-10.8 19.9-22.2v-77.5c-135.7 15.9-141.2-73.9-150.3-88.9C215 726 171.5 718 184.5 703c30.9-15.9 62.4 4 98.9 57.9 26.4 39.1 77.9 32.5 104 26 5.7-23.5 17.9-44.5 34.7-60.8-140.6-25.2-199.2-111-199.2-213 0-49.5 16.3-95 48.3-131.7-20.4-60.5 1.9-112.3 4.9-120 58.1-5.2 118.5 41.6 123.2 45.3 33-8.9 70.7-13.6 112.9-13.6 42.4 0 80.2 4.9 113.5 13.9 11.3-8.6 67.3-48.8 121.3-43.9 2.9 7.7 24.7 58.3 5.5 118 32.4 36.8 48.9 82.7 48.9 132.3 0 102.2-59 188.1-200 212.9a127.5 127.5 0 0 1 38.1 91v112.5c.8 9 0 17.9 15 17.9 177.1-59.7 304.6-227 304.6-424.1 0-247.2-200.4-447.3-447.5-447.3z"></path></svg></a><a href="https://www.linkedin.com/in/%EA%B1%B4%ED%9D%AC-%EB%B0%95-6ab959238/" target="_blank" rel="noreferrer"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M880 112H144c-17.7 0-32 14.3-32 32v736c0 17.7 14.3 32 32 32h736c17.7 0 32-14.3 32-32V144c0-17.7-14.3-32-32-32zM349.3 793.7H230.6V411.9h118.7v381.8zm-59.3-434a68.8 68.8 0 1 1 68.8-68.8c-.1 38-30.9 68.8-68.8 68.8zm503.7 434H675.1V608c0-44.3-.8-101.2-61.7-101.2-61.7 0-71.2 48.2-71.2 98v188.9H423.7V411.9h113.8v52.2h1.6c15.8-30 54.5-61.7 112.3-61.7 120.2 0 142.3 79.1 142.3 181.9v209.4z"></path></svg></a></div></div></div></div><div id="gatsby-announcer" style="position:absolute;top:0;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border:0" aria-live="assertive" aria-atomic="true"></div></div><script id="gatsby-script-loader">/*<![CDATA[*/window.pagePath="/good-code-is-testable-code/";/*]]>*/</script><!-- slice-start id="_gatsby-scripts-1" -->
           <script
@@ -389,4 +387,4 @@
           >
             window.___chunkMapping="{\"app\":[\"/app-2a6f470a6ad9d828a849.js\"],\"component---src-pages-404-tsx\":[\"/component---src-pages-404-tsx-8535dbf06a13c1090bd2.js\"],\"component---src-pages-index-tsx\":[\"/component---src-pages-index-tsx-7226e26e24a45d3f8ba1.js\"],\"component---src-templates-post-template-tsx\":[\"/component---src-templates-post-template-tsx-767855da760b602a3e98.js\"]}";
           </script>
-        <script>window.___webpackCompilationHash="cebb9f87d930de44d592";</script><script src="/webpack-runtime-f4adabee83a5012a9741.js" async></script><script src="/framework-a02ced70e77b2a7c030d.js" async></script><script src="/app-2a6f470a6ad9d828a849.js" async></script><!-- slice-end id="_gatsby-scripts-1" --></body></html>
+        <script>window.___webpackCompilationHash="31e89780e7940e4a3fbb";</script><script src="/webpack-runtime-f4adabee83a5012a9741.js" async></script><script src="/framework-a02ced70e77b2a7c030d.js" async></script><script src="/app-2a6f470a6ad9d828a849.js" async></script><!-- slice-end id="_gatsby-scripts-1" --></body></html>
