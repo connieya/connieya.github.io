@@ -44,7 +44,7 @@ const PostTemplate = ({
           timeToRead={timeToRead}
         />
         <PostBody ref={contentRef} html={html} />
-        <PostComment />
+        {/* <PostComment /> */}
         <TableOfContents ref={contentRef} tableOfContents={tableOfContents} />
       </Container>
     </Template>
