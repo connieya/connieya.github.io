@@ -89,20 +89,53 @@ sequenceDiagram
 
 그 안에 OrderFacade를 두어 이 복잡한 과정을 위임하기로 결정했습니다.
 
+```mermaid
+sequenceDiagram
+    participant OF as OrderFacade
+    participant PS as ProductService
+    participant OS as OrderService
+    participant PTS as PointService
+    participant STS as StockService
+
+
+    OF->>PS : 상품 목록 반환 (List<Product>)
+    activate PS
+    PS-->>OF: 상품 목록 반환 (List<Product>)
+    deactivate PS
+    OF->>OS: 주문 생성 요청 (OrderCommand)
+    activate OS
+    OS-->>OF: 주문 생성 완료
+    deactivate OS
+    OF->>PTS: 포인트 차감 요청 (userId, totalAmount)
+    activate PTS
+    PTS-->>OF: 포인트 차감 완료
+    deactivate PTS
+    OF->>STS: 재고 차감 요청 (orderItems)
+    activate STS
+    STS-->>OF: 재고 차감 완료
+    deactivate STS
+
+```
+
 ```java
 @Service
 @RequiredArgsConstructor
 public class OrderFacade {
-    private final ProductService productService;
-    private final OrderService orderService;
 
-    public void place(OrderCriteria criteria) {
-        // Facade는 흐름만 제어한다.
-        // 1. 조회 -> 2. 변환 -> 3. 실행
-        List<Product> products = productService.getProductsByIds(criteria.getProductIds());
-        OrderCommand command = criteria.toCommand(products, criteria.getUserId()); // DTO가 변환 책임
-        orderService.place(command);
-        // .. 이후 재고 차감 , 결제 등등
+    private final ProductService productService;
+    private final UserService userService;
+    private final OrderService orderService;
+    private final PointService pointService;
+    private final StockService stockService;
+
+    @Transactional
+    public void place(OrderCriteria orderCriteria) {
+        User user = userService.findByUserId(orderCriteria.getUserId());
+        List<Product> products = productService.findAllById(orderCriteria.getProductIds());
+        OrderCommand command = orderCriteria.toCommand(products, user.getId());
+        OrderInfo orderInfo = orderService.place(command);
+        pointService.deduct(user.getUserId(), orderInfo.getTotalAmount());
+        stockService.deduct(orderCriteria.getProductIds(), command);
     }
 }
 ```
@@ -250,18 +283,24 @@ Mapper의 등장으로 모든 객체는 자신의 책임에만 완벽하게 충�
 - OrderService: 핵심 비즈니스 로직만 처리.
 
 ```java
-// 최종 설계: 완벽하게 책임을 분리한 Facade
 @Service
 @RequiredArgsConstructor
 public class OrderFacade {
-    private final ProductService productService;
-    private final OrderService orderService;
 
-    public void place(OrderCriteria criteria) {
-        List<Product> products = productService.getProductsByIds(criteria.getProductIds());
-        OrderCommand command = OrderCommandMapper.map(criteria.getUserId(), criteria, products);
-         orderService.place(command);
-        // .. 이후 재고 차감 , 결제 등등
+    private final ProductService productService;
+    private final UserService userService;
+    private final OrderService orderService;
+    private final PointService pointService;
+    private final StockService stockService;
+
+    @Transactional
+    public void place(OrderCriteria orderCriteria) {
+        User user = userService.findByUserId(orderCriteria.getUserId());
+        List<Product> products = productService.findAllById(orderCriteria.getProductIds());
+        OrderCommand command = OrderCommandMapper.map(user.getId(),orderCriteria,products);
+        OrderInfo orderInfo = orderService.place(command);
+        pointService.deduct(user.getUserId(), orderInfo.getTotalAmount());
+        stockService.deduct(orderCriteria.getProductIds(), command);
     }
 }
 ```
