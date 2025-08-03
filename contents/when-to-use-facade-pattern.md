@@ -123,18 +123,16 @@ sequenceDiagram
 public class OrderFacade {
 
     private final ProductService productService;
-    private final UserService userService;
     private final OrderService orderService;
     private final PointService pointService;
     private final StockService stockService;
 
     @Transactional
     public void place(OrderCriteria orderCriteria) {
-        User user = userService.findByUserId(orderCriteria.getUserId());
         List<Product> products = productService.findAllById(orderCriteria.getProductIds());
-        OrderCommand command = orderCriteria.toCommand(products, user.getId());
+        OrderCommand command = orderCriteria.toCommand(products);
         OrderInfo orderInfo = orderService.place(command);
-        pointService.deduct(user.getUserId(), orderInfo.getTotalAmount());
+        pointService.deduct(orderCriteria.getUserId(), orderInfo.getTotalAmount());
         stockService.deduct(orderCriteria.getProductIds(), command);
     }
 }
@@ -169,7 +167,7 @@ public class OrderCriteria {
         return orderItems.stream().map(OrderItem::getProductId).collect(Collectors.toList());
     }
 
-    public OrderCommand toCommand(List<Product> products , Long userId) {
+    public OrderCommand toCommand(List<Product> products) {
         // 상품 ID를 키로 사용하여 Product 객체를 쉽게 찾을 수 있도록 Map으로 만듭니다.
         Map<Long, Product> productMap = products.stream()
                 .collect(Collectors.toMap(Product::getId, product -> product));
@@ -196,7 +194,7 @@ public class OrderCriteria {
                 .collect(Collectors.toList());
 
         // 위에서 준비된 모든 정보를 담아 최종 OrderCommand 객체를 생성하고 반환합니다.
-        return OrderCommand.of(userId, convertedItems, totalAmount);
+        return OrderCommand.of(convertedItems, totalAmount , userId);
     }
 }
 ```
@@ -246,7 +244,7 @@ DTO는 순수한 데이터 운반 객체(Data Transfer Object)여야 한다는 �
 
 ```java
 public class OrderCommandMapper {
-    public static OrderCommand map(Long userId , OrderCriteria orderCriteria , List<Product> products) {
+    public static OrderCommand map(String userId , OrderCriteria orderCriteria , List<Product> products) {
         Map<Long, Product> productMap = products.stream()
                 .collect(Collectors.toMap(Product::getId, product -> product));
 
@@ -269,7 +267,7 @@ public class OrderCommandMapper {
                 })
                 .toList();
 
-        return OrderCommand.of(userId, convertedItems,totalAmount);
+        return OrderCommand.of(convertedItems,totalAmount , userId);
 
     }
 }
@@ -288,18 +286,16 @@ Mapper의 등장으로 모든 객체는 자신의 책임에만 완벽하게 충�
 public class OrderFacade {
 
     private final ProductService productService;
-    private final UserService userService;
     private final OrderService orderService;
     private final PointService pointService;
     private final StockService stockService;
 
     @Transactional
     public void place(OrderCriteria orderCriteria) {
-        User user = userService.findByUserId(orderCriteria.getUserId());
         List<Product> products = productService.findAllById(orderCriteria.getProductIds());
-        OrderCommand command = OrderCommandMapper.map(user.getId(),orderCriteria,products);
+        OrderCommand command = OrderCommandMapper.map(orderCriteria.getUserId() , orderCriteria , products);
         OrderInfo orderInfo = orderService.place(command);
-        pointService.deduct(user.getUserId(), orderInfo.getTotalAmount());
+        pointService.deduct(orderCriteria.getUserId(), orderInfo.getTotalAmount());
         stockService.deduct(orderCriteria.getProductIds(), command);
     }
 }
