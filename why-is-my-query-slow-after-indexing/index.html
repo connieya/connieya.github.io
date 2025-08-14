@@ -51,7 +51,54 @@
   </script><link rel="canonical" href="https://connieya.github.io/why-is-my-query-slow-after-indexing/" data-baseprotocol="https:" data-basehost="connieya.github.io"/></head><body><div id="___gatsby"><div style="outline:none" tabindex="-1" id="gatsby-focus-wrapper"><style data-emotion="css 11pfcjj">.css-11pfcjj{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;min-height:100vh;}</style><div class="css-11pfcjj esjg9ma0"><style data-emotion="css 123clne">.css-123clne{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;width:100%;height:7rem;}</style><div class="css-123clne e1o8p83g2"><style data-emotion="css 1dg0t7z">.css-1dg0t7z{width:100%;max-width:768px;margin:0 auto;}</style><div class="css-1dg0t7z e1o8p83g1"><style data-emotion="css 1yk9l7f">.css-1yk9l7f{font-size:1.5rem;font-weight:bold;font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji';}</style><a class="css-1yk9l7f e1o8p83g0" href="/">박건희</a></div></div><style data-emotion="css-global 4cqo99">*{padding:0;margin:0;box-sizing:border-box;font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji';}html,body,#___gatsby{height:100%;font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji';}a,a:hover{color:inherit;-webkit-text-decoration:none;text-decoration:none;cursor:pointer;}</style><style data-emotion="css 11k3q87">.css-11k3q87{position:relative;width:100%;max-width:768px;margin:0 auto;}</style><div class="css-11k3q87 e17f455w0"><style data-emotion="css jwelnu">.css-jwelnu{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;padding:2.5rem 1rem 2rem;max-width:768px;margin:0 auto;}@media (max-width: 768px){.css-jwelnu{padding:2rem 0.75rem 1.5rem;}}</style><div class="css-jwelnu ehbuenk4"><style data-emotion="css gjsprg">.css-gjsprg{word-break:keep-all;line-height:1.3;font-size:1.9rem;margin-bottom:1.3rem;}@media (max-width: 768px){.css-gjsprg{font-size:1.8rem;margin-bottom:0.8rem;}}</style><h1 class="css-gjsprg ehbuenk3">인덱스를 걸었는데, 왜 느리죠? (feat. 5초를 0.03초로 만든 쿼리 삽질기) </h1><style data-emotion="css 1r9pax5">.css-1r9pax5{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:start;-ms-flex-pack:start;-webkit-justify-content:flex-start;justify-content:flex-start;color:#757575;font-size:0.9rem;}@media (max-width: 768px){.css-1r9pax5{-webkit-box-pack:start;-ms-flex-pack:start;-webkit-justify-content:flex-start;justify-content:flex-start;}}</style><div class="css-1r9pax5 ehbuenk2"> <style data-emotion="css 1bmnxg7">.css-1bmnxg7{white-space:nowrap;}</style><div class="css-1bmnxg7 ehbuenk1">2025-08-15<style data-emotion="css uaob3j">.css-uaob3j{margin-left:0.5rem;}</style><span class="css-uaob3j ehbuenk0">약 <!-- -->10<!-- -->분</span></div></div></div><style data-emotion="css n5jjl">.css-n5jjl{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;width:100%;margin:0 auto;padding:1.5rem 0;line-height:1.75;word-break:break-all;}.css-n5jjl h1,.css-n5jjl h2,.css-n5jjl h3{margin-bottom:1.5rem;font-weight:700;}.css-n5jjl h1{padding-left:0.2rem;font-size:2rem;border-bottom:1px solid #e2e5e6;}.css-n5jjl h2{font-size:1.75rem;border-bottom:1px solid #e2e5e6;}.css-n5jjl h3{font-size:1.25rem;}.css-n5jjl *+h1,.css-n5jjl *+h2,.css-n5jjl *+h3{margin-top:2rem;margin-bottom:0.5rem;}.css-n5jjl hr+h1,.css-n5jjl hr+h2,.css-n5jjl hr+h3{margin-top:0;}.css-n5jjl blockquote{margin:30px 0;padding:0 1rem;color:#757575;font-weight:800;border-left:2px solid #e2e5e6;}.css-n5jjl ol,.css-n5jjl ul{margin-top:0rem;margin-bottom:0rem;margin-left:1rem;padding:0.5rem 0;}.css-n5jjl li{font-weight:300;}.css-n5jjl hr{margin:100px 0;border:1px solid #000;}.css-n5jjl a{color:#0E68C8;}.css-n5jjl p{margin:0;padding:0.5rem 0;font-weight:300;}.css-n5jjl img{margin:3rem 0;}.css-n5jjl pre[class*='language-'],.css-n5jjl code[class*='language-']{color:#d4d4d4;font-size:13px;font-family:Menlo,Monaco,Consolas,'Andale Mono','Ubuntu Mono','Courier New',monospace;direction:ltr;white-space:pre;text-align:left;text-shadow:none;word-break:normal;word-spacing:normal;tab-size:4;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none;border-radius:0.5rem;}.css-n5jjl pre[class*='language-']::selection,.css-n5jjl code[class*='language-']::selection,.css-n5jjl pre[class*='language-'] *::selection,.css-n5jjl code[class*='language-'] *::selection{text-shadow:none;background:#264f78;}@media print{.css-n5jjl pre[class*='language-'],.css-n5jjl code[class*='language-']{text-shadow:none;}}.css-n5jjl pre[class*='language-']{padding:1rem;overflow:auto;background:#1e1e1e;}.css-n5jjl:not(pre)>code[class*='language-']{padding:0.1em 0.3em;background:#1e1e1e;border-radius:0;border-radius:0.3em;}.css-n5jjl .namespace{opacity:0.7;}.css-n5jjl .token.doctype .token.doctype-tag{color:#569cd6;}.css-n5jjl .token.doctype .token.name{color:#9cdcfe;}.css-n5jjl .token.comment,.css-n5jjl .token.prolog{color:#6a9955;}.css-n5jjl .token.punctuation,.css-n5jjl .language-html .language-css .token.punctuation,.css-n5jjl .language-html .language-javascript .token.punctuation{color:#d4d4d4;}.css-n5jjl .token.property,.css-n5jjl .token.tag,.css-n5jjl .token.boolean,.css-n5jjl .token.number,.css-n5jjl .token.constant,.css-n5jjl .token.symbol,.css-n5jjl .token.inserted,.css-n5jjl .token.unit{color:#b5cea8;}.css-n5jjl .token.selector,.css-n5jjl .token.attr-name,.css-n5jjl .token.string,.css-n5jjl .token.char,.css-n5jjl .token.builtin,.css-n5jjl .token.deleted{color:#ce9178;}.css-n5jjl .language-css .token.string.url{-webkit-text-decoration:underline;text-decoration:underline;}.css-n5jjl .token.operator,.css-n5jjl .token.entity{color:#d4d4d4;}.css-n5jjl .token.operator.arrow{color:#569cd6;}.css-n5jjl .token.atrule{color:#ce9178;}.css-n5jjl .token.atrule .token.rule{color:#c586c0;}.css-n5jjl .token.atrule .token.url{color:#9cdcfe;}.css-n5jjl .token.atrule .token.url .token.function{color:#dcdcaa;}.css-n5jjl .token.atrule .token.url .token.punctuation{color:#d4d4d4;}.css-n5jjl .token.keyword{color:#569cd6;}.css-n5jjl .token.keyword.module,.css-n5jjl .token.keyword.control-flow{color:#c586c0;}.css-n5jjl .token.function,.css-n5jjl .token.function .token.maybe-class-name{color:#dcdcaa;}.css-n5jjl .token.regex{color:#d16969;}.css-n5jjl .token.important{color:#569cd6;}.css-n5jjl .token.italic{font-style:italic;}.css-n5jjl .token.constant{color:#9cdcfe;}.css-n5jjl .token.class-name,.css-n5jjl .token.maybe-class-name{color:#4ec9b0;}.css-n5jjl .token.console{color:#9cdcfe;}.css-n5jjl .token.parameter{color:#9cdcfe;}.css-n5jjl .token.interpolation{color:#9cdcfe;}.css-n5jjl .token.punctuation.interpolation-punctuation{color:#569cd6;}.css-n5jjl .token.boolean{color:#569cd6;}.css-n5jjl .token.property,.css-n5jjl .token.variable,.css-n5jjl .token.imports .token.maybe-class-name,.css-n5jjl .token.exports .token.maybe-class-name{color:#9cdcfe;}.css-n5jjl .token.selector{color:#d7ba7d;}.css-n5jjl .token.escape{color:#d7ba7d;}.css-n5jjl .token.tag{color:#569cd6;}.css-n5jjl .token.tag .token.punctuation{color:#808080;}.css-n5jjl .token.cdata{color:#808080;}.css-n5jjl .token.attr-name{color:#9cdcfe;}.css-n5jjl .token.attr-value,.css-n5jjl .token.attr-value .token.punctuation{color:#ce9178;}.css-n5jjl .token.attr-value .token.punctuation.attr-equals{color:#d4d4d4;}.css-n5jjl .token.entity{color:#569cd6;}.css-n5jjl .token.namespace{color:#4ec9b0;}.css-n5jjl pre[class*='language-javascript'],.css-n5jjl code[class*='language-javascript'],.css-n5jjl pre[class*='language-jsx'],.css-n5jjl code[class*='language-jsx'],.css-n5jjl pre[class*='language-typescript'],.css-n5jjl code[class*='language-typescript'],.css-n5jjl pre[class*='language-tsx'],.css-n5jjl code[class*='language-tsx']{color:#9cdcfe;}.css-n5jjl pre[class*='language-css'],.css-n5jjl code[class*='language-css']{color:#ce9178;}.css-n5jjl pre[class*='language-html'],.css-n5jjl code[class*='language-html']{color:#d4d4d4;}.css-n5jjl .language-regex .token.anchor{color:#dcdcaa;}.css-n5jjl .language-html .token.punctuation{color:#808080;}.css-n5jjl pre[class*='language-']>code[class*='language-']{position:relative;z-index:1;}.css-n5jjl .line-highlight.line-highlight{z-index:0;background:#f7ebc6;box-shadow:inset 5px 0 0 #f7d87c;}.css-n5jjl pre[class*='language-text'],.css-n5jjl code[class*='language-text']{padding:0.25rem;color:#000000;background-color:#e2e5e6;}@media (max-width: 768px){.css-n5jjl img{width:100%;}.css-n5jjl pre[class*='language-']{width:100%;overflow-x:auto;}}</style><div class="css-n5jjl e13plzdv0"><p>상품 데이터 50만 건, 상품 좋아요 데이터 10만 건을 적재하고
 상품 목록 조회 API 테스트를 진행했다.</p>
 <p>API의 주요 기능은 가격, 출시일, 좋아요 수로 상품을 정렬하여 페이징으로 반환하는 것이다.</p>
-<p>API의 성능을 확인하고자 k6로 부하 테스트를 진행했는데, 평균 응답 시간이 10초를 훌쩍 넘기는 믿을 수 없는 결과가 나왔다.</p>
+<p>성능을 확인하기 위해 k6 를 사용해 1분 동안 반복 호출을 진행했는데,
+평균 응답 시간이 10초를 훌쩍 넘는 믿기 힘든 결과가 나왔다.</p>
+<p><span
+      class="gatsby-resp-image-wrapper"
+      style="position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 768px; "
+    >
+      <a
+    class="gatsby-resp-image-link"
+    href="/static/ee3d92b396628c12098904d31a69412b/58a83/k6test.png"
+    style="display: block"
+    target="_blank"
+    rel="noopener"
+  >
+    <span
+    class="gatsby-resp-image-background-image"
+    style="padding-bottom: 36.45833333333333%; position: relative; bottom: 0; left: 0; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAHCAYAAAAIy204AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAx0lEQVR42pWRWw6DIBBF3UhBBHlHaaxJ97+x22GExGj70Y8TXuHMcBliWrCWF0ZlIOSEUVtIQoya1/8yzC6g7C9oS6IqpLUkRCvwEAqi8Wj0+Veh9QHpucDGQN0ZljLUYWWyAZOL0MQxBp5XpJ7vQh8ytu0N5zPUNPPTz+iYYfICExJJCB9hmHREcxWmvKI8d75cO7oKlXFQJFAucL6qQ/uyxXITrmU7PuQiY6yHMO2TTnmKXxnWZ+parWV2g857J31P9PGL8ANAscRRCH+1JgAAAABJRU5ErkJggg=='); background-size: cover; display: block;"
+  ></span>
+  <picture>
+          <source
+              srcset="/static/ee3d92b396628c12098904d31a69412b/a59e9/k6test.webp 192w,
+/static/ee3d92b396628c12098904d31a69412b/0ca9f/k6test.webp 384w,
+/static/ee3d92b396628c12098904d31a69412b/dc9b9/k6test.webp 768w,
+/static/ee3d92b396628c12098904d31a69412b/e2c2f/k6test.webp 1152w,
+/static/ee3d92b396628c12098904d31a69412b/f952e/k6test.webp 1488w"
+              sizes="(max-width: 768px) 100vw, 768px"
+              type="image/webp"
+            />
+          <source
+            srcset="/static/ee3d92b396628c12098904d31a69412b/3b721/k6test.png 192w,
+/static/ee3d92b396628c12098904d31a69412b/66595/k6test.png 384w,
+/static/ee3d92b396628c12098904d31a69412b/fe486/k6test.png 768w,
+/static/ee3d92b396628c12098904d31a69412b/d2d74/k6test.png 1152w,
+/static/ee3d92b396628c12098904d31a69412b/58a83/k6test.png 1488w"
+            sizes="(max-width: 768px) 100vw, 768px"
+            type="image/png"
+          />
+          <img
+            class="gatsby-resp-image-image"
+            src="/static/ee3d92b396628c12098904d31a69412b/fe486/k6test.png"
+            alt="alt text"
+            title=""
+            loading="lazy"
+            decoding="async"
+            style="width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;"
+          />
+        </picture>
+  </a>
+    </span></p>
 <p>DB 클라이언트에서 직접 쿼리를 실행해 보았다.</p>
 <div class="gatsby-highlight" data-language="sql"><pre class="language-sql"><code class="language-sql"><span class="token number">5</span> <span class="token keyword">rows</span> <span class="token operator">in</span> <span class="token keyword">set</span> <span class="token punctuation">(</span><span class="token number">5.38</span> sec<span class="token punctuation">)</span></code></pre></div>
 <p>단 5개의 데이터를 가져오는 데 5초 이상이 소요되고 있었다.</p>
@@ -107,7 +154,7 @@
 <p>이 집계 연산은 테이블의 전체 데이터를 대상으로 할 수밖에 없으므로, 옵티마이저는 price 인덱스를 사용하여 5개만 미리 뽑아내는 최적화를 포기해버린다.</p>
 <p>결국 옵티마이저는 다음과 같은 순서로 동작한다.</p>
 <ol>
-<li>50만 개 상품 전체를 JOIN, GROUP BY 하여 likeCount가 포함된 거대한 임시 테이블 생성</li>
+<li>50만 개 상품 전체를 <code class="language-text">JOIN</code>, <code class="language-text">GROUP BY</code> 하여 likeCount가 포함된 거대한 임시 테이블 생성</li>
 <li>이 인덱스가 없는 임시 테이블을 price 기준으로 정렬</li>
 <li>price 인덱스는 원본 테이블에만 존재할 뿐, 이 임시 테이블에는 없으므로 무용지물</li>
 </ol>
@@ -130,8 +177,8 @@
 <span class="token operator">+</span><span class="token comment">----+-------------+-------+------+---------+---------------------------------+</span></code></pre></div>
 <p>product_like 테이블의 실행 계획이 type: index에서 type: ref로 개선되며 조인 자체는 빨라졌다.</p>
 <p>하지만 가장 큰 문제인 product 테이블의 type: ALL과 Using filesort는 조금도 변하지 않았다.</p>
-<p>쿼리 시간은 여전히 5초대에 머물렀다. GROUP BY라는 거대한 벽이 ORDER BY를 위한 인덱스 활용을 원천적으로 차단하고 있었던 것이다.</p>
-<h2 id="서브쿼리로의-전환--join에-대한-관점-바꾸기" style="position:relative;"><a href="#%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC%EB%A1%9C%EC%9D%98-%EC%A0%84%ED%99%98--join%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B4%80%EC%A0%90-%EB%B0%94%EA%BE%B8%EA%B8%B0" aria-label="서브쿼리로의 전환  join에 대한 관점 바꾸기 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>서브쿼리로의 전환 , JOIN에 대한 관점 바꾸기</h2>
+<p>쿼리 시간은 여전히 5초대에 머물렀다. GROUP BY 절은 ORDER BY 절보다 먼저 실행되어 테이블 전체를 대상으로 집계 연산을 수행해야 한다. 이 과정에서 생성되는 임시 테이블에는 price 인덱스가 없으므로, 결국 ORDER BY를 위한 인덱스 최적화는 원천적으로 불가능했다.</p>
+<h2 id="먼저-줄이고-나중에-계산한다-서브쿼리--limit-전략" style="position:relative;"><a href="#%EB%A8%BC%EC%A0%80-%EC%A4%84%EC%9D%B4%EA%B3%A0-%EB%82%98%EC%A4%91%EC%97%90-%EA%B3%84%EC%82%B0%ED%95%9C%EB%8B%A4-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC--limit-%EC%A0%84%EB%9E%B5" aria-label="먼저 줄이고 나중에 계산한다 서브쿼리  limit 전략 permalink" class="anchor before"><svg aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>먼저 줄이고 나중에 계산한다: 서브쿼리 + LIMIT 전략</h2>
 <p>GROUP BY라는 거대한 벽 앞에서 인덱스가 무력해지는 것을 확인한 나는, 문제 해결의 방향을 완전히 틀어야 했다. 인덱스 튜닝이 아니라, 쿼리 구조 자체를 변경하기로 결심했다.</p>
 <p>나는 GROUP BY를 제거하고, likeCount를 SELECT 절의 스칼라 서브쿼리로 가져오는 방식으로 쿼리를 수정했다.</p>
 <div class="gatsby-highlight" data-language="sql"><pre class="language-sql"><code class="language-sql"><span class="token comment">-- 최적화된 쿼리 (스칼라 서브쿼리)</span>
@@ -421,7 +468,7 @@ like_summary <span class="token punctuation">(</span>idx: target_type<span class
 </ul>
 </li>
 <li>
-<p><a href="#%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC%EB%A1%9C%EC%9D%98-%EC%A0%84%ED%99%98--join%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B4%80%EC%A0%90-%EB%B0%94%EA%BE%B8%EA%B8%B0">서브쿼리로의 전환 , JOIN에 대한 관점 바꾸기</a></p>
+<p><a href="#%EB%A8%BC%EC%A0%80-%EC%A4%84%EC%9D%B4%EA%B3%A0-%EB%82%98%EC%A4%91%EC%97%90-%EA%B3%84%EC%82%B0%ED%95%9C%EB%8B%A4-%EC%84%9C%EB%B8%8C%EC%BF%BC%EB%A6%AC--limit-%EC%A0%84%EB%9E%B5">먼저 줄이고 나중에 계산한다: 서브쿼리 + LIMIT 전략</a></p>
 <ul>
 <li>
 <p><a href="#%EA%B5%AC%EC%A1%B0-%EB%B3%80%EA%B2%BD%EB%A7%8C-%EC%A0%81%EC%9A%A9%ED%96%88%EC%9D%84-%EB%95%8C-%EC%A0%88%EB%B0%98%EC%9D%98-%EC%84%B1%EA%B3%B5">구조 변경만 적용했을 때: 절반의 성공</a></p>
