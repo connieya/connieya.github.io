@@ -113,7 +113,7 @@ public class PgSimulator implements PaymentAdapter {
 장애에서 막 회복하려는 서버를 또 쓰러뜨리는 꼴입니다.
 이것이 바로 **재시도 폭풍(Retry Storm)** 입니다.
 
-이를 피하기 위해 우리는 **지수 백오프(Exponential Backoff)**와 **지터(Jitter)**를 적용했습니다.
+이를 피하기 위해 우리는 **`지수 백오프(Exponential Backoff)`** 와 **`지터(Jitter)`** 를 적용했습니다.
 
 ### Exponential Backoff with Jitter
 
