@@ -43,11 +43,11 @@ const Footer: FunctionComponent = function () {
   return (
     <FooterWrapper>
       © {currentYear} 박건희
-      {/* <Menu>
+      <Menu>
         <a href="https://github.com/connieya" target="_blank" rel="noreferrer">
           <AiFillGithub />
         </a>
-        <a href="#" target="_blank">
+        {/* <a href="#" target="_blank">
                  <AiOutlineInstagram />
                </a>
         <a
@@ -56,8 +56,8 @@ const Footer: FunctionComponent = function () {
           rel="noreferrer"
         >
           <AiFillLinkedin />
-        </a>
-      </Menu> */}
+        </a> */}
+      </Menu>
     </FooterWrapper>
   )
 }
