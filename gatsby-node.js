@@ -8,6 +8,23 @@
  */
 const path = require('path')
 const { createFilePath } = require('gatsby-source-filesystem')
+
+// Supabase 연결을 위한 설정
+let supabase = null
+try {
+  const { createClient } = require('@supabase/supabase-js')
+  const supabaseUrl = process.env.GATSBY_SUPABASE_URL
+  const supabaseAnonKey = process.env.GATSBY_SUPABASE_ANON_KEY
+
+  if (supabaseUrl && supabaseAnonKey) {
+    supabase = createClient(supabaseUrl, supabaseAnonKey)
+  }
+} catch (error) {
+  console.warn(
+    'Supabase not configured for build-time operations:',
+    error.message,
+  )
+}
 // Setup Import Alias
 exports.onCreateWebpackConfig = ({ getConfig, actions }) => {
   const output = getConfig().output || {}
@@ -37,6 +54,9 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
           node {
             fields {
               slug
+            }
+            frontmatter {
+              title
             }
           }
         }
@@ -73,6 +93,40 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
 
   // Generate Post Page And Passing Slug Props for Query
   queryAllMarkdownData.data.allMarkdownRemark.edges.forEach(generatePostPage)
+
+  // Supabase에 포스트 자동 추가 (빌드 시)
+  if (supabase) {
+    try {
+      const posts = queryAllMarkdownData.data.allMarkdownRemark.edges.map(
+        ({ node }) => ({
+          slug: node.fields.slug.replace(/\//g, ''), // 슬래시 제거
+          title: node.frontmatter?.title || 'Untitled',
+          view_count: 0,
+        }),
+      )
+
+      // 기존 포스트들과 비교하여 새 포스트만 추가
+      for (const post of posts) {
+        const { data: existingPost } = await supabase
+          .from('posts')
+          .select('slug')
+          .eq('slug', post.slug)
+          .single()
+
+        if (!existingPost) {
+          const { error } = await supabase.from('posts').insert([post])
+
+          if (error) {
+            console.warn(`Failed to insert post ${post.slug}:`, error.message)
+          } else {
+            console.log(`✅ Added new post to database: ${post.slug}`)
+          }
+        }
+      }
+    } catch (error) {
+      console.warn('Failed to sync posts with Supabase:', error.message)
+    }
+  }
 }
 
 exports.onCreateNode = ({ node, getNode, actions }) => {

@@ -7,6 +7,7 @@ import { PostDetail } from 'types/Post'
 import TableOfContents from 'components/PostDetail/TableOfContent'
 import styled from '@emotion/styled'
 import PostBody from 'components/PostDetail/PostBody'
+import PostViews from 'components/PostDetail/PostViews'
 
 type PostTemplateProps = {
   data: {
@@ -17,12 +18,16 @@ type PostTemplateProps = {
   location: {
     href: string
   }
+  pageContext: {
+    slug: string
+  }
 }
 const PostTemplate = ({
   data: {
     allMarkdownRemark: { edges },
   },
   location: { href },
+  pageContext: { slug },
 }: PostTemplateProps) => {
   const contentRef = useRef<HTMLDivElement>(null)
   const {
@@ -43,6 +48,7 @@ const PostTemplate = ({
           categories={categories}
           timeToRead={timeToRead}
         />
+        <PostViews slug={slug} />
         <PostBody ref={contentRef} html={html} />
         {/* <PostComment /> */}
         <TableOfContents ref={contentRef} tableOfContents={tableOfContents} />

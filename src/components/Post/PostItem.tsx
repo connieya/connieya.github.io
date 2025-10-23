@@ -3,10 +3,17 @@ import { navigate } from 'gatsby'
 import styled from '@emotion/styled'
 import { Link } from 'gatsby'
 import { PostFrontMatterType } from 'components/types/PostItem.types'
+import { usePostViews } from '../../hooks/usePostViews'
 
-type Props = PostFrontMatterType & { link: string; timeToRead: number }
+type Props = PostFrontMatterType & {
+  link: string
+  timeToRead: number
+  slug: string
+}
 
-const PostItem = ({ date, summary, title, link, timeToRead }: Props) => {
+const PostItem = ({ date, summary, title, link, timeToRead, slug }: Props) => {
+  const { viewCount, loading } = usePostViews(slug)
+
   const handleClick = () => {
     navigate(link)
   }
@@ -21,6 +28,9 @@ const PostItem = ({ date, summary, title, link, timeToRead }: Props) => {
             {date}
             <TimeInfo>약 {timeToRead}분</TimeInfo>
           </CreatedAt>
+          {!loading && (
+            <ViewCount>{viewCount.toLocaleString()}회 조회</ViewCount>
+          )}
         </CreatedAtAndTimeToReadContainer>
       </TextInfoContainer>
     </Container>
@@ -94,4 +104,9 @@ const TimeInfo = styled.span`
   margin-left: 0.5rem; /* 왼쪽에 0.5rem (약 8px) 간격 추가 */
   /* 또는 padding-left를 사용할 수도 있습니다. */
   /* padding-left: 0.5rem; */
+`
+
+const ViewCount = styled.span`
+  white-space: nowrap;
+  color: #6b7280;
 `
