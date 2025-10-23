@@ -44,13 +44,6 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        name: `content-images`, // 'images' 라는 이름으로 노드를 생성
-        path: `${__dirname}/images`, // 실제 이미지가 있는 경로는 static 폴더
-      },
-    },
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
         name: `images`,
         path: `${__dirname}/static`,
       },
@@ -80,6 +73,7 @@ module.exports = {
               maxWidth: 768,
               quality: 100,
               withWebp: true,
+              wrapperStyle: 'margin: 1rem 0;',
             },
           },
           {

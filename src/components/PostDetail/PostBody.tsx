@@ -96,7 +96,12 @@ const MarkdownRenderer = styled.div`
   }
 
   img {
-    margin: 3rem 0;
+    margin: 1rem 0;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   /* Code Block Highlighting */

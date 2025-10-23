@@ -12,7 +12,7 @@ categories: ['index']
 
 측정 결과 평균 응답 시간이 10초를 훌쩍 넘는 믿기 힘든 결과가 나왔다.
 
-![alt text](../images/k6test.png)
+![alt text](/images/k6test.png)
 
 DB 클라이언트에서 직접 쿼리를 실행해 보았다.
 

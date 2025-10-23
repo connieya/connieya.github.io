@@ -7,7 +7,6 @@ import { PostDetail } from 'types/Post'
 import TableOfContents from 'components/PostDetail/TableOfContent'
 import styled from '@emotion/styled'
 import PostBody from 'components/PostDetail/PostBody'
-import PostViews from 'components/PostDetail/PostViews'
 
 type PostTemplateProps = {
   data: {
@@ -47,8 +46,8 @@ const PostTemplate = ({
           date={date}
           categories={categories}
           timeToRead={timeToRead}
+          slug={slug}
         />
-        <PostViews slug={slug} title={title} />
         <PostBody ref={contentRef} html={html} />
         {/* <PostComment /> */}
         <TableOfContents ref={contentRef} tableOfContents={tableOfContents} />

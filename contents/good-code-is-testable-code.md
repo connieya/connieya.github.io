@@ -14,7 +14,7 @@ TDD는 말 그대로 테스트 주도 개발입니다. 코드를 작성하기 �
 
 TDD는 아래와 같은 Red-Green-Refactoring 사이클을 반복하며 진행됩니다.
 
-![TDD Red-Green-Refactoring](../images/tdd.png)
+![TDD Red-Green-Refactoring](/images/tdd.png)
 
 이미지 출처 https://mbauza.medium.com/red-green-refactor-1a3fb160e649
 

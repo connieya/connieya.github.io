@@ -89,7 +89,7 @@ const Description = styled.div`
 
 const CreatedAtAndTimeToReadContainer = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
   align-items: center;
   padding-top: 0.5rem; /* 상단 여백 조금 줄이기 */
   color: #757575;
@@ -108,5 +108,6 @@ const TimeInfo = styled.span`
 
 const ViewCount = styled.span`
   white-space: nowrap;
-  color: #6b7280;
+  color: #757575;
+  font-size: 14px;
 `
