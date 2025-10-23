@@ -6,8 +6,14 @@ const Header = () => {
   return (
     <Container>
       <ContentContainer>
-        {/* <ProfileImage profileImage={profileImage} /> */}
-        <InfoContainer to="/">박건희</InfoContainer>
+        <NavigationContainer>
+          <MainLink to="/">
+            <MainText>박건희</MainText>
+          </MainLink>
+          <SubLink to="/blog">
+            <SubText>개발</SubText>
+          </SubLink>
+        </NavigationContainer>
       </ContentContainer>
     </Container>
   )
@@ -33,9 +39,56 @@ const ContentContainer = styled.div`
   }
 `
 
-const InfoContainer = styled(Link)`
-  font-size: 1.5rem;
+const NavigationContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+`
+
+const MainLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+`
+
+const SubLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+`
+
+const MainText = styled.span`
+  font-size: 1.3rem;
   font-weight: bold;
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    Segoe UI,
+    Roboto,
+    Helvetica Neue,
+    Arial,
+    Noto Sans,
+    sans-serif,
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    'Noto Color Emoji';
+`
+
+const SubText = styled.span`
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #666;
   font-family:
     ui-sans-serif,
     system-ui,
