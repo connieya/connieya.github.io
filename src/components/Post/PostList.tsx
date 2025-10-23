@@ -1,16 +1,18 @@
-import React, { FunctionComponent, useMemo } from 'react'
+import React, { FunctionComponent } from 'react'
 import styled from '@emotion/styled'
-import { PostListItemType } from 'components/types/PostItem.types'
 import PostItem from './PostItem'
 
 export type PostType = {
   node: {
     id: string
+    fields: {
+      slug: string
+    }
+    timeToRead: number
     frontmatter: {
       title: string
       summary: string
       date: string
-      timeToRead: number
       categories: string[]
       thumbnail: {
         publicURL: string
@@ -25,14 +27,15 @@ type PostListProps = {
 
 const Container = styled.div`
   display: grid;
-  width: 780px;
+  width: 100%;
+  max-width: 768px;
   margin: 0 auto;
-  padding: 40px 0 100px;
+  padding: 40px 1rem 100px;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     width: 100%;
-    padding: 50px 20px;
+    padding: 50px 0.75rem;
   }
 `
 
@@ -50,9 +53,12 @@ const PostList: FunctionComponent<PostListProps> = function ({ posts }) {
               timeToRead,
               frontmatter,
             },
-          }: PostListItemType) => (
+          }: PostType) => (
             <PostItem
-              {...frontmatter}
+              title={frontmatter.title}
+              date={frontmatter.date}
+              categories={frontmatter.categories}
+              summary={frontmatter.summary}
               link={slug}
               key={id}
               timeToRead={timeToRead}

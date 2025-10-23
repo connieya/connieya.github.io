@@ -5,21 +5,15 @@ export type PostFrontMatterType = {
   date: string
   categories: string[]
   summary: string
-  timeToRead: number
-  thumbnail: {
-    childImagesSharp: {
-      gatsbyImageData: IGatsbyImageData
-    }
-    publicURL: string
-  }
 }
 
 export type PostListItemType = {
   node: {
     id: string
-    filed: {
+    fields: {
       slug: string
     }
+    timeToRead: number
     frontmatter: PostFrontMatterType
   }
 }

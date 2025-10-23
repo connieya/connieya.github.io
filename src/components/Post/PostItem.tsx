@@ -4,7 +4,7 @@ import styled from '@emotion/styled'
 import { Link } from 'gatsby'
 import { PostFrontMatterType } from 'components/types/PostItem.types'
 
-type Props = PostFrontMatterType & { link: string }
+type Props = PostFrontMatterType & { link: string; timeToRead: number }
 
 const PostItem = ({ date, summary, title, link, timeToRead }: Props) => {
   const handleClick = () => {
@@ -39,15 +39,9 @@ const Container = styled(Link)`
 const TextInfoContainer = styled.div`
   /* 썸네일 제거로 인한 width 100% */
   width: 100%;
-  padding: 0 1rem; /* 좌우 패딩으로 내용물 여백 확보 */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
-  /* 모바일 환경에서 패딩 조정 */
-  @media (max-width: 768px) {
-    padding: 0 0.5rem;
-  }
 `
 const Title = styled.h3`
   margin-top: 0.5rem; /* 카테고리 아래 여백 */

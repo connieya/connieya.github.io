@@ -17,9 +17,13 @@ const MarkdownRenderer = styled.div`
   flex-direction: column;
   width: 100%;
   margin: 0 auto;
-  padding: 1.5rem 0;
+  padding: 1.5rem 1rem;
   line-height: 1.75;
   word-break: break-all;
+
+  @media (max-width: 768px) {
+    padding: 1.5rem 0.75rem;
+  }
 
   h1,
   h2,
