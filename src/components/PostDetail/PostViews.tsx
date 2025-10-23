@@ -5,10 +5,14 @@ import { usePostViews } from '../../hooks/usePostViews'
 
 type PostViewsProps = {
   slug: string
+  title?: string
 }
 
-const PostViews: React.FC<PostViewsProps> = ({ slug }) => {
-  const { viewCount, loading, error, incrementViewCount } = usePostViews(slug)
+const PostViews: React.FC<PostViewsProps> = ({ slug, title }) => {
+  const { viewCount, loading, error, incrementViewCount } = usePostViews(
+    slug,
+    title,
+  )
 
   // 페이지 진입 시 조회수 증가 (한 번만)
   useEffect(() => {

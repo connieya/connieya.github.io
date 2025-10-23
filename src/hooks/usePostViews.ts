@@ -9,7 +9,7 @@ try {
   console.warn('Supabase not configured:', error)
 }
 
-export const usePostViews = (slug: string) => {
+export const usePostViews = (slug: string, title?: string) => {
   const [viewCount, setViewCount] = useState<number>(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -73,7 +73,7 @@ export const usePostViews = (slug: string) => {
         // 새 포스트 생성 (조회수 1로 시작)
         const { error } = await supabase
           .from('posts')
-          .insert([{ slug, title: 'Untitled', view_count: 1 }])
+          .insert([{ slug, title: title || 'Untitled', view_count: 1 }])
 
         if (error) {
           console.error('Error creating new post:', error)

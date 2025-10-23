@@ -48,7 +48,7 @@ const PostTemplate = ({
           categories={categories}
           timeToRead={timeToRead}
         />
-        <PostViews slug={slug} />
+        <PostViews slug={slug} title={title} />
         <PostBody ref={contentRef} html={html} />
         {/* <PostComment /> */}
         <TableOfContents ref={contentRef} tableOfContents={tableOfContents} />
