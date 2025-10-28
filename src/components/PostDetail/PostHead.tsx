@@ -2,19 +2,14 @@ import React, { FunctionComponent } from 'react'
 import styled from '@emotion/styled'
 import { PostHeadInfoProps } from './PostHeadInfo'
 import COLORS from 'utils/constant/colors'
-import { usePostViews } from '../../hooks/usePostViews'
 
-type PostHeadProps = PostHeadInfoProps & {
-  slug: string
-}
+type PostHeadProps = PostHeadInfoProps & {}
 
 const PostHead: FunctionComponent<PostHeadProps> = function ({
   title,
   date,
   timeToRead,
-  slug,
 }) {
-  const { viewCount, loading } = usePostViews(slug, title)
   return (
     <Container>
       <Title>{title}</Title>
@@ -23,7 +18,6 @@ const PostHead: FunctionComponent<PostHeadProps> = function ({
           {date}
           <TimeInfo>약 {timeToRead}분</TimeInfo>
         </CreatedAt>
-        {!loading && <ViewCount>{viewCount.toLocaleString()}회 조회</ViewCount>}
       </CreatedAtContainer>
     </Container>
   )
@@ -76,9 +70,4 @@ const TimeInfo = styled.span`
   margin-left: 0.5rem; /* 왼쪽에 0.5rem (약 8px) 간격 추가 */
   /* 또는 padding-left를 사용할 수도 있습니다. */
   /* padding-left: 0.5rem; */
-`
-
-const ViewCount = styled.span`
-  margin-left: 1rem;
-  font-size: 0.9rem;
 `

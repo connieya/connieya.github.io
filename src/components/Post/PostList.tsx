@@ -62,7 +62,6 @@ const PostList: FunctionComponent<PostListProps> = function ({ posts }) {
               link={slug}
               key={id}
               timeToRead={timeToRead}
-              slug={slug}
             />
           ),
         )}

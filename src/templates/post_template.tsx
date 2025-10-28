@@ -2,7 +2,6 @@ import React, { useRef } from 'react'
 import { graphql } from 'gatsby'
 import Template from 'components/Common/Template'
 import PostHead from 'components/PostDetail/PostHead'
-import PostComment from 'components/PostDetail/PostComment'
 import { PostDetail } from 'types/Post'
 import TableOfContents from 'components/PostDetail/TableOfContent'
 import styled from '@emotion/styled'
@@ -17,16 +16,12 @@ type PostTemplateProps = {
   location: {
     href: string
   }
-  pageContext: {
-    slug: string
-  }
 }
 const PostTemplate = ({
   data: {
     allMarkdownRemark: { edges },
   },
   location: { href },
-  pageContext: { slug },
 }: PostTemplateProps) => {
   const contentRef = useRef<HTMLDivElement>(null)
   const {
@@ -39,17 +34,15 @@ const PostTemplate = ({
   } = edges[0]
 
   return (
-    <Template title={title} description={summary} url={href}>
+    <Template title={title} description={summary} url={href} image="">
       <Container>
         <PostHead
           title={title}
           date={date}
           categories={categories}
           timeToRead={timeToRead}
-          slug={slug}
         />
         <PostBody ref={contentRef} html={html} />
-        {/* <PostComment /> */}
         <TableOfContents ref={contentRef} tableOfContents={tableOfContents} />
       </Container>
     </Template>
