@@ -1,5 +1,5 @@
 import React from 'react'
-import PostList, { PostType } from 'components/Post/PostList'
+import PostList from 'components/Post/PostList'
 import { graphql } from 'gatsby'
 import { IGatsbyImageData } from 'gatsby-plugin-image'
 import Template from 'components/Common/Template'
@@ -29,20 +29,19 @@ type Props = {
 }
 
 const Blog = ({
-  location: { search },
+  location: {},
   data: {
     site: {
       siteMetadata: { title, description, siteUrl },
     },
     allMarkdownRemark: { edges: posts },
-    file: {
-      childImageSharp: { gatsbyImageData: any },
-      publicURL,
-    },
+    file: { publicURL },
   },
 }: Props) => {
   const filteredPosts = posts.filter(
-    ({ node }) => !node.frontmatter.categories?.includes('books'),
+    ({ node }) =>
+      !node.frontmatter.categories?.includes('books') &&
+      node.frontmatter.deploy !== false,
   )
   return (
     <Template
@@ -82,6 +81,7 @@ export const getBlogData = graphql`
             summary
             date(formatString: "YYYY-MM-DD")
             categories
+            deploy
           }
         }
       }

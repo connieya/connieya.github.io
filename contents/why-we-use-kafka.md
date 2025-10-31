@@ -2,6 +2,7 @@
 date: '2025-09-05'
 title: 'kafka 아는 척 해보기'
 categories: ['kafka']
+deploy: true
 ---
 
 최근 Spring Application Event를 공부하고 사용해 보면서, 모듈 간 의존성을 줄이는 것만으로도 코드가 단순해지고 유지보수가 쉬워지는 경험을 했습니다.

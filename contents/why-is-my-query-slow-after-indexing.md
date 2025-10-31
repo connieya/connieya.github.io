@@ -2,6 +2,7 @@
 date: '2025-08-15'
 title: '인덱스를 걸었는데, 왜 느리죠? (feat. 5초를 0.03초로 만든 쿼리 삽질기) '
 categories: ['index']
+deploy: true
 ---
 
 이커머스 서비스에서 가격, 최신순, 인기순으로 상품 목록을 보여주는 것은 지극히 평범하고도 필수적인 기능이다
@@ -448,6 +449,7 @@ STRAIGHT_JOIN을 통해 like_summary를 Driving Table로 삼는 순간, `1.84초
 이 API는 '좋아요 목록 조회'가 아닌, '상품 목록 조회' API다. 대부분의 사용자는 가격순, 최신순으로 상품을 탐색할 것이고, 이때 기준이 되는 테이블은 당연히 product 테이블이다. 즉, product 테이블이 `Driving Table`이 되는 것이 이 API의 본질에 더 부합했다.
 
 ### Driving Table 선택의 원칙: ORDER BY가 열쇠를 쥐고 있다
+
 JOIN 튜닝의 핵심은 "어떻게 하면 Driving Table의 작업 범위를 가장 작게 줄일 수 있는가?"이다. 그리고 그 열쇠는 바로 `ORDER BY`와 `LIMIT` 절이 쥐고 있다.
 
 옵티마이저가 `filesort`를 피하는 유일한 방법은, 이미 정렬된 순서대로 데이터를 읽는 것, 즉 인덱스를 활용하는 것이다.
@@ -458,11 +460,11 @@ JOIN 튜닝의 핵심은 "어떻게 하면 Driving Table의 작업 범위를 가
 즉, ORDER BY의 대상 컬럼이 속한 테이블이 Driving Table이 되어야만 filesort를 피하고 최고의 성능을 낼 수 있다.
 
 이 원칙은 우리에게 명확한 딜레마를 안겨주었다.
+
 - '가격순/최신순' 정렬을 위해서는 product가 Driving Table이 되어야 한다.
 - '좋아요순' 정렬을 위해서는 like_summary가 Driving Table이 되어야 한다.
 
 하나의 쿼리로는 이 두 마리 토끼를 동시에 잡을 수 없었다.
-
 
 ### 포기가 아닌, 분리(Separation)
 
@@ -476,14 +478,11 @@ JOIN 튜닝의 핵심은 "어떻게 하면 Driving Table의 작업 범위를 가
 
 product를 Driving Table로 삼아 `filesort` 없이 price 또는 released_at 인덱스를 타는 일반 쿼리를 호출한다. <br/>(성능: `0.05초`)
 
-
-
 "productSort = LIKE_COUNT_DESC 요청이 들어오면?"
 
 like_summary를 Driving Table로 삼아 `filesort` 없이 like_count 인덱스를 타는 '좋아요순 전용' 쿼리 (STRAIGHT_JOIN 사용)를 호출한다. <br/> (성능: `0.03초`)
 
 이 방식은 '좋아요순' 정렬 시 '좋아요 0개' 상품이 제외된다는 비즈니스적 타협을 동반하지만, "인기 있는 상품을 본다"는 사용자의 의도에 더 부합하는 합리적인 선택이었다.
-
 
 ## 튜닝 여정 한눈에 보기
 

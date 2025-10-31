@@ -2,6 +2,7 @@
 date: '2024-03-15'
 title: 'Spring @Transactional의 기본, REQUIRED 파헤치기'
 categories: ['트랜잭션']
+deploy: true
 ---
 
 ## TL;DR

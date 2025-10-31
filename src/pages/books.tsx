@@ -28,6 +28,9 @@ const BooksPage = ({
     allMarkdownRemark: { edges: books },
   },
 }: Props) => {
+  const visibleBooks = books.filter(
+    ({ node }) => node.frontmatter.deploy !== false,
+  )
   return (
     <Template
       title={`${title} - 읽은 책`}
@@ -42,8 +45,8 @@ const BooksPage = ({
         <Divider />
 
         <SectionTitle>읽은 책</SectionTitle>
-        {books.length > 0 ? (
-          <PostList posts={books as any} />
+        {visibleBooks.length > 0 ? (
+          <PostList posts={visibleBooks as any} />
         ) : (
           <EmptyState>아직 기록된 책이 없습니다.</EmptyState>
         )}
@@ -79,6 +82,7 @@ export const query = graphql`
             summary
             date(formatString: "YYYY-MM-DD")
             categories
+            deploy
           }
         }
       }

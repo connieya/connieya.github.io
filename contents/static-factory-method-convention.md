@@ -2,6 +2,7 @@
 date: '2024-10-17'
 title: '정적 팩토리 메서드, 취향에서 컨벤션으로'
 categories: ['리팩토링']
+deploy: true
 ---
 
 ## Setter 기반 객체 생성의 한계

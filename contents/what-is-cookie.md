@@ -2,6 +2,7 @@
 date: '2023-06-09'
 title: '클라이언트의 작은 기억상자, 쿠키'
 categories: ['cookie']
+deploy: true
 ---
 
 "손님, 처음 뵙겠습니다. 무엇을 도와드릴까요?"

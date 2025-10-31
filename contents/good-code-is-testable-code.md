@@ -2,6 +2,7 @@
 date: '2023-12-16'
 title: '테스트 코드를 작성하다 깨달은 것들: 좋은 코드는 테스트하기 좋은 코드였다. '
 categories: ['TDD']
+deploy: true
 ---
 
 개발자라면 한 번쯤 TDD(Test-Driven Development)라는 단어를 들어봤을 겁니다. 마치 개발의 성배처럼 여겨지기도 하죠.

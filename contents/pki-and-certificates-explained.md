@@ -2,6 +2,7 @@
 date: '2024-12-21'
 title: '내 공개키는 내가 만들었는데, 왜 CA가 보증해야 하죠?'
 categories: ['암호화']
+deploy: true
 ---
 
 ## TL;DR

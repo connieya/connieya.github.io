@@ -4,6 +4,7 @@ export type Frontmatter = {
   date: string
   title: string
   summary: string
+  deploy?: boolean
   thumbnail: {
     childImageSharp: {
       gatsbyImageData: IGatsbyImageData

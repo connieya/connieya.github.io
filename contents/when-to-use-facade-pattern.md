@@ -2,6 +2,7 @@
 date: '2025-08-01'
 title: '파사드 패턴으로 체지방 걷어내기'
 categories: ['facade']
+deploy: true
 ---
 
 "파사드 패턴을 언제 도입하는 것이 좋을까?"

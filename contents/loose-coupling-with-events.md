@@ -2,6 +2,7 @@
 date: '2025-08-28'
 title: 'import 문을 줄이는 가장 우아한 방법 (feat: ApplicationEvent)'
 categories: ['application event']
+deploy: true
 ---
 
 요즘 많은 시스템이 **`이벤트 드리븐 아키텍처(EDA)`** 를 채택하고 있습니다. 이제는 이벤트를 활용하지 않는 회사를 찾기 힘들 정도라고 해도 과언이 아닐 겁니다.

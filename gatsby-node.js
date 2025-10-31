@@ -57,6 +57,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
             }
             frontmatter {
               title
+              deploy
             }
           }
         }
@@ -91,19 +92,20 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     createPage(pageOptions)
   }
 
-  // Generate Post Page And Passing Slug Props for Query
-  queryAllMarkdownData.data.allMarkdownRemark.edges.forEach(generatePostPage)
+  // Generate Post Page only when deploy flag is not false
+  const visibleEdges = queryAllMarkdownData.data.allMarkdownRemark.edges.filter(
+    ({ node }) => node.frontmatter?.deploy !== false,
+  )
+  visibleEdges.forEach(generatePostPage)
 
   // Supabase에 포스트 자동 추가 (빌드 시)
   if (supabase) {
     try {
-      const posts = queryAllMarkdownData.data.allMarkdownRemark.edges.map(
-        ({ node }) => ({
-          slug: node.fields.slug.replace(/\//g, ''), // 슬래시 제거
-          title: node.frontmatter?.title || 'Untitled',
-          view_count: 0,
-        }),
-      )
+      const posts = visibleEdges.map(({ node }) => ({
+        slug: node.fields.slug.replace(/\//g, ''), // 슬래시 제거
+        title: node.frontmatter?.title || 'Untitled',
+        view_count: 0,
+      }))
 
       // 기존 포스트들과 비교하여 새 포스트만 추가
       for (const post of posts) {
@@ -162,6 +164,7 @@ exports.createSchemaCustomization = ({ actions }) => {
       date: Date! @dateformat # 날짜도 항상 있어야 하므로 !
       categories: [String!] # 카테고리 배열도 항상 있어야 하므로 !
       summary: String # 요약은 없을 수도 있으므로 ! 없음
+      deploy: Boolean # 배포 여부 플래그 (기본: true)
       thumbnail: File @fileByRelativePath
     }
 
