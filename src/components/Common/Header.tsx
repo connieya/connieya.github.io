@@ -13,6 +13,9 @@ const Header = () => {
           <SubLink to="/blog">
             <SubText>개발</SubText>
           </SubLink>
+          <SubLink to="/books">
+            <SubText>읽은 책</SubText>
+          </SubLink>
           <SubLink to="/guestbook">
             <SubText>방명록</SubText>
           </SubLink>

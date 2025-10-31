@@ -41,6 +41,9 @@ const Blog = ({
     },
   },
 }: Props) => {
+  const filteredPosts = posts.filter(
+    ({ node }) => !node.frontmatter.categories?.includes('books'),
+  )
   return (
     <Template
       title={`${title} - 개발`}
@@ -48,7 +51,7 @@ const Blog = ({
       url={siteUrl}
       image={publicURL}
     >
-      <PostList posts={posts} />
+      <PostList posts={filteredPosts as any} />
     </Template>
   )
 }
