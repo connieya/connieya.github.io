@@ -7,6 +7,9 @@ let supabase: any = null
 try {
   const { supabase: supabaseClient } = require('../../lib/supabase')
   supabase = supabaseClient
+  if (!supabase) {
+    console.warn('Supabase client is null. Check your environment variables.')
+  }
 } catch (error) {
   console.warn('Supabase not configured:', error)
 }
@@ -106,6 +109,8 @@ const Guestbook: React.FC = () => {
         <ErrorMessage>
           방명록 기능에 문제가 생겼습니다.
           <br />
+          <br />
+          Supabase가 설정되지 않았습니다. 환경 변수 GATSBY_SUPABASE_URL과 GATSBY_SUPABASE_ANON_KEY를 확인해주세요.
         </ErrorMessage>
       </Container>
     )
@@ -126,9 +131,17 @@ const Guestbook: React.FC = () => {
         setEntries(data || [])
         setError(null)
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error:', err)
-      setError('방명록을 불러오는데 실패했습니다.')
+      
+      // 네트워크 에러 처리
+      if (err?.message?.includes('Failed to fetch') || 
+          err?.message?.includes('ERR_NAME_NOT_RESOLVED') ||
+          err?.name === 'TypeError') {
+        setError('Supabase 서버에 연결할 수 없습니다. 환경 변수를 확인해주세요.')
+      } else {
+        setError('방명록을 불러오는데 실패했습니다.')
+      }
     } finally {
       setInitialLoading(false)
     }
@@ -138,21 +151,32 @@ const Guestbook: React.FC = () => {
   useEffect(() => {
     fetchGuestbookEntries()
 
-    // 실시간 구독
-    const subscription = supabase.channel('guestbook_changes').on(
-      'postgres_changes',
-      {
-        event: 'INSERT',
-        schema: 'public',
-        table: 'guestbook',
-      },
-      payload => {
-        fetchGuestbookEntries() // 새로운 방명록이 추가되면 자동으로 새로고침
-      },
-    )
+    // 실시간 구독 (에러가 없을 때만)
+    let subscription: any = null
+    try {
+      subscription = supabase.channel('guestbook_changes').on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'guestbook',
+        },
+        payload => {
+          fetchGuestbookEntries() // 새로운 방명록이 추가되면 자동으로 새로고침
+        },
+      )
+    } catch (err) {
+      console.warn('Failed to set up real-time subscription:', err)
+    }
 
     return () => {
-      subscription.unsubscribe()
+      if (subscription) {
+        try {
+          subscription.unsubscribe()
+        } catch (err) {
+          console.warn('Failed to unsubscribe:', err)
+        }
+      }
     }
   }, [])
 
@@ -183,9 +207,17 @@ const Guestbook: React.FC = () => {
         setName(getRandomName())
         setMessage('')
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error:', err)
-      setError('방명록 등록에 실패했습니다.')
+      
+      // 네트워크 에러 처리
+      if (err?.message?.includes('Failed to fetch') || 
+          err?.message?.includes('ERR_NAME_NOT_RESOLVED') ||
+          err?.name === 'TypeError') {
+        setError('Supabase 서버에 연결할 수 없습니다. 환경 변수를 확인해주세요.')
+      } else {
+        setError('방명록 등록에 실패했습니다.')
+      }
     }
 
     setLoading(false)
