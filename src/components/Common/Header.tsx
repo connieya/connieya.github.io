@@ -1,24 +1,30 @@
 import styled from '@emotion/styled'
 import React from 'react'
 import { Link } from 'gatsby'
+import { useTheme } from 'context/ThemeContext'
 
 const Header = () => {
+  const { theme, toggleTheme } = useTheme()
+
   return (
     <Container>
       <ContentContainer>
         <NavigationContainer>
-          <MainLink to="/">
-            <MainText>박건희</MainText>
-          </MainLink>
-          <SubLink to="/blog">
-            <SubText>개발</SubText>
-          </SubLink>
-          {/* <SubLink to="/books"> */}
-          {/* <SubText>읽은 책</SubText> */}
-          {/* </SubLink> */}
-          {/* <SubLink to="/guestbook"> */}
-          {/* <SubText>방명록</SubText> */}
-          {/* </SubLink> */}
+          <NavLeft>
+            <MainLink to="/">
+              <MainText>박건희</MainText>
+            </MainLink>
+            <SubLink to="/blog">
+              <SubText>개발</SubText>
+            </SubLink>
+          </NavLeft>
+          <ThemeToggle
+            onClick={toggleTheme}
+            aria-label={theme === 'light' ? '다크 모드로 전환' : '라이트 모드로 전환'}
+            title={theme === 'light' ? '다크 모드로 전환' : '라이트 모드로 전환'}
+          >
+            {theme === 'light' ? '🌙' : '☀️'}
+          </ThemeToggle>
         </NavigationContainer>
       </ContentContainer>
     </Container>
@@ -32,6 +38,7 @@ const Container = styled.div`
   align-items: center;
   width: 100%;
   height: 7rem;
+  border-bottom: 1px solid var(--color-border);
 `
 
 const ContentContainer = styled.div`
@@ -46,6 +53,12 @@ const ContentContainer = styled.div`
 `
 
 const NavigationContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+const NavLeft = styled.div`
   display: flex;
   align-items: center;
   gap: 2rem;
@@ -94,7 +107,7 @@ const MainText = styled.span`
 const SubText = styled.span`
   font-size: 1.1rem;
   font-weight: 400;
-  color: #666;
+  color: var(--color-text-tertiary);
   font-family:
     ui-sans-serif,
     system-ui,
@@ -110,4 +123,18 @@ const SubText = styled.span`
     'Segoe UI Emoji',
     'Segoe UI Symbol',
     'Noto Color Emoji';
+`
+
+const ThemeToggle = styled.button`
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.15);
+  }
 `

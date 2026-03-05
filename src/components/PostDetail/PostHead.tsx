@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from 'react'
 import styled from '@emotion/styled'
 import { PostHeadInfoProps } from './PostHeadInfo'
-import COLORS from 'utils/constant/colors'
 
 type PostHeadProps = PostHeadInfoProps & {}
 
@@ -54,7 +53,7 @@ const CreatedAtContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  color: ${COLORS.GRAY_BOLD};
+  color: var(--color-text-muted);
   font-size: 0.9rem; /* 날짜 폰트 사이즈 유지 */
 
   @media (max-width: 768px) {

@@ -1,6 +1,5 @@
 import styled from '@emotion/styled'
 import { ForwardedRef, forwardRef } from 'react'
-import COLORS from 'utils/constant/colors'
 
 const PostBody = forwardRef(
   ({ html }: { html: string }, ref: ForwardedRef<HTMLDivElement>) => {
@@ -35,12 +34,12 @@ const MarkdownRenderer = styled.div`
   h1 {
     padding-left: 0.2rem;
     font-size: 2rem;
-    border-bottom: 1px solid ${COLORS.GRAY};
+    border-bottom: 1px solid var(--color-border);
   }
 
   h2 {
     font-size: 1.75rem;
-    border-bottom: 1px solid ${COLORS.GRAY};
+    border-bottom: 1px solid var(--color-border);
   }
 
   h3 {
@@ -63,9 +62,9 @@ const MarkdownRenderer = styled.div`
   blockquote {
     margin: 30px 0;
     padding: 0 1rem;
-    color: ${COLORS.GRAY_BOLD};
+    color: var(--color-blockquote-text);
     font-weight: 800;
-    border-left: 2px solid ${COLORS.GRAY};
+    border-left: 2px solid var(--color-blockquote-border);
   }
 
   ol,
@@ -82,11 +81,11 @@ const MarkdownRenderer = styled.div`
 
   hr {
     margin: 100px 0;
-    border: 1px solid #000;
+    border: 1px solid var(--color-hr);
   }
 
   a {
-    color: ${COLORS.SUB_BOLD};
+    color: var(--color-accent);
   }
 
   p {
@@ -380,8 +379,8 @@ const MarkdownRenderer = styled.div`
   pre[class*='language-text'],
   code[class*='language-text'] {
     padding: 0.25rem;
-    color: ${COLORS.BLACK};
-    background-color: ${COLORS.GRAY};
+    color: var(--color-inline-code-text);
+    background-color: var(--color-inline-code-bg);
   }
 
   @media (max-width: 768px) {

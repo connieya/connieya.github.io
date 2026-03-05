@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { ForwardedRef, forwardRef, useEffect } from 'react'
-import COLORS from 'utils/constant/colors'
+
 type Props = {
   tableOfContents: string
 }
@@ -60,7 +60,7 @@ const TableOfContentsRenderer = styled.nav`
     transition: all 0.1s ease-out;
 
     &:hover {
-      background-color: ${COLORS.SUB_MIDDLE_BOLD};
+      background-color: var(--color-accent-hover);
     }
   }
 
@@ -73,6 +73,6 @@ const TableOfContentsRenderer = styled.nav`
     padding: 0 0.5rem;
     list-style: none;
 
-    border-left: 2px solid ${COLORS.GRAY};
+    border-left: 2px solid var(--color-border);
   }
 `

@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { Link } from 'gatsby'
 import { ReactNode } from 'react'
-import COLORS from 'utils/constant/colors'
+
 type Props = {
   active?: boolean
   innerText?: string
@@ -46,13 +46,14 @@ const StyledLink = styled(({ active, ...props }: GatsbyLinkProps) => (
   z-index: 9;
   display: inline-block;
   padding: 0.25rem 0.65rem;
-  color: ${COLORS.BLACK}
+  color: var(--color-text-primary);
   font-size: 0.85rem;
-  font-weight : ${({ active }) => (active ? '800' : '400')};
+  font-weight: ${({ active }) => (active ? '800' : '400')};
   white-space: nowrap;
-  background-color: ${({ active }) => (active ? COLORS : COLORS)};
   border: ${({ active }) =>
-    active ? '1px solid #909da1' : '1px solid #b5a5a5'};
+    active
+      ? '1px solid var(--color-category-border-active)'
+      : '1px solid var(--color-category-border)'};
   border-radius: 1rem;
   transform: scale(${({ active }) => (active ? 1.15 : 1)});
   cursor: pointer;
@@ -63,8 +64,11 @@ const StyledLink = styled(({ active, ...props }: GatsbyLinkProps) => (
   }
 
   &:hover {
-    color: ${COLORS.BLACK}
-    background-color: ${({ active }) => (active ? '#a0a0a0' : '#b5a5a5')};
+    color: var(--color-text-primary);
+    background-color: ${({ active }) =>
+      active
+        ? 'var(--color-category-active-hover-bg)'
+        : 'var(--color-category-hover-bg)'};
   }
 
   @media (max-width: 768px) {

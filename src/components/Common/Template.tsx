@@ -18,6 +18,10 @@ const Container = styled.div`
   min-height: 100vh;
 `
 
+const Main = styled.main`
+  flex: 1;
+`
+
 const Template: FunctionComponent<TemplateProps> = function ({
   title,
   description,
@@ -61,7 +65,7 @@ const Template: FunctionComponent<TemplateProps> = function ({
         <html lang="ko" />
       </Helmet>
       <GlobalStyle />
-      {children}
+      <Main>{children}</Main>
       <Footer />
     </Container>
   )

@@ -133,9 +133,9 @@ const Guestbook: React.FC = () => {
       }
     } catch (err: any) {
       console.error('Error:', err)
-      
+
       // 네트워크 에러 처리
-      if (err?.message?.includes('Failed to fetch') || 
+      if (err?.message?.includes('Failed to fetch') ||
           err?.message?.includes('ERR_NAME_NOT_RESOLVED') ||
           err?.name === 'TypeError') {
         setError('Supabase 서버에 연결할 수 없습니다. 환경 변수를 확인해주세요.')
@@ -209,9 +209,9 @@ const Guestbook: React.FC = () => {
       }
     } catch (err: any) {
       console.error('Error:', err)
-      
+
       // 네트워크 에러 처리
-      if (err?.message?.includes('Failed to fetch') || 
+      if (err?.message?.includes('Failed to fetch') ||
           err?.message?.includes('ERR_NAME_NOT_RESOLVED') ||
           err?.name === 'TypeError') {
         setError('Supabase 서버에 연결할 수 없습니다. 환경 변수를 확인해주세요.')
@@ -327,11 +327,11 @@ const Form = styled.form`
 `
 
 const FormCard = styled.div`
-  background: white;
-  border: 1px solid #e5e7eb;
+  background: var(--color-form-card-bg);
+  border: 1px solid var(--color-card-border);
   border-radius: 8px;
   padding: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px var(--color-card-shadow);
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -347,28 +347,29 @@ const InputRow = styled.div`
 const NameInput = styled.input`
   flex: 0 0 150px;
   padding: 0.5rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--color-input-border);
   border-radius: 6px;
   font-size: 0.8rem;
-  background: #f9fafb;
+  background: var(--color-input-bg);
+  color: var(--color-text-primary);
   transition: all 0.2s ease;
 
   &:focus {
     outline: none;
-    border-color: #6b7280;
-    box-shadow: 0 0 0 2px rgba(107, 114, 128, 0.1);
-    background: white;
+    border-color: var(--color-input-focus-border);
+    box-shadow: 0 0 0 2px var(--color-input-focus-shadow);
+    background: var(--color-form-card-bg);
   }
 
   &:disabled {
-    background: #f3f4f6;
+    background: var(--color-bg-tertiary);
     cursor: not-allowed;
   }
 `
 
 const RandomButton = styled.button`
   padding: 0.5rem;
-  background: #6b7280;
+  background: var(--color-btn-secondary-bg);
   color: white;
   border: none;
   border-radius: 6px;
@@ -378,11 +379,11 @@ const RandomButton = styled.button`
   min-width: 40px;
 
   &:hover:not(:disabled) {
-    background: #4b5563;
+    background: var(--color-btn-secondary-hover);
   }
 
   &:disabled {
-    background: #9ca3af;
+    background: var(--color-btn-disabled);
     cursor: not-allowed;
   }
 `
@@ -390,23 +391,24 @@ const RandomButton = styled.button`
 const MessageInput = styled.textarea`
   width: 100%;
   padding: 0.5rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--color-input-border);
   border-radius: 6px;
   font-size: 0.8rem;
-  background: #f9fafb;
+  background: var(--color-input-bg);
+  color: var(--color-text-primary);
   resize: none;
   min-height: 60px;
   transition: all 0.2s ease;
 
   &:focus {
     outline: none;
-    border-color: #6b7280;
-    box-shadow: 0 0 0 2px rgba(107, 114, 128, 0.1);
-    background: white;
+    border-color: var(--color-input-focus-border);
+    box-shadow: 0 0 0 2px var(--color-input-focus-shadow);
+    background: var(--color-form-card-bg);
   }
 
   &:disabled {
-    background: #f3f4f6;
+    background: var(--color-bg-tertiary);
     cursor: not-allowed;
   }
 `
@@ -414,7 +416,7 @@ const MessageInput = styled.textarea`
 const SubmitButton = styled.button`
   align-self: flex-end;
   padding: 0.5rem 1rem;
-  background: #374151;
+  background: var(--color-btn-primary-bg);
   color: white;
   border: none;
   border-radius: 6px;
@@ -424,23 +426,23 @@ const SubmitButton = styled.button`
   transition: background-color 0.2s ease;
 
   &:hover:not(:disabled) {
-    background: #1f2937;
+    background: var(--color-btn-primary-hover);
   }
 
   &:disabled {
-    background: #9ca3af;
+    background: var(--color-btn-disabled);
     cursor: not-allowed;
   }
 `
 
 const ErrorMessage = styled.div`
-  background: #fef2f2;
-  color: #dc2626;
+  background: var(--color-error-bg);
+  color: var(--color-error-text);
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 2rem;
   text-align: center;
-  border: 1px solid #fecaca;
+  border: 1px solid var(--color-error-border);
 `
 
 const EntriesContainer = styled.div`
@@ -453,7 +455,7 @@ const LoadingState = styled.div`
 `
 
 const LoadingText = styled.p`
-  color: #6b7280;
+  color: var(--color-loading-text);
   font-size: 0.875rem;
   margin: 0;
 `
@@ -478,7 +480,7 @@ const EmptyIcon = styled.div`
 `
 
 const EmptyText = styled.p`
-  color: #6b7280;
+  color: var(--color-loading-text);
   font-size: 0.875rem;
   line-height: 1.5;
 `
@@ -498,17 +500,17 @@ const EntryHeader = styled.div`
 const EntryName = styled.span`
   font-size: 0.875rem;
   font-weight: 600;
-  color: #374151;
+  color: var(--color-entry-name);
 `
 
 const EntryDate = styled.time`
   font-size: 0.75rem;
-  color: #6b7280;
+  color: var(--color-entry-date);
 `
 
 const EntryMessage = styled.p`
   font-size: 0.875rem;
-  color: #4b5563;
+  color: var(--color-entry-message);
   line-height: 1.6;
   margin: 0;
 `

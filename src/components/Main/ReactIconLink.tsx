@@ -54,10 +54,10 @@ const Container = styled.a<{ tooltipText: string }>`
   ::before {
     width: max-content;
     padding: 0.5rem;
-    color: white;
+    color: var(--color-tooltip-text);
     font-size: 0.75rem;
     text-align: center;
-    background: #333333;
+    background: var(--color-tooltip-bg);
     border-radius: 0.3rem;
     transform: translateX(-50%) translateY(calc(-100% - var(--arrow-size)));
     content: ${({ tooltipText }) => `'${tooltipText}'`};
@@ -66,7 +66,7 @@ const Container = styled.a<{ tooltipText: string }>`
   ::after {
     --translate-y: calc(-1 * var(--arrow-size));
     border: var(--arrow-size) solid transparent;
-    border-top-color: #333333;
+    border-top-color: var(--color-tooltip-bg);
     transform: translateX(-50%) translateY(calc(-1 * var(--arrow-size)));
     transform-origin: top center;
     content: '';
