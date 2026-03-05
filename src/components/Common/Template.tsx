@@ -48,6 +48,11 @@ const Template: FunctionComponent<TemplateProps> = function ({
         <meta property="og:url" content={url} />
         <meta property="og:site_name" content="박건희" />
 
+        <meta
+          name="google-site-verification"
+          content="MewvnFIOz6F5cDFIX2LfX-KbHvYPNMGHxIemGGdYWSk"
+        />
+
         <html lang="ko" />
       </Helmet>
       <GlobalStyle />
