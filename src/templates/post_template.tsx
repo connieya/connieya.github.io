@@ -29,12 +29,12 @@ const PostTemplate = ({
       tableOfContents,
       html,
       timeToRead,
-      frontmatter: { title, summary, date, categories },
+      frontmatter: { title, summary, date, categories, thumbnail },
     },
   } = edges[0]
 
   return (
-    <Template title={title} description={summary} url={href} image="">
+    <Template title={title} description={summary} url={href} image={thumbnail?.publicURL || ''} ogType="article">
       <Container>
         <PostHead
           title={title}

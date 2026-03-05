@@ -47,7 +47,7 @@ const Blog = ({
     <Template
       title={`${title} - 개발`}
       description={description}
-      url={siteUrl}
+      url={`${siteUrl}blog`}
       image={publicURL}
     >
       <PostList posts={filteredPosts as any} />

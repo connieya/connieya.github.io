@@ -15,7 +15,7 @@ require('dotenv').config({
 module.exports = {
   siteMetadata: {
     title: `박건희`,
-    description: `gatsby 로 나만의 블로그 만들기`,
+    description: `결제 시스템과 백엔드 인프라 설계를 다루는 개발 블로그`,
     author: `Park Geon Hee`,
     siteUrl: `https://connieya.github.io/`,
   },
@@ -26,7 +26,28 @@ module.exports = {
     `gatsby-plugin-react-helmet`,
     'gatsby-plugin-sitemap',
     'gatsby-plugin-sharp',
-
+    {
+      resolve: 'gatsby-plugin-robots-txt',
+      options: {
+        host: 'https://connieya.github.io',
+        sitemap: 'https://connieya.github.io/sitemap-index.xml',
+        policy: [{ userAgent: '*', allow: '/' }],
+      },
+    },
+    {
+      resolve: 'gatsby-plugin-canonical-urls',
+      options: {
+        siteUrl: 'https://connieya.github.io/',
+        stripQueryString: true,
+      },
+    },
+    {
+      resolve: 'gatsby-plugin-gtag',
+      options: {
+        trackingId: process.env.GOOGLE_ANALYTICS_ID,
+        head: true,
+      },
+    },
     {
       resolve: 'gatsby-plugin-typescript',
       options: {
@@ -55,12 +76,6 @@ module.exports = {
           `gatsby-remark-reading-time`,
           `gatsby-remark-mermaid`,
           'gatsby-remark-autolink-headers',
-          // {
-          //   resolve: 'gatsby-remark-smartypants',
-          //   options: {
-          //     dashes: 'oldschool',
-          //   },
-          // },
           {
             resolve: 'gatsby-remark-prismjs',
             options: {
@@ -85,38 +100,6 @@ module.exports = {
             options: {
               target: '_blank',
               rel: 'nofollow',
-            },
-          },
-          // {
-          //   resolve: `gatsby-plugin-sharp`,
-          //   options: {
-          //     defaults: {
-          //       formats: ['auto', 'webp'],
-          //       quality: 100,
-          //       placeholder: 'blurred',
-          //     },
-          //   },
-          // },
-          {
-            resolve: 'gatsby-plugin-robots-txt',
-            options: {
-              host: 'https://connieya.github.io',
-              sitemap: 'https://connieya.github.io/sitemap-index.xml',
-              policy: [{ userAgent: '*', allow: '/' }],
-            },
-          },
-          {
-            resolve: 'gatsby-plugin-canonical-urls',
-            options: {
-              siteUrl: 'https://connieya.github.io/',
-              stripQueryString: true,
-            },
-          },
-          {
-            resolve: 'gatsby-plugin-gtag',
-            options: {
-              trackingId: process.env.GOOGLE_ANALYTICS_ID,
-              head: true, // 애널리틱스 스크립트를 Head 태그 내에 둘지에 대한 속성입니다.
             },
           },
         ],
