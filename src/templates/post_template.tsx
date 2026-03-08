@@ -9,32 +9,44 @@ import PostBody from 'components/PostDetail/PostBody'
 
 type PostTemplateProps = {
   data: {
+    site: {
+      siteMetadata: {
+        siteUrl: string
+      }
+    }
     allMarkdownRemark: {
       edges: PostDetail[]
     }
   }
-  location: {
-    href: string
+  pageContext: {
+    slug: string
   }
 }
 const PostTemplate = ({
   data: {
+    site: {
+      siteMetadata: { siteUrl },
+    },
     allMarkdownRemark: { edges },
   },
-  location: { href },
+  pageContext: { slug },
 }: PostTemplateProps) => {
   const contentRef = useRef<HTMLDivElement>(null)
   const {
     node: {
       tableOfContents,
       html,
+      excerpt,
       timeToRead,
       frontmatter: { title, summary, date, categories, thumbnail },
     },
   } = edges[0]
 
+  const description = summary || excerpt || ''
+  const url = `${siteUrl}${slug}`
+
   return (
-    <Template title={title} description={summary} url={href} image={thumbnail?.publicURL || ''} ogType="article">
+    <Template title={title} description={description} url={url} image={thumbnail?.publicURL || ''} ogType="article">
       <Container>
         <PostHead
           title={title}
@@ -52,11 +64,17 @@ export default PostTemplate
 
 export const queryMarkdownDataBySlug = graphql`
   query queryMarkdownDataBySlug($slug: String) {
+    site {
+      siteMetadata {
+        siteUrl
+      }
+    }
     allMarkdownRemark(filter: { fields: { slug: { eq: $slug } } }) {
       edges {
         node {
           tableOfContents
           html
+          excerpt(pruneLength: 160)
           timeToRead
           frontmatter {
             title

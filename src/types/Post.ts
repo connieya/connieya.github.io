@@ -30,6 +30,7 @@ export type PostDetail = {
     tableOfContents: string
     timeToRead: number
     html: string
+    excerpt: string
     frontmatter: Frontmatter
   }
 }

@@ -177,9 +177,26 @@ exports.createSchemaCustomization = ({ actions }) => {
     type MarkdownRemark implements Node @dontInfer {
       frontmatter: MarkdownRemarkFrontmatter
       html: String
-      excerpt: String
-      fields: Fields # <-- 여기에 fields 필드를 추가합니다.
+      excerpt(pruneLength: Int = 160): String
+      fields: Fields
     }
   `
   createTypes(typeDefs)
+}
+
+exports.createResolvers = ({ createResolvers }) => {
+  createResolvers({
+    MarkdownRemark: {
+      excerpt: {
+        resolve: async (source, args, context, info) => {
+          // Strip HTML tags from html field as fallback
+          const html = source.html || source.internal?.content || ''
+          const text = html.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()
+          const len = args.pruneLength || 160
+          if (text.length <= len) return text
+          return text.slice(0, len) + '…'
+        },
+      },
+    },
+  })
 }
