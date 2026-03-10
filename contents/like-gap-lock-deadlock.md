@@ -326,4 +326,4 @@ public LikeInfo add(Long userId, Long targetId, LikeTargetType targetType) {
 
 비관적 락은 "행이 이미 존재하는 상황"에서의 동시 수정을 막는 데는 유효합니다. 하지만 "행이 없는 상황"에서 `SELECT FOR UPDATE`를 쓰면 Gap Lock이 발생하고, 복수의 트랜잭션이 동시에 진입하면 Deadlock으로 이어집니다.
 
-INSERT가 관여하는 시나리오에서는 락보다 DB의 원자적 쿼리가 더 안전하고 단순했습니다. 중복 시 값을 갱신해야 하면 `ON DUPLICATE KEY UPDATE`, 단순히 중복 삽입만 무시하면 되면 `INSERT IGNORE`처럼 목적에 맞는 구문을 선택하면 됩니다. 동시성 테스트를 작성하지 않았다면 이 문제를 운영 환경에서 처음 만났을 거라고 생각하면 좀 아찔합니다.
+INSERT가 관여하는 시나리오에서는 락보다 DB의 원자적 쿼리가 더 안전하고 단순했습니다. 중복 시 값을 갱신해야 하면 `ON DUPLICATE KEY UPDATE`, 단순히 중복 삽입만 무시하면 되면 `INSERT IGNORE`처럼 목적에 맞는 구문을 선택하면 됩니다. 동시성 테스트가 없었다면 코드 리뷰만으로는 절대 발견할 수 없는 문제였습니다.
