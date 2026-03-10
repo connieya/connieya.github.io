@@ -46,8 +46,23 @@ const PostTemplate = ({
   const description = summary || excerpt || ''
   const url = `${siteUrl}${slug}`
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: title,
+    description,
+    datePublished: date,
+    author: {
+      '@type': 'Person',
+      name: '박건희',
+      url: 'https://connieya.github.io',
+    },
+    url,
+    ...(thumbnail?.publicURL && { image: thumbnail.publicURL }),
+  }
+
   return (
-    <Template title={title} description={description} url={url} image={thumbnail?.publicURL || ''} ogType="article">
+    <Template title={title} description={description} url={url} image={thumbnail?.publicURL || ''} ogType="article" jsonLd={jsonLd}>
       <Container>
         <PostHead
           title={title}

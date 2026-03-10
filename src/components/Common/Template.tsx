@@ -12,6 +12,7 @@ type TemplateProps = {
   image: string
   children: ReactNode
   ogType?: string
+  jsonLd?: object
 }
 const Container = styled.div`
   display: flex;
@@ -30,6 +31,7 @@ const Template: FunctionComponent<TemplateProps> = function ({
   image,
   children,
   ogType = 'website',
+  jsonLd,
 }) {
   return (
     <Container>
@@ -48,10 +50,23 @@ const Template: FunctionComponent<TemplateProps> = function ({
         <meta property="og:url" content={url} />
         <meta property="og:site_name" content="박건희" />
 
+        <meta property="og:locale" content="ko_KR" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        {image && <meta name="twitter:image" content={image} />}
+
         <meta
           name="google-site-verification"
           content="MewvnFIOz6F5cDFIX2LfX-KbHvYPNMGHxIemGGdYWSk"
         />
+
+        {jsonLd && (
+          <script type="application/ld+json">
+            {JSON.stringify(jsonLd)}
+          </script>
+        )}
 
         <html lang="ko" />
       </Helmet>
