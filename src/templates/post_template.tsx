@@ -6,6 +6,7 @@ import { PostDetail } from 'types/Post'
 import TableOfContents from 'components/PostDetail/TableOfContent'
 import styled from '@emotion/styled'
 import PostBody from 'components/PostDetail/PostBody'
+import CommentWidget from 'components/PostDetail/PostComment'
 
 type PostTemplateProps = {
   data: {
@@ -56,6 +57,7 @@ const PostTemplate = ({
         />
         <PostBody ref={contentRef} html={html} />
         <TableOfContents ref={contentRef} tableOfContents={tableOfContents} />
+        <CommentWidget />
       </Container>
     </Template>
   )

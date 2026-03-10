@@ -16,8 +16,13 @@ type UtterancesAttributesType = {
 }
 
 const UtterancesWrapper = styled.div`
+  margin-top: 80px;
+  padding-top: 40px;
+  border-top: 1px solid var(--color-border, #e5e7eb);
+
   @media (max-width: 768px) {
-    padding: 0 20px;
+    padding: 40px 20px 0;
+    margin-top: 60px;
   }
 `
 
