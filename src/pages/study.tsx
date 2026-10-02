@@ -1,15 +1,11 @@
 import React from 'react'
-import PostList from 'components/Post/PostList'
 import { graphql } from 'gatsby'
 import { IGatsbyImageData } from 'gatsby-plugin-image'
 import Template from 'components/Common/Template'
+import PostList from 'components/Post/PostList'
 import { PostItem } from 'types/Post'
 
 type Props = {
-  location: {
-    search: string
-    href: string
-  }
   data: {
     site: {
       siteMetadata: {
@@ -28,8 +24,7 @@ type Props = {
   }
 }
 
-const Blog = ({
-  location: {},
+const Study = ({
   data: {
     site: {
       siteMetadata: { title, description, siteUrl },
@@ -37,29 +32,21 @@ const Blog = ({
     allMarkdownRemark: { edges: posts },
     file: { publicURL },
   },
-}: Props) => {
-  const filteredPosts = posts.filter(
-    ({ node }) =>
-      !node.frontmatter.categories?.includes('books') &&
-      !node.frontmatter.categories?.includes('study') &&
-      node.frontmatter.deploy !== false,
-  )
-  return (
-    <Template
-      title={`${title} - 개발`}
-      description={description}
-      url={`${siteUrl}blog`}
-      image={publicURL}
-    >
-      <PostList posts={filteredPosts as any} />
-    </Template>
-  )
-}
+}: Props) => (
+  <Template
+    title={`${title} - 공부`}
+    description="개발하며 궁금해진 내용을 찾아보고 기록합니다."
+    url={`${siteUrl}study`}
+    image={publicURL}
+  >
+    <PostList posts={posts as any} />
+  </Template>
+)
 
-export default Blog
+export default Study
 
-export const getBlogData = graphql`
-  query getBlogData {
+export const getStudyData = graphql`
+  query getStudyData {
     site {
       siteMetadata {
         title
@@ -68,6 +55,7 @@ export const getBlogData = graphql`
       }
     }
     allMarkdownRemark(
+      filter: { frontmatter: { categories: { in: ["study"] }, deploy: { ne: false } } }
       sort: { order: DESC, fields: [frontmatter___date, frontmatter___title] }
     ) {
       edges {

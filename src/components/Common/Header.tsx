@@ -17,6 +17,9 @@ const Header = () => {
             <SubLink to="/blog">
               <SubText>개발</SubText>
             </SubLink>
+            <SubLink to="/study">
+              <SubText>공부</SubText>
+            </SubLink>
           </NavLeft>
           <ThemeToggle
             onClick={toggleTheme}

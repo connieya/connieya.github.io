@@ -28,18 +28,24 @@ const Home = ({
     <Template title={title} description={description} url={siteUrl} image="">
       <ContentContainer>
         <Description>
-          결제 시스템과 카드사 연동 인프라를 설계해 온 백엔드 개발자입니다.
+          신규 도메인을 설계부터 운영까지 끝까지 책임지는 <strong>3년차 백엔드
+          개발자</strong>입니다.
           <br />
           <br />
-          신한카드 Apple Pay 토큰 시스템에서 4개 브랜드사 간 장애 격리 구조를
-          설계했습니다. <br /> Netty 기반 단말 관리 서버에서는 100만 건 규모의
-          데이터 동기화 파이프라인을 구현했습니다.
+          스노우온카드에서 교통 결제 요금 처리 서버와 Apple Pay 토큰 시스템을
+          설계했습니다.
+          <br />
+          무신사에서 SCM 조달 도메인(OTB 예산·공급률·발주·입고)을 LLD 설계부터
+          BE·FE·운영 배포까지 전담했습니다.
+          <br />
+          Temporal saga + Kafka 콜백으로 물류 파이프라인을 무중단 전환하고,
+          AI 기반 E2E QA 자동화 대시보드를 단독 개발했습니다.
           <br />
           <br />
-          시스템 경계를 명확히 정의해 외부 장애가 내부로 전파되지 않는 구조를
-          고민합니다. <br />
-          불필요한 추상화보다 읽기 쉬운 코드를, 빠른 구현보다 변경에 안전한
-          설계를 선호합니다.
+          DDD + Clean Architecture로 도메인 불변식을 코드 가드레일로 만들고,
+          외부 장애가 내부로 전파되지 않는 구조를 먼저 고민합니다. <br />
+          빠른 구현보다 변경에 안전한 설계를, AI는 코드 이해·생성 가속에
+          적극 활용하되 정합성 판단은 직접 검증하는 방식을 지향합니다.
         </Description>
         <ContactSection>
           <ContactTitle>Contact</ContactTitle>
