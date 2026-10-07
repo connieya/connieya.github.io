@@ -28,24 +28,24 @@ const Home = ({
     <Template title={title} description={description} url={siteUrl} image="">
       <ContentContainer>
         <Description>
-          신규 도메인을 설계부터 운영까지 끝까지 책임지는 <strong>3년차 백엔드
+          복잡한 도메인을 운영 가능한 시스템으로 만드는 <strong>3년차 백엔드
           개발자</strong>입니다.
           <br />
           <br />
-          스노우온카드에서 교통 결제 요금 처리 서버와 Apple Pay 토큰 시스템을
-          설계했습니다.
+          스노우온카드에서는 교통 결제 요금 처리 서버와 Apple Pay 토큰 시스템을
+          설계했습니다. 무신사에서는 SCM 조달 도메인(OTB 예산·공급률·발주·입고)을
+          설계부터 BE·FE 구현, 운영 배포까지 맡았습니다.
           <br />
-          무신사에서 SCM 조달 도메인(OTB 예산·공급률·발주·입고)을 LLD 설계부터
-          BE·FE·운영 배포까지 전담했습니다.
-          <br />
-          Temporal saga + Kafka 콜백으로 물류 파이프라인을 무중단 전환하고,
+          Temporal saga와 Kafka 콜백으로 물류 파이프라인을 무중단 전환했고,
           AI 기반 E2E QA 자동화 대시보드를 단독 개발했습니다.
           <br />
           <br />
-          DDD + Clean Architecture로 도메인 불변식을 코드 가드레일로 만들고,
-          외부 장애가 내부로 전파되지 않는 구조를 먼저 고민합니다. <br />
-          빠른 구현보다 변경에 안전한 설계를, AI는 코드 이해·생성 가속에
-          적극 활용하되 정합성 판단은 직접 검증하는 방식을 지향합니다.
+          DDD와 Clean Architecture로 도메인 불변식을 코드에 담고, 외부 장애가
+          내부로 전파되지 않는 경계를 설계합니다.
+          <br />
+          AI를 개발의 기본 도구로 활용하는 <strong>AI Native Engineer</strong>를
+          지향합니다. 코드 이해·구현·QA의 속도를 높이되, 도메인 규칙과 데이터
+          정합성은 직접 설계하고 검증합니다.
         </Description>
         <ContactSection>
           <ContactTitle>Contact</ContactTitle>
