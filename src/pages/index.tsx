@@ -2,7 +2,7 @@ import React from 'react'
 import { graphql } from 'gatsby'
 import styled from '@emotion/styled'
 import Template from 'components/Common/Template'
-import { AiFillGithub, AiFillLinkedin } from 'react-icons/ai'
+import { AiFillGithub } from 'react-icons/ai'
 import { HiOutlineMail } from 'react-icons/hi'
 
 type Props = {
@@ -62,15 +62,6 @@ const Home = ({
             >
               <AiFillGithub />
               <span>GitHub</span>
-            </ContactLink>
-            <ContactLink
-              href="https://www.linkedin.com/in/%EA%B1%B4%ED%9D%AC-%EB%B0%95-6ab959238/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-            >
-              <AiFillLinkedin />
-              <span>LinkedIn</span>
             </ContactLink>
           </ContactList>
         </ContactSection>

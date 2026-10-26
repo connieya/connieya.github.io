@@ -99,6 +99,13 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   )
   visibleEdges.forEach(generatePostPage)
 
+  // Drafts have direct preview URLs during local development only.
+  if (process.env.NODE_ENV === 'development') {
+    queryAllMarkdownData.data.allMarkdownRemark.edges
+      .filter(({ node }) => node.frontmatter?.deploy === false)
+      .forEach(generatePostPage)
+  }
+
   // Supabase에 포스트 자동 추가 (빌드 시)
   if (supabase) {
     try {

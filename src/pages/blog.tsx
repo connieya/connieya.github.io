@@ -42,7 +42,8 @@ const Blog = ({
     ({ node }) =>
       !node.frontmatter.categories?.includes('books') &&
       !node.frontmatter.categories?.includes('study') &&
-      node.frontmatter.deploy !== false,
+      (process.env.NODE_ENV === 'development' ||
+        node.frontmatter.deploy !== false),
   )
   return (
     <Template

@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react'
 import styled from '@emotion/styled'
-import { AiFillGithub, AiFillLinkedin } from 'react-icons/ai'
+import { AiFillGithub } from 'react-icons/ai'
 
 const Footer: FunctionComponent = function () {
   const currentYear = new Date().getFullYear()
@@ -12,9 +12,6 @@ const Footer: FunctionComponent = function () {
         <IconLinks>
           <a href="https://github.com/connieya" target="_blank" rel="noreferrer" aria-label="GitHub">
             <AiFillGithub />
-          </a>
-          <a href="https://www.linkedin.com/in/%EA%B1%B4%ED%9D%AC-%EB%B0%95-6ab959238/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
-            <AiFillLinkedin />
           </a>
         </IconLinks>
       </FooterContent>
